@@ -82,7 +82,7 @@ const Header = (props: Props) => {
     },
     {
       label: 'Triển lãm',
-      path: '',
+      path: '/exhibition',
       children: [
         { label: 'Trung tâm triển lãm', path: '/center-exhibition'},
         { label: 'Lịch triển lãm', path: '/schedule-exhibition'},

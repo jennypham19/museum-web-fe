@@ -32,6 +32,7 @@ const IntroduceAboutMuseum = Loadable(lazy(() => import('@/views/LandingPage/Com
 const OutstandingCollection = Loadable(lazy(() => import('@/views/LandingPage/Components/OutstandingCollections')));
 const InformationOfTicket = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/InformationOfTicket')));
 const UtilityServices = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/UtilityServices')));
+const Exhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/index')));
 const ScheduleOfExhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/ScheduleOfExhibition')));
 const Pages = Loadable(lazy(() => import('@/views/LandingPage/Pages/index')));
 const Visit = Loadable(lazy(() => import('@/views/LandingPage/Visit/index')));
@@ -53,14 +54,13 @@ const routes: RouteObject[] = [
     ],
   },
 
-  // --- NHÁNH 2: CÁC TRANG CÔNG KHAI (PUBLIC)
+  // --- NHÁNH 2: CÁC TRANG XÁC THỰC (CHỈ DÀNH CHO NGƯỜI CHƯA ĐĂNG NHẬP) ---
   {
-    path: '/',
-    // element:<PublicRoute />,
+    path: 'auth',
+    element: <PublicRoute/>,
     children: [
       {
-        path: 'auth',
-        element: <AuthLayout />,
+        element: <AuthLayout/>,
         children: [
           { index: true, element: <Navigate to={'login'} replace /> },
           { path: 'login', element: <Login /> },
@@ -68,30 +68,33 @@ const routes: RouteObject[] = [
           { path: 'forgot-password', element: <ForgotPassword /> },
           { path: 'change-password', element: <ChangePassword /> },
         ]
-      },
-      {
-        element: <LandingPageLayout />,
-        children: [
-          { path: 'home', element: <DashboardHome />},
-          { path: 'center-exhibition', element: <CentralExhibition />},
-          { path: 'introduce-museum', element: <IntroduceAboutMuseum />},
-          { path: 'outstanding-collection', element: <OutstandingCollection />},
-          { path: 'information-ticket', element: <InformationOfTicket />},
-          { path: 'utility-service', element: <UtilityServices />},
-          { path: 'schedule-exhibition', element: <ScheduleOfExhibition />},
-          { path: 'pages', element: <Pages />},
-          { path: 'visit', element: <Visit />},
-          { path: 'shop', element: <Shop />},
-          { path: 'contact', element: <Contact />},
-          // Nếu người dùng vào '/', mặc định hiển thị trang home
-          { index: true, element: <Navigate to='home' replace /> },
-
-        ]
       }
-    ],
+    ]
   },
 
-  // --- NHÁNH 3: CÁC TRANG LỖI (Nằm ngoài các layout chính) ---
+  // --- NHÁNH 3: CÁC TRANG CÔNG KHAI (LANDING PAGE - DÀNH CHO TẤT CẢ MỌI NGƯỜI)
+  {
+    path: '/',
+    element: <LandingPageLayout />,
+    children: [
+      { path: 'home', element: <DashboardHome />},
+      { path: 'center-exhibition', element: <CentralExhibition />},
+      { path: 'introduce-museum', element: <IntroduceAboutMuseum />},
+      { path: 'outstanding-collection', element: <OutstandingCollection />},
+      { path: 'information-ticket', element: <InformationOfTicket />},
+      { path: 'utility-service', element: <UtilityServices />},
+      { path: 'exhibition', element: <Exhibition/>},
+      { path: 'schedule-exhibition', element: <ScheduleOfExhibition />},
+      { path: 'pages', element: <Pages />},
+      { path: 'visit', element: <Visit />},
+      { path: 'shop', element: <Shop />},
+      { path: 'contact', element: <Contact />},
+      // Nếu người dùng vào '/', mặc định hiển thị trang home
+      { index: true, element: <Navigate to='home' replace /> },
+    ]
+  },
+
+  // --- NHÁNH 4: CÁC TRANG LỖI (Nằm ngoài các layout chính) ---
   {
     path: '*',
     element: <NotFound />,

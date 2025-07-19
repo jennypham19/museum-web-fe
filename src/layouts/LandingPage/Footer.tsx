@@ -1,66 +1,29 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { __VERSION__ } from '@/config';
-import { Box, Button, Divider, Stack } from '@mui/material';
+import { Box, Divider, Stack } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import IconButton from '@/components/IconButton/IconButton';
-import { Facebook, Instagram,Language,Twitter } from '@mui/icons-material';
-import InputText from '@/components/InputText';
-import { useState } from 'react';
-import { Dayjs } from 'dayjs';
+import { Language } from '@mui/icons-material';
 import { FaTiktok, FaFacebookF } from 'react-icons/fa';
-
-interface ProfileFormData {
-  email: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { DATA_INFO, DATA_LINKS, DATA_SOCIAL } from '@/constants/data';
+ 
 
 const Footer = () => {
-  const [errors, setErrors] = useState<Partial<Record<'email' , string>>>({});
-  const [formData, setFormData] = useState<ProfileFormData>({ email: '' });
-  const handleCustomInputChange = (name: string, value: string | null | Dayjs | number ) => {
-          if (Object.prototype.hasOwnProperty.call(formData, name)) {
-          const validName = name as keyof ProfileFormData; 
-      
-          setFormData((prevData) => ({
-              ...prevData,
-              [validName]: String(value ?? ''), 
-          }));
+  const navigate = useNavigate();
 
-          if(validName === 'email' && typeof value === 'string'){
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // chuẩn email đơn giản
-            if(!emailRegex.test(value)){
-              setErrors(prev => ({
-                ...prev,
-                email: "Email không hợp lệ"
-              }));
-              return;
-            }
-            }
-  
-          if (validName === 'email') {
-              if (errors[validName as 'email']) {
-                  setErrors(prev => {
-                      const newErrors = { ...prev };
-                      delete newErrors[validName as 'email'];
-                      return newErrors;
-                  });
-              }
-          }
-          } else {
-          console.warn(`CustomInput called onChange with an unexpected name: ${name}`);
-          }
-      };
   return (
     <FooterRoot>
-        <Box sx={{ height: {xs: '300px', md: '250px'}}}>
+        <Box sx={{ height: {xs: '520px', sm: '350px', md: '400px'}}}>
           <Grid container spacing={2} sx={{ height: '100%' }}>
             <Grid size={{ xs: 12, md: 6}}>
                 <Box
                   sx={{
                     height:'100%',
                     display:'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    alignItems: { xs: 'start', md: 'center'},
+                    justifyContent: { xs: 'start', md: 'center'},
                     
                   }}
                 >
@@ -69,41 +32,51 @@ const Footer = () => {
                       mt: 2
                     }}
                   >
-                  <Typography fontFamily='Rozha One' sx={{ color: '#F4E2D4'}} variant='h4' fontWeight={800}>AMUSE</Typography>
-                  <Typography variant='h6' sx={{ whiteSpace: 'wrap'}} fontWeight={500}>Số 62/128 đường Tôn Thất Thuyết - quận Nam Tử Liêm - thành phố Hà Nội</Typography>
+                  <Typography fontFamily='Rozha One' sx={{ color: '#F4E2D4'}} variant='h3' fontWeight={800}>AMUSE</Typography>
+                  <Typography sx={{ whiteSpace: 'wrap', fontSize: { xs: '15px', md: '20px'}}} fontWeight={500}>Số 62/128 đường Tôn Thất Thuyết - quận Nam Từ Liêm - thành phố Hà Nội</Typography>
                   </Box>
                 </Box>
 
             </Grid>
             <Grid size={{ xs: 12, md: 6}}>
-              <Box
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <Stack direction='column' sx={{ width: { xs: '100%', md: '60%'}, mb: { xs: 2, md: 0}}}>
-                  <Typography fontWeight={500} textAlign={{ xs: 'center', md: 'start'}}>Đăng ký nhận thông báo</Typography>
-                  <Box display='flex' flexDirection={{ xs: 'column', md: 'row'}}>
-                    <InputText
-                      label=''
-                      name='email'
-                      onChange={handleCustomInputChange}
-                      type='text'
-                      value={formData.email}
-                      placeholder='Email của bạn'
-                      sx={{ mt: 0, mr: 2 }}
-                      margin="dense"
-                      error={!!errors.email}
-                      helperText={errors.email}
-                    />
-                    <Button sx={{ width: { xs: '100%', md: '105px'}, height: '35px', bgcolor: '#1C1A1B', mt: { xs: 1, md: 0}}}>
-                      Gửi đi
-                    </Button>    
-                  </Box>
-                </Stack>
-              </Box>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 6, sm: 4}}>
+                    <Box pt={{ xs: 0, md: 6}} pb={{ xs: 2, sm: 3}} display='flex' flexDirection='column'>
+                      <Typography fontWeight={700} sx={{ fontSize: { xs: '16px', md: '24px'}}}>Links</Typography>
+                    </Box>
+                    {DATA_LINKS.map((data, index) => {
+                      return(
+                        <Stack key={index} direction='column'>
+                          <Typography py={1} onClick={() => navigate(`${data.path}`)} sx={{ fontSize: { xs: '13px', md: '16px'}, cursor: 'pointer'}}>{data.name}</Typography>
+                        </Stack>
+                      )
+                    })}
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4}}>
+                    <Box pt={{ xs: 0, md: 6}} pb={{ xs: 2, sm: 3}} display='flex' flexDirection='column'>
+                      <Typography fontWeight={700} sx={{ fontSize: { xs: '16px', md: '24px'}}}>Info</Typography>
+                    </Box>
+                    {DATA_INFO.map((data, index) => {
+                      return(
+                        <Stack key={index} direction='column'>
+                          <Typography py={1} onClick={() => navigate(`${data.path}`)} sx={{ fontSize: { xs: '13px', md: '16px'}, cursor: 'pointer'}}>{data.name}</Typography>
+                        </Stack>
+                      )
+                    })}
+                </Grid>
+                <Grid size={{ xs: 6, sm: 4}}>
+                    <Box pt={{ xs: 0, md: 6}} pb={{ xs: 2, sm: 3}} display='flex' flexDirection='column'>
+                      <Typography fontWeight={700} sx={{ fontSize: { xs: '16px', md: '24px'}}}>Social</Typography>
+                    </Box>
+                    {DATA_SOCIAL.map((data, index) => {
+                      return(
+                        <Stack key={index} direction='column'>
+                          <Typography py={1} onClick={() => navigate(`${data.path}`)} sx={{ fontSize: { xs: '13px', md: '16px'}, cursor: 'pointer'}}>{data.name}</Typography>
+                        </Stack>
+                      )
+                    })}
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
@@ -140,7 +113,7 @@ const Footer = () => {
 };
 
 const FooterRoot = styled('footer')(({ theme }) => ({
-  height: '220px',
+  height: '620px',
   display: 'flex',
   flexDirection:'column',
   // justifyContent: 'center',
@@ -148,9 +121,9 @@ const FooterRoot = styled('footer')(({ theme }) => ({
   padding: theme.spacing(1, 2),
   backgroundColor: '#160E0D',
   color: 'white',
-  // responsive cho xs
-  [theme.breakpoints.down('sm')]: {
-    height: '400px',
+  // responsive cho sm
+  [theme.breakpoints.up('sm')]: {
+    height: '440px',
   },
 }));
 

@@ -1,4 +1,10 @@
 import image_collection from "@/assets/images/users/collection_image.png";
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import PublicIcon from '@mui/icons-material/Public';
+import LocalCafeIcon from '@mui/icons-material/LocalCafe';
+import MapIcon from '@mui/icons-material/Map';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 export const DATA_EXHIBITION = [
     {
         id: 1,
@@ -64,5 +70,108 @@ export const DATA_COLLECTION = [
         image_url: image_collection,
         title: 'Đèn tiffany ánh dương ngược sáng',
         content: 'Tác phẩm chú ý'
+    },
+];
+
+export const DATA_LINKS = [
+    {
+        id: 1,
+        name: 'Trang chủ',
+        path: '/home'
+    },
+    {
+        id: 2,
+        name: 'Triển lãm',
+        path: '/exhibition'
+    },
+    {
+        id: 3,
+        name: 'Sưu tập',
+        path: '/outstanding-collection'
+    },
+    {
+        id: 4,
+        name: 'Giới thiệu',
+        path: '/introduce-museum'
+    },
+];
+
+export const DATA_INFO = [
+    {
+        id: 1,
+        name: 'Giới thiệu',
+        path: '/introduce-museum'
+    },
+    {
+        id: 2,
+        name: 'Liên hệ',
+        path: '/contact'
+    },
+    {
+        id: 3,
+        name: 'Pages',
+        path: '/pages'
+    },
+];
+
+export const DATA_SOCIAL = [
+    {
+        id: 1,
+        name: 'Facebook',
+        path: '#'
+    },
+    {
+        id: 2,
+        name: 'Tiktok',
+        path: '#'
+    },
+    {
+        id: 3,
+        name: 'Website',
+        path: '#'
+    },
+    {
+        id: 4,
+        name: 'Shop',
+        path: '#'
+    },
+]
+
+export const DATA_SERVICES = [
+    {
+        id: 1,
+        name: 'Phát nhạc nền cho bảo tàng',
+        path: '#',
+        icon: MusicNoteIcon
+    },
+    {
+        id: 2,
+        name: 'Chụp photobooth vintage',
+        path: '#',
+        icon: PhotoCameraIcon
+    },
+    {
+        id: 3,
+        name: 'Khám phá các tác phẩm hot',
+        path: '#',
+        icon: PublicIcon
+    },
+    {
+        id: 4,
+        name: 'Cafe chill cực chill Amuse',
+        path: '#',
+        icon: LocalCafeIcon
+    },
+    {
+        id: 5,
+        name: 'Hành trình tour siêu vui vẻ',
+        path: '#',
+        icon: MapIcon
+    },
+    {
+        id: 6,
+        name: 'Mua sắm tiện lợi từ online',
+        path: '#',
+        icon: StorefrontIcon
     },
 ]
