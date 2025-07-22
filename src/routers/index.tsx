@@ -30,14 +30,17 @@ const DashboardHome = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/
 const CentralExhibition = Loadable(lazy(() => import('@/views/LandingPage/Components/CentralExhibition')));
 const IntroduceAboutMuseum = Loadable(lazy(() => import('@/views/LandingPage/Components/IntroduceAboutMuseum')));
 const OutstandingCollection = Loadable(lazy(() => import('@/views/LandingPage/Components/OutstandingCollections')));
-const InformationOfTicket = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/InformationOfTicket')));
-const UtilityServices = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/UtilityServices')));
+const InformationOfTicket = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfTiffanyLight')));
+const UtilityServices = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfBlueShine')));
 const Exhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/index')));
 const ScheduleOfExhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/ScheduleOfExhibition')));
 const Pages = Loadable(lazy(() => import('@/views/LandingPage/Pages/index')));
 const Visit = Loadable(lazy(() => import('@/views/LandingPage/Visit/index')));
 const Shop = Loadable(lazy(() => import('@/views/LandingPage/Shop/index')));
 const Contact = Loadable(lazy(() => import('@/views/LandingPage/Contact/index')));
+const ExhibitionOfTiffanyLight = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfTiffanyLight')));
+const ExhibitionOfBlueShine = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfBlueShine')));
+const ExploreMore = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExploreMore')));
 
 // Auth
 
@@ -77,7 +80,16 @@ const routes: RouteObject[] = [
     path: '/',
     element: <LandingPageLayout />,
     children: [
-      { path: 'home', element: <DashboardHome />},
+      { 
+        path: 'home', 
+        element: <Outlet />,
+        children: [
+          { index: true, element: <DashboardHome /> },
+          { path: 'exhibition-tiffany-light', element: <ExhibitionOfTiffanyLight/>},
+          { path: 'exhibition-blue-shine', element: <ExhibitionOfBlueShine/>},
+          { path: 'explore-more', element: <ExploreMore/>},
+        ]
+      },
       { path: 'center-exhibition', element: <CentralExhibition />},
       { path: 'introduce-museum', element: <IntroduceAboutMuseum />},
       { path: 'outstanding-collection', element: <OutstandingCollection />},

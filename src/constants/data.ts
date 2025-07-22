@@ -5,71 +5,108 @@ import PublicIcon from '@mui/icons-material/Public';
 import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 import MapIcon from '@mui/icons-material/Map';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-export const DATA_EXHIBITION = [
-    {
-        id: 1,
-        title: 'Ngược dòng thời gian hóa ánh dương xanh',
-        content: "Tiffany là cái tên rất quen thuộc với người Mỹ. Không phải vì nó trùng với tên một bộ phim kinh điển ra đời năm 1961 gắn với tên tuổi của huyền thoại màn bạc Audrey Hepburn, Breakfast at Tiffany's mà bởi Tiffany là thương hiệu của một loại đèn kính màu nổi tiếng do họa sĩ, nhà sáng chế, nhà thiết kế.",
-        startedAt: '18/05/2025',
-        endedAt: '20/06/2025'
-    },
-    {
-        id: 1,
-        title: 'Hướng dương ngược nắng tỏa sáng',
-        content: "Tiffany là cái tên rất quen thuộc với người Mỹ. Không phải vì nó trùng với tên một bộ phim kinh điển ra đời năm 1961 gắn với tên tuổi của huyền thoại màn bạc Audrey Hepburn, Breakfast at Tiffany's mà bởi Tiffany là thương hiệu của một loại đèn kính màu nổi tiếng do họa sĩ, nhà sáng chế, nhà thiết kế.",
-        startedAt: '20/06/2025',
-        endedAt: '25/07/2025'
-    }
-];
+import live_1 from "@/assets/images/users/1.png";
+import live_2 from "@/assets/images/users/2.png";
+import live_3 from "@/assets/images/users/3.png";
+import image_location from "@/assets/images/users/image_location.png";
+import image_exhibition from "@/assets/images/users/image_exhibition.png";
+import explore_1 from "@/assets/images/users/explore_1.png";
+import explore_2 from "@/assets/images/users/explore_2.png";
+import explore_3 from "@/assets/images/users/explore_3.png";
+import explore_4 from "@/assets/images/users/explore_4.png";
 
-export const DATA_COLLECTION = [
+export const DATA_LIVE_STREAM = [
     {
         id: 1,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
+        image_url: live_1,
+        title: 'Nghệ thuật từ Châu Á',
+        date: 'Ngày 26/06',
+        status: 'Sắp diễn ra'
     },
     {
-        id: 2,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
+        id: 1,
+        image_url: live_2,
+        title: 'Nghệ thuật cổ điển Châu Mỹ',
+        date: 'Ngày 26/06',
+        status: 'Sắp diễn ra'
     },
     {
         id: 3,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
+        image_url: live_3,
+        title: 'Trình diễn Tiffany từ Úc',
+        date: 'Ngày 26/06',
+        status: 'Sắp diễn ra'
+    }
+];
+
+export const DATA_LOCATION_TIME = [
+    {
+        id: 1,
+        image_url: image_location,
+        title: 'Triễn lãm đèn Tiffany',
+        date: 'Chủ nhật - Thứ Ba: 10 AM - 17 PM',
+        time_open: 'Thứ Sáu - Thứ Bảy: 10 AM - 17 PM',
+        time_close: 'Thứ Tư - Thứ Năm',
+        reason: 'Đóng cửa trong tuần để sửa chữa lỗi hỏng trong bảo tàng. Mong quý khách thông cảm'
+    },
+    {
+        id: 2,
+        image_url: image_location,
+        title: 'Triễn lãm đèn Tiffany',
+        date: 'Chủ nhật - Thứ Ba: 10 AM - 17 PM',
+        time_open: 'Thứ Sáu - Thứ Bảy: 10 AM - 17 PM',
+        time_close: 'Thứ Tư - Thứ Năm',
+        reason: 'Đóng cửa trong tuần để sửa chữa lỗi hỏng trong bảo tàng. Mong quý khách thông cảm'
+    },
+]
+
+export const DATA_EXHIBITION = [
+    {
+        id: 1,
+        image_url: image_exhibition,
+        title: "Triển lãm ' Ánh dương xanh'",
+        content: 'Triển lãm đèn Tiffany mang đến trải nghiệm tinh tế của phong cách Art Nouveau qua các tác phẩm thủy tinh pha chì lấp lánh, do Louis Comfort Tiffany và đặc biệt là Clara Driscoll - "bà hoàng" của nhóm "Tiffany Girls" - kiến tạo',
+    },
+    {
+        id: 2,
+        image_url: image_exhibition,
+        title: "Triển lãm ' Ánh dương xanh'",
+        content: 'Triển lãm đèn Tiffany mang đến trải nghiệm tinh tế của phong cách Art Nouveau qua các tác phẩm thủy tinh pha chì lấp lánh, do Louis Comfort Tiffany và đặc biệt là Clara Driscoll - "bà hoàng" của nhóm "Tiffany Girls" - kiến tạo',
+    },
+    {
+        id: 3,
+        image_url: image_exhibition,
+        title: "Triển lãm ' Ánh dương xanh'",
+        content: 'Triển lãm đèn Tiffany mang đến trải nghiệm tinh tế của phong cách Art Nouveau qua các tác phẩm thủy tinh pha chì lấp lánh, do Louis Comfort Tiffany và đặc biệt là Clara Driscoll - "bà hoàng" của nhóm "Tiffany Girls" - kiến tạo',
     },
     {
         id: 4,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
+        image_url: image_exhibition,
+        title: "Triển lãm ' Ánh dương xanh'",
+        content: 'Triển lãm đèn Tiffany mang đến trải nghiệm tinh tế của phong cách Art Nouveau qua các tác phẩm thủy tinh pha chì lấp lánh, do Louis Comfort Tiffany và đặc biệt là Clara Driscoll - "bà hoàng" của nhóm "Tiffany Girls" - kiến tạo',
+    },
+]
+
+export const DATA_EXPLORE = [
+    {
+        id: 1,
+        image_url: explore_1,
+        title: 'Sen Decor Tiffany',
     },
     {
-        id: 5,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
+        id: 2,
+        image_url: explore_2,
+        title: 'Sen Decor Tiffany',
     },
     {
-        id: 6,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
+        id: 3,
+        image_url: explore_3,
+        title: 'Sen Decor Tiffany',
     },
     {
-        id: 7,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
-    },
-    {
-        id: 8,
-        image_url: image_collection,
-        title: 'Đèn tiffany ánh dương ngược sáng',
-        content: 'Tác phẩm chú ý'
+        id: 4,
+        image_url: explore_4,
+        title: 'Sen Decor Tiffany',
     },
 ];
 

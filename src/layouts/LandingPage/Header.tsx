@@ -9,9 +9,9 @@ import { DensityMedium } from '@mui/icons-material';
 import CollapsedSideBar from './CollapseSidebar';
 import HoverDropdownMenu from './components/HoverDropdownMenu';
 import Grid from "@mui/material/Grid2";
-import AlarmIcon from '@mui/icons-material/Alarm';
-import LanguageIcon from '@mui/icons-material/Language';
 import InputSearch from '@/components/SearchBar';
+import CommonImage from '@/components/Image/index';
+import logo_museum from "@/assets/images/users/logo_museum.png"
 
 interface MenuChildProps{
   label: string,
@@ -19,8 +19,9 @@ interface MenuChildProps{
 }
 
 export interface MenuProps{
+  id: number,
   label: string, 
-  path: string,
+  path?: string,
   children?: MenuChildProps[]
 }
 
@@ -70,24 +71,44 @@ const Header = (props: Props) => {
 
   const MENU_DASHBOARD: MenuProps[] = [
     {
+      id:1,
       label: 'Trang chủ',
       path: '/home',
+    },
+    {
+      id: 2,
+      label: 'Thăm quan',
+      path: '#',
       children: [
-        { label: 'Trung tâm triển lãm', path: '/center-exhibition'},
-        { label: 'Giới thiệu bảo tàng', path: '/introduce-museum'},
-        { label: 'Bộ sưu tập nổi tiếng', path: '/outstanding-collection'},
-        { label: 'Thông tin vé bán', path: '/information-ticket'},
-        { label: 'Dịch vụ tiện ích', path: '/utility-service'},
+        { label: 'Kế hoạch thăm quan', path: '/visit-plan'},
+        { label: 'Mua vé thăm quan', path: '/ticket-visit'},
+        { label: 'Thẻ thành viên', path: '/card-member'},
+        { label: 'Trải nghiệm miễn phí', path: '/free-experience'},
+        { label: 'Bản đồ bảo tàng', path: '/map-museum'},
       ]
     },
     {
-      label: 'Triển lãm',
-      path: '/exhibition',
+      id: 3,
+      label: 'Triển lãm và sự kiện',
+      path: '#',
       children: [
-        { label: 'Trung tâm triển lãm', path: '/center-exhibition'},
-        { label: 'Lịch triển lãm', path: '/schedule-exhibition'},
+        { label: 'Sự kiện & biểu diễn', path: '/event-performance'},
+        { label: 'Trải nghiệm miễn phí', path: '/free-experience'},
       ]
     },
+    {
+      id: 4,
+      label: 'Nghệ thuật',
+      path: '#',
+      children: [
+        { label: 'Bộ sưu tập bảo tàng', path: '/museum-collection'},
+      ]
+    },
+    {
+      id: 5,
+      label: 'Về chúng tôi',
+      path: 'about-us'
+    }
   ]
 
   if(mdUp){
@@ -96,60 +117,53 @@ const Header = (props: Props) => {
             position='fixed'
             sx={{
               color: 'common.white',
-              backgroundColor: '#160E0D',
+              backgroundColor: '#D30000',
               height: 140,
               marginLeft: 'auto',
               zIndex: 9,
               width: '100%',
             }}
           >
-              <Grid container>
-                <Grid size={{ xs: 12, md: 8}} sx={{ borderRight: 'solid 1px white', borderBottom: 'solid 1px white'}}>
-                  <Box py={1.5} px={2} display='flex' justifyContent='space-between'>
-                    <Stack direction='row'>
-                      <AlarmIcon/>
-                      <Typography variant='subtitle2' sx={{ color: '#C1C1C1'}}> Bảo tàng mở cửa từ 08:00 AM - 20:00 PM</Typography>
-                    </Stack>
-                    <Typography variant='subtitle2' sx={{ color: '#C1C1C1'}}>62 Tôn Thất Thuyết - Nam Từ Liêm - Hà Nội</Typography>
-                  </Box>
-                </Grid>
-                <Grid size={{ xs: 12, md: 3}} sx={{ borderRight: 'solid 1px white', borderBottom: 'solid 1px white'}}>
-                    <InputSearch
-                      initialValue={searchTerm}
-                      placeholder='Tìm kiếm'
-                      onSearch={handleSearch}
-                    />
-                </Grid>
-                <Grid size={{ xs: 12, md: 1}} sx={{ borderBottom: 'solid 1px white'}}>
-                  <Stack py={1.5} direction='row' justifyContent='center' alignItems='center'>
-                    <LanguageIcon/>
-                    <Typography variant='subtitle2' sx={{ color: '#C1C1C1'}}> Ngôn ngữ</Typography>
-                  </Stack>
-                </Grid>
-              </Grid> 
+              <Box py={2} display='flex' justifyContent='space-around'>
+                <Box></Box>
+                <Box display='flex' justifyContent='center' alignItems='center'>
+                    <Box display='flex' flexDirection='row' px={2} borderRight='solid 1px white'>
+                      <Typography mr={2} variant='subtitle2'>Mua vé</Typography>
+                      <Typography variant='subtitle2'>Thẻ thành viên</Typography>
+                    </Box>
+                    <Box px={2}>
+                      <Typography variant='subtitle2'>Quyên góp cũ</Typography>
+                    </Box>
+                </Box>
+              </Box> 
             <Toolbar 
               disableGutters 
               sx={{ 
                 display: 'flex', justifyContent: 'center', flexDirection: 'column', mt:1.5,
-                alignItems: 'center', px: 4, // padding ngang để giới hạn chiều rộng
+                alignItems: 'center', px: 4, // padding ngang để giới hạn chiều rộng,
               }}>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10}}>
-                <Stack flexGrow={1} direction="row" spacing={3}>
-                  {MENU_DASHBOARD.map((item) => (
-                    <HoverDropdownMenu key={item.label} menu={item} />
-                  ))}
-                </Stack>
-                <Typography sx={styleMenu('/outstanding-collection')} onClick={() =>  handleMenuClick('/outstanding-collection')}>Sưu tập</Typography>
-                <Typography sx={styleMenu('/introduce-museum')} onClick={() =>  handleMenuClick('/introduce-museum')}>Giới thiệu</Typography>
-
-                <Typography fontFamily='Rozha One' variant='h3' fontWeight={700}>AMUSE</Typography>
-
-                <Typography sx={styleMenu('/pages')} onClick={() =>  handleMenuClick('/pages')}>Pages</Typography>
-                <Typography sx={styleMenu('/visit')} onClick={() =>  handleMenuClick('/visit')}>Visit</Typography>
-                <Typography sx={styleMenu('/shop')} onClick={() =>  handleMenuClick('/shop')}>Shop</Typography>
-                <Typography sx={styleMenu('/contact')} onClick={() =>  handleMenuClick('/contact')}>Liên hệ</Typography>
-
+              <Box sx={{ display: 'flex', flexDirection: 'row', gap:40}}>
+                <Box display='flex' flexDirection='row'>
+                    <CommonImage
+                      src={logo_museum}
+                      alt="museum logo"
+                      sx={{ height: 80, mb: 2.5, px: 2 }}
+                    />
+                  <Stack flexGrow={1} direction="row" spacing={3}>
+                    {MENU_DASHBOARD.map((item) => (
+                      <HoverDropdownMenu key={item.label} menu={item} />
+                    ))}
+                  </Stack>                                    
+                </Box>
+                <Box margin='auto 0' sx={{ width: '100%'}}>
+                  <InputSearch
+                    initialValue={searchTerm}
+                    placeholder='Tìm kiếm'
+                    onSearch={handleSearch}
+                    borderColor='#D30000'
+                  />                  
+                </Box>
               </Box>
             </Toolbar>
           </AppBar>
@@ -162,13 +176,12 @@ const Header = (props: Props) => {
       sx={{
         color: 'common.black',
         backgroundColor: '#fff',
-        height: '64px',
         borderBottom: 'thin solid #E6E8F0',
         marginLeft: 'auto',
         zIndex: 9,
         width: '100%',
         display:'flex',
-        flexDirection:'row'
+        flexDirection:'row',
       }}
     >
       <IconButton
@@ -188,7 +201,7 @@ const Header = (props: Props) => {
       <Toolbar 
         disableGutters 
         sx={{ 
-          display: 'flex', justifyContent: 'center', alignItems: 'center', height: 64, px: 6, // padding ngang để giới hạn chiều rộng
+          display: 'flex', justifyContent: 'center', alignItems: 'center', px: 6, // padding ngang để giới hạn chiều rộng
           margin: 'auto'
         }}>
         <Typography fontFamily='Rozha One' variant='h3' fontWeight={700}>AMUSE</Typography>

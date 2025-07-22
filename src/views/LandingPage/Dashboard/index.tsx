@@ -1,20 +1,16 @@
 import { Box} from "@mui/material"
 import ImageCarousel from "./components/ImageCarousel";
-import ExhibitionDashBoard from "./components/ExhibitionDashBoard";
-import IntroAboutMuseum from "./components/IntroAboutMuseum";
-import CollectionDashboard from "./components/CollectionDashboard";
-import InforOfTicket from "./components/InforOfTicket";
-import ServicesDashboard from "./components/ServicesDashboard";
+import LiveStream from "./components/LiveStream";
+import LocationAndTime from "./components/LocationAndTime";
+import ExploreMore from "./components/ExploreMore";
 
 const DashboardHome = () => {
     return (
-        <Box bgcolor='#FFFEF2'>
+        <Box bgcolor='white'>
             <ImageCarousel/>
-            <ExhibitionDashBoard/>
-            <IntroAboutMuseum/>
-            <CollectionDashboard/>
-            <InforOfTicket/>
-            <ServicesDashboard/>
+            <LiveStream/>
+            <LocationAndTime/>
+            <ExploreMore/>
         </Box>
     )
 }

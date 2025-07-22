@@ -24,7 +24,7 @@ const LandingPageLayout = () => {
           flexDirection: 'column',
           minHeight: '100svh',
           overflow: 'hidden',
-          paddingTop: '140px',
+          paddingTop: { xs: '64px', md: '140px'},
         }}
     >
         <Header

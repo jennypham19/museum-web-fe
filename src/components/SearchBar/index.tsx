@@ -7,10 +7,12 @@ interface InputSearchProps{
     placeholder?: string;
     initialValue?: string;
     style?:SxProps<Theme>;
+    borderColor?: string;
+    color?: string;
 }
 
 const InputSearch: React.FC<InputSearchProps> = (props) => {
-    const { onSearch, placeholder, initialValue = " ", style} = props;
+    const { onSearch, placeholder, initialValue = " ", style, borderColor='#1C1A1B', color='white'} = props;
     const [searchTerm, setSearchTerm] = useState<string>(initialValue);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -54,22 +56,22 @@ const InputSearch: React.FC<InputSearchProps> = (props) => {
                     ),
                     sx:{
                         "& .MuiOutlinedInput-notchedOutline":{
-                            borderColor:"#1C1A1B"
+                            borderColor:borderColor
                         },
                         "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#1C1A1B",
+                            borderColor: borderColor,
                         },
                         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                             // borderColor: "rgba(0, 0, 0, 0.2)",
-                            border:'1px solid black'
+                            border:`1px solid ${borderColor}`
                         },
                         ".MuiInputBase-input":{
                             padding: "12px 14px", // Điều chỉnh padding cho text input, bỏ padding trái vì adornment đã lo
-                            paddingLeft:0 // Bỏ padding mặc định bên trái vì đã có adornment
+                            paddingLeft:0 // Bỏ padding mặc định bên trái vì đã có adornment,
                         },
                         // Áp dụng border radius cho chính input field
                         borderRadius: "20px",
-                        color: 'white'
+                        color: color
                     },
                 }}
                 sx={{
@@ -77,8 +79,11 @@ const InputSearch: React.FC<InputSearchProps> = (props) => {
                     "& .MuiInputBase-root":{
                         padding:0, // Loại bỏ padding mặc định của root input base
                         borderRadius:"20px", // Áp dụng border radius cho toàn bộ TextField
-                        color: 'white'
+                        color: color
                     },
+                    "& .MuiInputBase-input::placeholder": {
+                        color: color
+                    }
                 }}
             />
         </Box>

@@ -1,8 +1,7 @@
-import React, { MouseEvent, useState } from 'react';
-import { Menu, MenuItem, Typography, Box, Stack, IconButton, Divider } from '@mui/material';
+import { useState } from 'react';
+import { Menu, MenuItem, Typography, Box, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { MenuProps } from '../Header';
-import { ArrowDropDown } from '@mui/icons-material';
 
 interface HoverDropdownMenuProps{
     menu: MenuProps
@@ -19,12 +18,10 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
     whiteSpace: 'nowrap',
     cursor: 'pointer',
     transition: 'border-bottom 0.3s',
-    '&:hover':{
-      with: '100%',
-      height: '100%'
-    },
-    color: isActive(path) ? "#AC7D4F" : 'white',
-    fontSize: '15px'
+    color: 'white',
+    fontSize: '16px',
+    borderBottom: isActive(path) ? '1px solid white' : 'none',
+    '&:hover': { borderBottom: '1px solid white' },
   });
 
   return (
@@ -36,7 +33,6 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
         py: 1,
         cursor: 'pointer',
         color: 'white',
-        '&:hover': { color: 'orange' },
         fontWeight: menu.children ? 'bold' : 'normal'
       }}
       onClick={(e) => {
@@ -52,9 +48,11 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
         }
       }}
     >
-      <Typography sx={styleMenu(menu.path)}>
-        {menu.label}
-      </Typography>
+      {menu.path && (
+        <Typography sx={styleMenu(menu.path)}>
+          {menu.label}
+        </Typography>
+      )}
 
       <Menu
         anchorEl={anchorEl}
@@ -62,9 +60,10 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
         onClose={() => setAnchorEl(null)}
         PaperProps={{
           sx: {
-            bgcolor: '#111',
+            bgcolor: '#D30000',
             minWidth: anchorEl?.clientWidth || 'auto',
-            mt: 1.6
+            mt: -1.6,
+            borderRadius: 0
           }
         }}
         MenuListProps={{
@@ -80,7 +79,7 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
                 child.path && navigate(child.path);
                 setAnchorEl(null);
               }}
-              sx={{ color: 'white', '&:hover': { bgcolor: '#333' }, fontSize: 13, px: 4 }}
+              sx={{ color: 'white', '&:hover': { fontWeight: 600}, fontSize: 14, px: 4 }}
             >
               {child.label}
             </MenuItem>
