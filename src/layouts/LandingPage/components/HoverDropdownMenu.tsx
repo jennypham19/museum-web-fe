@@ -12,15 +12,27 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const isActive = (path: string) => location.pathname === path;
-  const styleMenu = (path: string) => ({
+  const isActive = (menu: MenuProps) : boolean => {
+    const currentPath = location.pathname;
+    if(menu.id === 1){
+      //Trang chủ: gạch chân nếu đang ở /home hoặc các trang mà điều hướng từ /home
+      return currentPath.startsWith('/home');
+    }
+    if(menu.children){
+      return menu.children.some(child => child.path && currentPath.startsWith(child.path))
+    };
+
+    return currentPath === menu.path
+  };
+  
+  const styleMenu = (menu: MenuProps) => ({
     fontWeight: 500,
     whiteSpace: 'nowrap',
     cursor: 'pointer',
     transition: 'border-bottom 0.3s',
     color: 'white',
     fontSize: '16px',
-    borderBottom: isActive(path) ? '1px solid white' : 'none',
+    borderBottom: isActive(menu) ? '1px solid white' : 'none',
     '&:hover': { borderBottom: '1px solid white' },
   });
 
@@ -49,7 +61,7 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
       }}
     >
       {menu.path && (
-        <Typography sx={styleMenu(menu.path)}>
+        <Typography sx={styleMenu(menu)}>
           {menu.label}
         </Typography>
       )}

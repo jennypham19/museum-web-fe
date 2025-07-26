@@ -1,15 +1,21 @@
 import { Box, Typography} from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { DATA_EXPLORE } from "@/constants/data";
+import { useNavigate } from "react-router-dom";
 
 
 const ExploreMore = () => {
+    const navigate = useNavigate();
+
+    const handleNavigate = () => {
+        navigate('explore-more')
+    }
     return(
         <Box p={{ xs: 2, md: 6}}>
             <Box py={1}>
                 <Typography sx={{ fontSize: { xs: '1.2rem', sm: '1.8rem', md: '2rem'}}} fontWeight={600}>Khám phá nhiều hơn</Typography>
             </Box>
-            <Box p={3}>
+            <Box sx={{ cursor: 'pointer'}} p={3} onClick={handleNavigate}>
                 <Grid container spacing={3}>
                     {DATA_EXPLORE.slice(0,4).map((item, index) => {
                         return(

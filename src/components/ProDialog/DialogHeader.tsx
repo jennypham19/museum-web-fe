@@ -1,17 +1,19 @@
-import type { SvgIconComponent } from '@mui/icons-material';
+import { Close, type SvgIconComponent } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import type { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import IconButton from '../IconButton/IconButton';
 
 interface Props extends BoxProps {
   title: string;
   icon?: SvgIconComponent;
   description?: string;
+  onClose:() => void;
 }
 
 const DialogHeader = (props: Props) => {
-  const { title, icon: Icon, children, description, ...rest } = props;
+  const { title, icon: Icon, children, description, onClose, ...rest } = props;
   return (
     <Wrapper {...rest}>
       {Icon && (
@@ -30,6 +32,11 @@ const DialogHeader = (props: Props) => {
       <Typography sx={{ fontWeight: 600, fontSize: 17, mt: 1 }} color='#121828' gutterBottom>
         {title}
       </Typography>
+      <IconButton 
+        handleFunt={onClose}
+        icon={<Close sx={{ mr:2, color: '#1C1A1B'}}/>}
+        backgroundColor='white'
+      />
       {description && <Typography variant='subtitle2'>{description}</Typography>}
     </Wrapper>
   );
@@ -37,9 +44,9 @@ const DialogHeader = (props: Props) => {
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'start',
   borderColor: theme.palette.divider,
 }));
 

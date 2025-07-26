@@ -26,21 +26,28 @@ const NotFound = Loadable(lazy(() => import('@/views/Errors/NotFound')));
 const PermissionDenied = Loadable(lazy(() => import('@/views/Errors/PermissionDenied')));
 
 // Landing Page
+
+// Trang chủ
 const DashboardHome = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/index')));
-const CentralExhibition = Loadable(lazy(() => import('@/views/LandingPage/Components/CentralExhibition')));
-const IntroduceAboutMuseum = Loadable(lazy(() => import('@/views/LandingPage/Components/IntroduceAboutMuseum')));
-const OutstandingCollection = Loadable(lazy(() => import('@/views/LandingPage/Components/OutstandingCollections')));
-const InformationOfTicket = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfTiffanyLight')));
-const UtilityServices = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfBlueShine')));
-const Exhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/index')));
-const ScheduleOfExhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/ScheduleOfExhibition')));
-const Pages = Loadable(lazy(() => import('@/views/LandingPage/Pages/index')));
-const Visit = Loadable(lazy(() => import('@/views/LandingPage/Visit/index')));
-const Shop = Loadable(lazy(() => import('@/views/LandingPage/Shop/index')));
-const Contact = Loadable(lazy(() => import('@/views/LandingPage/Contact/index')));
 const ExhibitionOfTiffanyLight = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfTiffanyLight')));
 const ExhibitionOfBlueShine = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExhibitionOfBlueShine')));
 const ExploreMore = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/ExploreMore')));
+const DetailArticleCollection = Loadable(lazy(() => import('@/views/LandingPage/Dashboard/DetailArticleCollection')));
+
+//Thăm quan
+const VisitPlan = Loadable(lazy(() => import('@/views/LandingPage/Visit/VisitPlan')));
+const TicketVisit = Loadable(lazy(() => import('@/views/LandingPage/Visit/TicketVisit')));
+const CardMember = Loadable(lazy(() => import('@/views/LandingPage/Visit/CardMember')));
+const FreeExperience = Loadable(lazy(() => import('@/views/LandingPage/Visit/FreeExperience')));
+const MapMuseum = Loadable(lazy(() => import('@/views/LandingPage/Visit/MapMuseum')));
+
+const ListClosedLocation = Loadable(lazy(() => import('@/views/LandingPage/Visit/components/ListClosedLocation')));
+const DirectionForVisiter = Loadable(lazy(() => import('@/views/LandingPage/Visit/components/DirectionForVisiter')));
+const ParkingLot = Loadable(lazy(() => import('@/views/LandingPage/Visit/components/ParkingLot')));
+
+const DetailArt = Loadable(lazy(() => import('@/views/LandingPage/Components/DetailArt')));
+
+
 
 // Auth
 
@@ -88,19 +95,32 @@ const routes: RouteObject[] = [
           { path: 'exhibition-tiffany-light', element: <ExhibitionOfTiffanyLight/>},
           { path: 'exhibition-blue-shine', element: <ExhibitionOfBlueShine/>},
           { path: 'explore-more', element: <ExploreMore/>},
+          { path: 'explore-more/detail-article/:id', element: <DetailArticleCollection/>},
         ]
       },
-      { path: 'center-exhibition', element: <CentralExhibition />},
-      { path: 'introduce-museum', element: <IntroduceAboutMuseum />},
-      { path: 'outstanding-collection', element: <OutstandingCollection />},
-      { path: 'information-ticket', element: <InformationOfTicket />},
-      { path: 'utility-service', element: <UtilityServices />},
-      { path: 'exhibition', element: <Exhibition/>},
-      { path: 'schedule-exhibition', element: <ScheduleOfExhibition />},
-      { path: 'pages', element: <Pages />},
-      { path: 'visit', element: <Visit />},
-      { path: 'shop', element: <Shop />},
-      { path: 'contact', element: <Contact />},
+      { 
+        path: '/', 
+        element: <Outlet />,
+        children: [
+          { 
+            path: 'visit-plan', 
+            element: <Outlet/>,
+            children: [
+              { index: true, element: <VisitPlan/> },
+              { path: 'close-location', element: <ListClosedLocation/>},
+              { path: 'direct-for-visiter', element: <DirectionForVisiter/>},
+              { path: 'direct-parking-lot', element: <ParkingLot/>},
+              { path: 'detail-art/:id', element: <DetailArt/>}
+            ]
+
+          },
+          { path: 'ticket-visit', element: <TicketVisit/>},
+          { path: 'card-member', element: <CardMember/>},
+          { path: 'free-experience', element: <FreeExperience/>},
+          { path: 'map-museum', element: <MapMuseum/>},
+        ]
+
+      },
       // Nếu người dùng vào '/', mặc định hiển thị trang home
       { index: true, element: <Navigate to='home' replace /> },
     ]

@@ -29,6 +29,10 @@ const LocationAndTime = () => {
     const handleNavigate = () => {
         navigate('/home/exhibition-tiffany-light')
     }
+
+    const handleNavigateEx = () => {
+        navigate('/home/exhibition-blue-shine')
+    }
     return(
         <Box px={{ xs: 2, md: 6}}>
             <Box py={1}>
@@ -106,7 +110,7 @@ const LocationAndTime = () => {
                             <Grid size={{ xs: 12, md: 6}}>
                                 <Typography fontSize={{ xs: '18px', md: '28px'}} mb={1} fontWeight={600}>{data.title}</Typography>
                                 <Typography fontSize={{ xs: '14px', md: '20px'}} mb={1} sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{data.content}</Typography>
-                                <Stack sx={{ cursor: 'pointer'}} direction='row'>
+                                <Stack sx={{ cursor: 'pointer'}} direction='row' onClick={handleNavigateEx}>
                                     <Typography pt={0.5} fontWeight={600} variant="subtitle2">Xem tất cả</Typography>
                                     <IconButton>
                                         <ChevronRight/>

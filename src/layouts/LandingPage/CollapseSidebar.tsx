@@ -1,10 +1,15 @@
-import Scrollbar from "@/components/Scrollbar";
-import { SIDEBAR_WIDTH } from "@/constants/layouts";
-import usePrevious from "@/hooks/usePrevious";
-import { AccountCircle, Close, Home, Newspaper } from "@mui/icons-material";
-import { Avatar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemText, MenuItem, Select, Stack, Typography } from "@mui/material";
-import { createContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Close,} from "@mui/icons-material";
+import { Avatar, Box,Drawer, IconButton, Stack, Typography } from "@mui/material";
+import { createContext } from "react";
+import logo_museum from "@/assets/images/users/logo_museum.png"
+import CommonImage from "@/components/Image/index";
+import CollapseMenu from "./components/CollapseMenu";
+import { MenuProps } from "./Header";
+import HomeIcon from '@mui/icons-material/Home';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import EventIcon from '@mui/icons-material/Event';
+import MuseumIcon from '@mui/icons-material/Museum';
+import InfoIcon from '@mui/icons-material/Info';
 
 
 export const CollapseContext = createContext<boolean | null>(null);
@@ -15,17 +20,57 @@ interface CollapsedSideBarProps{
   onToggleCollapsed: () => void;
 }
 
+
+
 const CollapsedSideBar = (props: CollapsedSideBarProps) => {
     const { collapsed, onToggleCollapsed} = props;
-    const location = useLocation();
-    const navigate = useNavigate();
 
-
-    const menuItems = [
-        { label: 'Trang chủ', icon: <Home/>, path: '/home' },
-        { label: 'About us', icon: <AccountCircle/>, path: '/about-us' },
-        { label: 'Tin tức', icon: <Newspaper/>, path: '/news' },
-    ];
+const MENU_DASHBOARD: MenuProps[] = [
+    {
+      id:1,
+      label: 'Trang chủ',
+      path: '/home',
+      icon: HomeIcon
+    },
+    {
+      id: 2,
+      label: 'Thăm quan',
+      path: '#',
+      icon: TravelExploreIcon,
+      children: [
+        { label: 'Kế hoạch thăm quan', path: '/visit-plan'},
+        { label: 'Mua vé thăm quan', path: '/ticket-visit'},
+        { label: 'Thẻ thành viên', path: '/card-member'},
+        { label: 'Trải nghiệm miễn phí', path: '/free-experience'},
+        { label: 'Bản đồ bảo tàng', path: '/map-museum'},
+      ]
+    },
+    {
+      id: 3,
+      label: 'Triển lãm và sự kiện',
+      path: '#',
+      icon: EventIcon,
+      children: [
+        { label: 'Sự kiện & biểu diễn', path: '/event-performance'},
+        { label: 'Trải nghiệm miễn phí', path: '/free-experience'},
+      ]
+    },
+    {
+      id: 4,
+      label: 'Nghệ thuật',
+      path: '#',
+      icon: MuseumIcon,
+      children: [
+        { label: 'Bộ sưu tập bảo tàng', path: '/museum-collection'},
+      ]
+    },
+    {
+      id: 5,
+      label: 'Về chúng tôi',
+      path: 'about-us',
+      icon: InfoIcon
+    }
+  ]
 
     return (
         <Drawer anchor="left" open={collapsed} onClose={onToggleCollapsed}>
@@ -52,6 +97,10 @@ const CollapsedSideBar = (props: CollapsedSideBarProps) => {
                     <Close />
                 </IconButton>
                 </Box>
+                <Box py={2} display='flex' flexDirection='row' justifyContent='center' borderBottom='1px solid #eee'>
+                    <Typography mr={2} variant='subtitle2'>Mua vé</Typography>
+                    <Typography variant='subtitle2'>Thẻ thành viên</Typography>
+                </Box>
                 <Box
                     sx={{
                         display: 'flex',
@@ -62,46 +111,16 @@ const CollapsedSideBar = (props: CollapsedSideBarProps) => {
                         py: 1.5,
                     }} 
                 >
-                    {/* <Avatar src={mintz_logo} alt="Logo" sx={{ height: 150, width: 150, bgcolor: 'grey.300', borderRadius: '50%' }} /> */}
-
-                {/* Menu Items */}
-                <List sx={{ px: 2 }}>
-                {menuItems.map((item) => {
-                    const isActive = location.pathname === item.path;
-                    return (
-                        <ListItem
-                        key={item.path}
-                        onClick={() => {
-                            navigate(item.path);
-                            onToggleCollapsed();
-                        }}
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            mb: 1,
-                        }}
-                        >
-                        <ListItemText
-                            primary={
-                                <Stack direction='row'>
-                                    <IconButton>{item.icon}</IconButton>
-                                    <Typography
-                                        sx={{
-                                            fontWeight: isActive ? 600 : 400,
-                                            fontSize: '1rem',
-                                            borderBottom: isActive ? '2px solid black' : 'none',
-                                        }}
-                                    >
-                                        {item.label}
-                                    </Typography>
-                                </Stack>
-                            }
-                            />
-                    </ListItem>
-                    );
-                })}
-                </List>
+                    <Avatar src={logo_museum} alt="Logo" sx={{ height: 150, width: 150, bgcolor: 'grey.300', borderRadius: '50%', mb: 2 }} />
+                    <Stack flexGrow={1} direction="column" spacing={3}>
+                        {MENU_DASHBOARD.map((item) => {
+                            const Icon = item.icon;
+                            if(!Icon) return null;
+                            return(
+                                <CollapseMenu key={item.label} menu={item} icon={Icon} />
+                            )
+                        })}
+                    </Stack>  
                 </Box>
             </Box>
         </Drawer>
