@@ -3,29 +3,48 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid2';
 import { DATA_LIVE_STREAM } from "@/constants/data";
+import React from "react";
 
-const LiveStream = () => {
+interface LiveStreamProps{
+    title: string,
+    isDisabled?: boolean
+}
+
+const LiveStream: React.FC<LiveStreamProps> = ({title, isDisabled=false}) => {
     const theme = useTheme();
     const navigate = useNavigate();
     const mdUp = useMediaQuery(theme.breakpoints.up('lg'));
 
+    const handleNavigate = (id: number) => {
+        navigate(`/visit-plan/detail-art/${id}`)
+    }
+
     return(
-        <Box p={{ xs: 2, md: 6}}>
+        <Box px={{ xs: 2, md: 6}} py={{ xs: 2, md: 4}}>
             <Box py={1} display='flex' justifyContent='space-between'>
-                <Typography sx={{ fontSize: { xs: '1.2rem', sm: '1.8rem', md: '2rem'}}} fontWeight={600}> Xem trực tiếp</Typography>
+                <Typography sx={{ fontSize: { xs: '1.2rem', sm: '1.8rem', md: '2rem'}}} fontWeight={600}>{title}</Typography>
                 {mdUp ? (
-                    <Stack direction='row'>
-                        <Typography sx={{ pt:1, cursor: 'pointer' }} variant="body2" fontWeight={600} onClick={() => navigate('/center-exhibition')}> Xem tất cả</Typography>
-                        <IconButton sx={{ border: 'solid 0.5px #757373ff', borderRadius: '50%', width: 36, height: 36}}>
-                            <ArrowForwardIcon fontSize="small"/>
-                        </IconButton>
-                    </Stack>  
+                    <>
+                        {!isDisabled && (
+                            <Stack direction='row'>
+                                <Typography sx={{ pt:1, cursor: 'pointer' }} variant="body2" fontWeight={600} onClick={() => navigate('/center-exhibition')}> Xem tất cả</Typography>
+                                <IconButton sx={{ border: 'solid 0.5px #757373ff', borderRadius: '50%', width: 36, height: 36}}>
+                                    <ArrowForwardIcon fontSize="small"/>
+                                </IconButton>
+                            </Stack> 
+                        )}
+                    </> 
                 ):(
-                    <Tooltip title='Xem tất cả'>
-                        <IconButton sx={{ border: 'solid 0.5px #757373ff', borderRadius: '50%', width: 36, height: 36}}>
-                            <ArrowForwardIcon fontSize="small"/>
-                        </IconButton>
-                    </Tooltip>
+                    <>
+                        {!isDisabled && (
+                            <Tooltip title='Xem tất cả'>
+                                <IconButton sx={{ border: 'solid 0.5px #757373ff', borderRadius: '50%', width: 36, height: 36}}>
+                                    <ArrowForwardIcon fontSize="small"/>
+                                </IconButton>
+                            </Tooltip>                            
+                        )}
+                    </>
+
                 )}
 
             </Box>
@@ -39,7 +58,9 @@ const LiveStream = () => {
                                             display: 'flex',
                                             flexDirection: 'column',
                                             height: '100%',
+                                            cursor: 'pointer',
                                         }}
+                                        onClick={() => data.id && handleNavigate(data.id)}
                                     >
                                         <CardMedia
                                             component='img'

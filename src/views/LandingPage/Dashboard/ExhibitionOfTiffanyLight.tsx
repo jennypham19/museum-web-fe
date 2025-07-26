@@ -6,6 +6,10 @@ import image_exhi from "@/assets/images/users/image-exhi.png";
 import image_1 from "@/assets/images/users/image_1.png";
 import Grid from "@mui/material/Grid2";
 import CommonImage from "@/components/Image/index";
+import LiveStream from "./components/LiveStream";
+import PlanVisit from "./components/PlanVisit";
+import { DATA_COMMON, DATA_PLAN_VISIT } from "@/constants/data";
+import CommonInfo from "./components/ComonInfo";
 
 const ExhibitionOfTiffanyLight = () => {
     const navigate = useNavigate();
@@ -31,9 +35,9 @@ const ExhibitionOfTiffanyLight = () => {
                     textAlign: 'center',
                 }}
             />
-            <Box px={{ xs: 2, md: 6}} mb={{ xs: 3, md: 6}}>
+            <Box px={{ xs: 3, md: 6}} mb={{ xs: 3, md: 6}}>
                 <Box pb={4} mt={{ xs: 4, md: 5}}>
-                    <Typography sx={{ fontSize: { xs: '1.2rem', sm: '1.8rem'} , borderBottom: '1px solid grey'}} fontWeight={600}>Triễn lãm đèn Tiffany</Typography>
+                    <Typography sx={{ fontSize: { xs: '1.2rem', sm: '1.8rem'} , borderBottom: '1px solid grey'}} fontWeight={600}>Triển lãm đèn Tiffany</Typography>
                 </Box>
                 <Grid container spacing={4} sx={{ borderBottom: '1px solid grey'}}>
                     <Grid size={{ xs: 12, md: 5}}>
@@ -97,7 +101,12 @@ const ExhibitionOfTiffanyLight = () => {
                         />
                     </Grid>
                 </Grid>
+            <LiveStream title="Sự kiện"/>
+            <LiveStream title="Trải nghiệm miễn phí"/>
+            <PlanVisit data={DATA_PLAN_VISIT} label="Thăm quan ngay" md={3}/>
+            <CommonInfo data={DATA_COMMON} />             
             </Box>
+
         </Box>
     )
 }

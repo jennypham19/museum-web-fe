@@ -130,29 +130,31 @@ const Footer = () => {
               <Grid size={{ xs: 12, md: 4}} sx={{ borderRight: { xs: 'none', md: '1px solid'}, borderBottom: { xs: '1px solid', md: 'none'}}}>
                 <Box py={{ xs: 2, md:4}} px={{ xs: 2, md: 5}} display='flex' flexDirection='column'>
                   <Typography ml={0.5} mb={1} fontWeight={600} fontSize={{ xs: '13px', md: '16px'}}>Follow us</Typography>
-                  <Box px={1} display='flex' flexDirection='row'>
-                    <IconButton
-                      handleFunt={() => {}}
-                      icon={<FaFacebookF size={20} color="#fff"/>}
-                      backgroundColor="black"
-                      // href="https://www.facebook.com/profile.php?id=61576721774771"
-                      borderRadius='50%'
-                      sx={{ mr: 1, mt: { xs: 0, md: 0.5}}}
-                    />
-                    <IconButton
-                      handleFunt={() => {}}
-                      icon={<FaInstagram size={20} color='#fff'/>}
-                      backgroundColor="black"
-                      borderRadius='50%'
-                      sx={{ mr: 1, mt: { xs: 0, md: 0.5}}}
-                    />
-                    <IconButton
-                      handleFunt={() => {}}
-                      icon={<FaPinterestP size={20} color='#fff'/>}
-                      backgroundColor="black"
-                      borderRadius='50%'
-                      sx={{ mr: 3, mt: { xs: 0, md: 0.5}}}
-                    />
+                  <Box px={1} display='flex' flexDirection={{ xs: 'row', md: 'column', lg: 'row'}}>
+                    <Stack direction='row'>
+                      <IconButton
+                        handleFunt={() => {}}
+                        icon={<FaFacebookF size={20} color="#fff"/>}
+                        backgroundColor="black"
+                        // href="https://www.facebook.com/profile.php?id=61576721774771"
+                        borderRadius='50%'
+                        sx={{ mr: 1, mt: { xs: 0, md: 0.5}}}
+                      />
+                      <IconButton
+                        handleFunt={() => {}}
+                        icon={<FaInstagram size={20} color='#fff'/>}
+                        backgroundColor="black"
+                        borderRadius='50%'
+                        sx={{ mr: 1, mt: { xs: 0, md: 0.5}}}
+                      />
+                      <IconButton
+                        handleFunt={() => {}}
+                        icon={<FaPinterestP size={20} color='#fff'/>}
+                        backgroundColor="black"
+                        borderRadius='50%'
+                        sx={{ mr: 3, mt: { xs: 0, md: 0.5}}}
+                      />
+                    </Stack>
                     <Stack direction='row'>
                       <IconButton
                         handleFunt={() => {}}
@@ -175,9 +177,9 @@ const Footer = () => {
         </Grid>
         <Box px={{ xs: 2, md: 6}} py={2} display='flex' flexDirection={{ xs: 'column', md: 'row'}} justifyContent={{ xs: 'flex-start', md: 'space-between'}}>
           <Stack direction='row'>
-            <Typography fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Side Index</Typography>
-            <Typography fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Terms and Conditions</Typography>
-            <Typography fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Privacy Policy</Typography>
+            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Side Index</Typography>
+            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Terms and Conditions</Typography>
+            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Privacy Policy</Typography>
             <Typography fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Contact Information</Typography>
           </Stack>
           <Typography fontSize={{ xs: '14px', md: '18px'}} mt={{ xs: 2, md: 0}} fontWeight={600}>© 2000 - 2025 The Metropolitan Museum of Art. All rights reserved.</Typography>

@@ -1,14 +1,12 @@
 import { Box,  Stack, Typography, useMediaQuery } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
-import { CSSObject, Theme, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { DensityMedium } from '@mui/icons-material';
+import { DensityMedium, SvgIconComponent } from '@mui/icons-material';
 import CollapsedSideBar from './CollapseSidebar';
 import HoverDropdownMenu from './components/HoverDropdownMenu';
-import Grid from "@mui/material/Grid2";
 import InputSearch from '@/components/SearchBar';
 import CommonImage from '@/components/Image/index';
 import logo_museum from "@/assets/images/users/logo_museum.png"
@@ -22,6 +20,7 @@ export interface MenuProps{
   id: number,
   label: string, 
   path?: string,
+  icon?: SvgIconComponent,
   children?: MenuChildProps[]
 }
 
@@ -31,49 +30,11 @@ interface Props {
   onToggleCollapsed: () => void;
 }
 
-const Header = (props: Props) => {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState('');
-    const handleSearch = (value: string) => {
-        setSearchTerm(value.trim())
-    }
-
-  const handleToggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-
-  const isActive = (path: string) => location.pathname === path;
-
-
-  const handleMenuClick = (path: string) => {
-    navigate(path)
-  }
-
-  const styleMenu = (path: string) => ({
-    fontWeight: 500,
-    whiteSpace: 'nowrap',
-    cursor: 'pointer',
-    pb: 1,
-    mt: 1,
-    transition: 'border-bottom 0.3s',
-    '&:hover':{
-      bgcolor: '#000',
-      with: '100%',
-    },
-    color: isActive(path) ? "#AC7D4F" : 'white',
-    fontSize: '15px'
-  });
-
-  const MENU_DASHBOARD: MenuProps[] = [
+const MENU_DASHBOARD: MenuProps[] = [
     {
       id:1,
       label: 'Trang chủ',
-      path: '/home',
+      path: '/home'
     },
     {
       id: 2,
@@ -111,7 +72,21 @@ const Header = (props: Props) => {
     }
   ]
 
-  if(mdUp){
+const Header = (props: Props) => {
+  const theme = useTheme();
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState('');
+    const handleSearch = (value: string) => {
+        setSearchTerm(value.trim())
+    }
+
+  const handleToggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
+
+  if(lgUp){
     return(
       <AppBar
             position='fixed'

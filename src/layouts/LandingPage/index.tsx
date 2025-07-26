@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -16,38 +16,48 @@ const LandingPageLayout = () => {
     setCollapsed(!collapsed);
   };
 
+  const location  = useLocation();
+  
   return (
-    <Box
-        sx={{
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100svh',
-          overflow: 'hidden',
-          paddingTop: { xs: '64px', md: '140px'},
-        }}
-    >
-        <Header
-          collapsed={collapsed}
-          onToggleSidebar={handleToggleSidebar}
-          onToggleCollapsed={handleToggleCollapsed}
-        />
+    <>
+      {location.pathname === '/map-museum' ? (
+        <Box bgcolor='#D2E7A9' height='100%'>
+          hgfhgfhf
+        </Box>
+      ) : (
         <Box
           sx={{
-              overflowY: 'auto',
-              '&::-webkit-scrollbar': { width: '6px' },
-              '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(0,0,0,0.2)', borderRadius: 1 },
-              '&::-webkit-scrollbar-track': {
-                backgroundColor: '#f1f1f1',
-            }, 
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100svh',
+            overflow: 'hidden',
+            paddingTop: { xs: '64px', md: '140px'},
           }}
         >
-          <Box sx={{ flexGrow: 1 }}>
-            <Outlet />
+          <Header
+            collapsed={collapsed}
+            onToggleSidebar={handleToggleSidebar}
+            onToggleCollapsed={handleToggleCollapsed}
+          />
+          <Box
+            sx={{
+                overflowY: 'auto',
+                '&::-webkit-scrollbar': { width: '6px' },
+                '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(0,0,0,0.2)', borderRadius: 1 },
+                '&::-webkit-scrollbar-track': {
+                  backgroundColor: '#f1f1f1',
+              }, 
+            }}
+          >
+            <Box sx={{ flexGrow: 1 }}>
+              <Outlet />
+            </Box>
+            <Footer />
           </Box>
-          <Footer />
         </Box>
-    </Box>
+      )}
+    </>
   );
 };
 
