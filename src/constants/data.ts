@@ -39,6 +39,12 @@ import detail_object_4 from "@/assets/images/users/detail_object_4.png";
 import detail_object_5 from "@/assets/images/users/detail_object_5.png";
 import detail_object_6 from "@/assets/images/users/detail_object_6.png";
 import detail_object_7 from "@/assets/images/users/detail_object_7.png";
+import ticket_1 from "@/assets/images/users/ticket_1.png";
+import ticket_2 from "@/assets/images/users/ticket_2.png";
+import ticket_3 from "@/assets/images/users/ticket_3.png";
+import ticket_4 from "@/assets/images/users/image_exhibition.png";
+import DateTime from "@/utils/DateTime";
+import dayjs from "dayjs";
 
 
 
@@ -611,5 +617,64 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
             { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
             { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
         ]
+    },
+]
+export const DATA_TICKET_LOCATION = [
+    {
+        id: 1,
+        image_url: ticket_1,
+        title: 'Triển lãm "Ánh dương xanh"',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+    {
+        id: 2,
+        image_url: ticket_2,
+        title: 'Chương trình khai trương',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+    {
+        id: 3,
+        image_url: ticket_3,
+        title: 'Tiffany và các tác phẩm',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+    {
+        id: 4,
+        image_url: ticket_4,
+        title: 'Khu triển lãm nghệ thuật',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+]
+
+export const DATA_DATE_THROUGH_LOCATION = [
+    {
+        id: 1,
+        date: 'Hôm nay',
+        detail: DateTime.formatVietnameseData(dayjs())
+    },
+    {
+        id: 2,
+        date: 'Ngày mai',
+        detail: DateTime.formatVietnameseData(dayjs().add(1, 'day'))
     },
 ]

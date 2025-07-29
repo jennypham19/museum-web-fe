@@ -53,6 +53,7 @@ const MENU_DASHBOARD: MenuProps[] = [
       label: 'Triển lãm và sự kiện',
       path: '#',
       children: [
+        { label: 'Triển lãm', path: '/exhibition'},
         { label: 'Sự kiện & biểu diễn', path: '/event-performance'},
         { label: 'Trải nghiệm miễn phí', path: '/free-experience'},
       ]

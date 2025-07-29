@@ -29,7 +29,7 @@ const DialogHeader = (props: Props) => {
         />
       )}
       {children && children}
-      <Typography sx={{ fontWeight: 600, fontSize: 17, mt: 1 }} color='#121828' gutterBottom>
+      <Typography sx={{ fontWeight: 600, fontSize: 17, mt: 1, ml:2 }} color='#121828' gutterBottom>
         {title}
       </Typography>
       <IconButton 
