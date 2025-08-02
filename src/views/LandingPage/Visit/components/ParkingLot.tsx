@@ -28,7 +28,6 @@ const TypoText: React.FC<TypoTextProps> = ({ label, borderBottom}) => (
 )
 
 const VehicleItem: React.FC<VehicleItemProps> = ({ name, count, onChange }) => {
-
     return(
         <Paper
             elevation={1}

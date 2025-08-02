@@ -55,6 +55,15 @@ class DateTime {
   public Format(value: Date | string | Dayjs | null = dayjs(), pattern: string = DateTimeFormat) {
     return this.IsValid(value) ? dayjs(value).format(pattern) : null;
   }
+
+  public formatVietnameseData(date: Dayjs){
+    const weekday = date.locale("vi").format("dddd"); //Thứ hai, thứ ba....
+    const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1)
+    const day = date.format("DD");
+    const month = date.format("MM");
+    const year = date.format("YYYY");
+    return `${capitalizedWeekday}_${day} th${month}, ${year}`;
+  }
 }
 
 export default new DateTime();

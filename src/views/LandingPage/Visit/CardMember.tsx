@@ -1,7 +1,4 @@
-import IconButton from "@/components/IconButton/IconButton";
-import { Home } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, List, ListItem, ListItemText, Paper, Stack, Typography } from "@mui/material"
-import { useNavigate } from "react-router-dom";
 import image_card_member from "@/assets/images/users/image-card-member.png";
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import PersonIcon from '@mui/icons-material/Person';
@@ -10,6 +7,7 @@ import { IPackageMember } from "@/types/landingpage";
 import Grid from "@mui/material/Grid2";
 import { DATA_MEMBER, DATA_PACKAGE_MEMBER } from "@/constants/data";
 import PlanVisit from "../Dashboard/components/PlanVisit";
+import CommonNavbar from "../Components/CommonNavbar";
 
 interface MembershipPackageProps{
     data: IPackageMember[];
@@ -79,16 +77,11 @@ const MembershipPackage: React.FC<MembershipPackageProps> = ({ data}) => {
 }
 
 const CardMember = () => {
-    const navigate = useNavigate();
     return(
         <Box>
-            <Box display='flex' flexDirection='row' py={{ xs: 0, md: 1.5}} px={{ xs: 2, md: 10}}>
-                <IconButton
-                    handleFunt={() => navigate('/home')}
-                    icon={<Home sx={{ width: { xs: 20, md: 30}, height: { xs: 20, md: 30}, color: '#000'}}/>}
-                />
-                <Typography mt={{ xs: 1, md: 1}} fontWeight={600} fontSize={{ xs: '12px', md: '18px'}}>/ Thẻ thành viên</Typography>
-            </Box>
+            <CommonNavbar
+                title="/ Thẻ thành viên"
+            />
             <Box
                 sx={{
                     height: { xs: 300, md: 480},
@@ -144,7 +137,7 @@ const CardMember = () => {
                 {/* Gói hội viên tiềm năng */}
             </Box>
             <Box px={{ xs: 0, md: 4}} mb={{ xs: 2, md: 4}}>
-                <PlanVisit data={DATA_MEMBER} label="Đăng ký thành viên" md={6}/>
+                <PlanVisit data={DATA_MEMBER} label="Đăng ký thành viên" md={6} handleNavigate={() => {}}/>
             </Box>
         </Box>
     )

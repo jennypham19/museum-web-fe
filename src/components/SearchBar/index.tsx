@@ -9,10 +9,13 @@ interface InputSearchProps{
     style?:SxProps<Theme>;
     borderColor?: string;
     color?: string;
+    colorIcon?: string;
+    borderRadius?: string;
+    boxShadow?: string
 }
 
 const InputSearch: React.FC<InputSearchProps> = (props) => {
-    const { onSearch, placeholder, initialValue = " ", style, borderColor='#1C1A1B', color='white'} = props;
+    const { onSearch, placeholder, initialValue = " ", style, borderColor='#1C1A1B', color='white', colorIcon='white', borderRadius='20px', boxShadow} = props;
     const [searchTerm, setSearchTerm] = useState<string>(initialValue);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -51,7 +54,7 @@ const InputSearch: React.FC<InputSearchProps> = (props) => {
                                 paddingRight: "12px" // Padding cho divider bên phải
                             }}
                         >
-                            <Search sx={{ color: 'white', fontSize: '25px'}}/>
+                            <Search sx={{ color: colorIcon, fontSize: '25px'}}/>
                         </InputAdornment>
                     ),
                     sx:{
@@ -70,7 +73,7 @@ const InputSearch: React.FC<InputSearchProps> = (props) => {
                             paddingLeft:0 // Bỏ padding mặc định bên trái vì đã có adornment,
                         },
                         // Áp dụng border radius cho chính input field
-                        borderRadius: "20px",
+                        borderRadius: borderRadius,
                         color: color
                     },
                 }}
@@ -78,8 +81,9 @@ const InputSearch: React.FC<InputSearchProps> = (props) => {
                     // Đảm bảo TextField root không có padding và áp dụng border radius
                     "& .MuiInputBase-root":{
                         padding:0, // Loại bỏ padding mặc định của root input base
-                        borderRadius:"20px", // Áp dụng border radius cho toàn bộ TextField
-                        color: color
+                        borderRadius: borderRadius, // Áp dụng border radius cho toàn bộ TextField
+                        color: color,
+                        boxShadow: boxShadow
                     },
                     "& .MuiInputBase-input::placeholder": {
                         color: color

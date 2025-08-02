@@ -11,7 +11,7 @@ import map from "@/assets/images/users/map.png";
 import plan from "@/assets/images/users/plan.png";
 import app from "@/assets/images/users/app.png";
 import present from "@/assets/images/users/present.png";
-import { IICommonLandingPage, IObjectArt, IPackageMember } from "@/types/landingpage";
+import { IICommonLandingPage, IInfoExperience, IObjectArt, IPackageMember, IType } from "@/types/landingpage";
 import parking_lot from "@/assets/images/users/parking_lot.png";
 import painting from "@/assets/images/users/painting.png";
 import explore_museum from "@/assets/images/users/explore_museum.png";
@@ -39,6 +39,31 @@ import detail_object_4 from "@/assets/images/users/detail_object_4.png";
 import detail_object_5 from "@/assets/images/users/detail_object_5.png";
 import detail_object_6 from "@/assets/images/users/detail_object_6.png";
 import detail_object_7 from "@/assets/images/users/detail_object_7.png";
+import ticket_1 from "@/assets/images/users/ticket_1.png";
+import ticket_2 from "@/assets/images/users/ticket_2.png";
+import ticket_3 from "@/assets/images/users/ticket_3.png";
+import ticket_4 from "@/assets/images/users/image_exhibition.png";
+import DateTime from "@/utils/DateTime";
+import dayjs from "dayjs";
+import image_info_1 from "@/assets/images/users/ticket_1.png";
+import image_info_2 from "@/assets/images/users/ticket_2.png";
+import image_info_3 from "@/assets/images/users/ticket_3.png";
+import image_info_4 from "@/assets/images/users/slide_blue_shine.png";
+import image_senior_leaders from "@/assets/images/users/image_senior_leaders.png";
+import image_collection from "@/assets/images/users/image_collection.png";
+import image_reality_research from "@/assets/images/users/image_reality_research.png";
+
+import image_about_us_1 from "@/assets/images/users/image_about_us_1.png";
+import image_about_us_2 from "@/assets/images/users/image_about_us_2.png";
+import image_about_us_3 from "@/assets/images/users/image_about_us_3.png";
+import image_about_us_4 from "@/assets/images/users/image_about_us_4.png";
+import image_about_us_5 from "@/assets/images/users/image_about_us_5.png";
+import image_about_us_6 from "@/assets/images/users/image_about_us_6.png";
+import image_about_us_7 from "@/assets/images/users/image_about_us_7.png";
+
+import image_policy_1 from "@/assets/images/users/image_policy_1.png";
+import image_policy_2 from "@/assets/images/users/image_policy_2.png";
+import image_policy_3 from "@/assets/images/users/image_policy_3.png";
 
 
 
@@ -161,6 +186,37 @@ export const DATA_PLAN_VISIT: IICommonLandingPage[] = [
         image_url: present,
         title: 'Thuyết trình bảo tàng',
         content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+    },
+]
+
+export const DATA_ABOUT_US: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: card_1,
+        title: 'Lịch sử bảo tàng',
+        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!',
+        type: 'history_museum'
+    },
+    {
+        id: 2,
+        image_url: image_senior_leaders,
+        title: 'Lãnh đạo cao cấp',
+        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.',
+        type: 'senior_leader'
+    },
+    {
+        id: 3,
+        image_url: image_collection,
+        title: 'Bộ sưu tập',
+        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.',
+        type: 'museum_collection'
+    },
+    {
+        id: 4,
+        image_url: image_reality_research,
+        title: 'Nghiên cứu thực tại',
+        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!',
+        type: 'reality_research'
     },
 ]
 
@@ -612,4 +668,389 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
             { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
         ]
     },
+]
+export const DATA_TICKET_LOCATION = [
+    {
+        id: 1,
+        image_url: ticket_1,
+        title: 'Triển lãm "Ánh dương xanh"',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+    {
+        id: 2,
+        image_url: ticket_2,
+        title: 'Chương trình khai trương',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+    {
+        id: 3,
+        image_url: ticket_3,
+        title: 'Tiffany và các tác phẩm',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+    {
+        id: 4,
+        image_url: ticket_4,
+        title: 'Khu triển lãm nghệ thuật',
+        open: 'Giờ mở cửa: thứ hai - thứ tư \n' + 
+        'Giờ mở cửa: thứ năm \n' +
+        'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '14 PM - 20 PM \n' +
+        '08 AM - 16 PM \n' +
+        '10 AM - 17 PM'
+    },
+]
+
+export const DATA_DATE_THROUGH_LOCATION = [
+    {
+        id: 1,
+        date: 'Hôm nay',
+        detail: DateTime.formatVietnameseData(dayjs())
+    },
+    {
+        id: 2,
+        date: 'Ngày mai',
+        detail: DateTime.formatVietnameseData(dayjs().add(1, 'day'))
+    },
+]
+
+export const DATA_TYPE: IType[] = [
+    {
+        id: 1,
+        label: 'Nhóm người',
+        children: [
+            { id: 1, label: 'Gia đình', count: 50, id_type: 1},
+            { id: 2, label: 'Thanh thiếu niên', count: 27, id_type: 1},
+            { id: 3, label: 'Truy cập', count: 0, id_type: 1},
+            { id: 4, label: 'Giáo viên', count: 0, id_type: 1},
+            { id: 5, label: 'Thành viên', count: 0, id_type: 1},
+        ]
+    },
+    {
+        id: 2,
+        label: 'Vị trí địa điểm',
+        children: [
+            { id: 1, label: 'Bảo tàng Tiffany Hà Nội', count: 2, id_type: 2},
+            { id: 2, label: 'Bảo tàng Tiffany Thành phố Hồ Chí Minh', count: 1, id_type: 2},
+            { id: 3, label: 'Thành phố Quảng Ninh', count: 0, id_type: 2},
+            { id: 4, label: 'Thành phố Hải Phòng', count: 0, id_type: 2},
+            { id: 5, label: 'Thành phố Nha Trang', count: 0, id_type: 2},
+        ]
+    },
+    {
+        id: 3,
+        label: 'Thể loại',
+        children: [
+            { id: 1, label: 'Nghệ thuật Tiffany', count: 102, id_type: 3},
+            { id: 2, label: 'Triển lãm nghệ thuật', count: 38, id_type: 3},
+            { id: 3, label: 'Chương trình giao lưu nghệ thuật', count: 3, id_type: 3},
+            { id: 4, label: 'Giải thưởng nghệ thuật trưng bày', count: 218, id_type: 3},
+            { id: 5, label: 'Câu lạc bộ thành viên', count: 20, id_type: 3},
+        ]
+    },
+]
+
+export const DATA_TYPE_EVENT: IType[] = [
+    {
+        id: 1,
+        label: 'Khán giả',
+        children: [
+            { id: 1, label: 'Gia đình', count: 50, id_type: 1},
+            { id: 2, label: 'Thanh thiếu niên', count: 27, id_type: 1},
+            { id: 3, label: 'Truy cập', count: 0, id_type: 1},
+            { id: 4, label: 'Giáo viên', count: 0, id_type: 1},
+            { id: 5, label: 'Thành viên', count: 0, id_type: 1},
+        ]
+    },
+    {
+        id: 2,
+        label: 'Vị trí địa điểm',
+        children: [
+            { id: 1, label: 'Bảo tàng Tiffany Hà Nội', count: 2, id_type: 2},
+            { id: 2, label: 'Bảo tàng Tiffany Thành phố Hồ Chí Minh', count: 1, id_type: 2},
+            { id: 3, label: 'Thành phố Quảng Ninh', count: 0, id_type: 2},
+            { id: 4, label: 'Thành phố Hải Phòng', count: 0, id_type: 2},
+            { id: 5, label: 'Thành phố Nha Trang', count: 0, id_type: 2},
+        ]
+    },
+    {
+        id: 3,
+        label: 'Giá',
+        children: [
+            { id: 1, label: 'Miễn phí', count: 23, id_type: 3},
+            { id: 2, label: 'Đã trả tiền', count: 1, id_type: 3},
+            { id: 3, label: 'Chưa trả tiền', count: 0, id_type: 3},
+            { id: 4, label: 'Mất phí tham gia', count: 123, id_type: 3},
+        ]
+    },
+    {
+        id: 4,
+        label: 'Thể loại',
+        children: [
+            { id: 1, label: 'Nghệ thuật Tiffany', count: 102, id_type: 4},
+            { id: 2, label: 'Triển lãm nghệ thuật', count: 38, id_type: 4},
+            { id: 3, label: 'Chương trình giao lưu nghệ thuật', count: 3, id_type: 4},
+            { id: 4, label: 'Giải thưởng nghệ thuật trưng bày', count: 218, id_type: 4},
+            { id: 5, label: 'Câu lạc bộ thành viên', count: 20, id_type: 4},
+        ]
+    },
+]
+
+export const DATA_INFO_EXPERIENCE: IInfoExperience[] = [
+    {
+        id: 1,
+        label: 'Triển lãm "Ánh dương xanh"',
+        image_url: image_info_1,
+        content: 'Dành một giờ để khám phá sâu một phần bộ sưu tập của TIFFANY, từ nghệ thuật Ai Cập cổ đại đến tranh Ấn tượng Pháp, hàng dệt may Hồi giáo hoặc tác phẩm của các nghệ sĩ đương đại. Lưu ý: Số lượng có hạn; ai đến trước được phục vụ trước',
+        open: 'Giờ mở cửa: thứ hai - chủ nhật',
+        hour: '10 AM - 17 PM'
+    },
+    {
+        id: 2,
+        label: 'Chương trình khai trương',
+        image_url: image_info_2,
+        content: 'Khám phá các tác phẩm nghệ thuật trải dài 5.000 năm nghệ thuật và văn hóa trong bộ sưu tập đa dạng của Bảo tàng. Các tour tham quan khởi hành từ Vélez Blanco Patio, Phòng trưng bày 534. Số lượng có hạn: ai đến trước được phục vụ trước.',
+        open: 'Giờ mở cửa: thứ tư - thứ năm',
+        hour: '10 AM - 17 PM'
+    },
+    {
+        id: 3,
+        label: 'Tiffany và các tác phẩm',
+        image_url: image_info_3,
+        content: "Visita Guidata dei Capolavori bằng tiếng Ý. Gratuita con l'acquisto del biglietto d'ingresso. Scoprite le opere d'arte attraverso le collezioni del Museo che coprono piu' di 5000 năm về các câu chuyện và nền.",
+        open: 'Giờ mở cửa: thứ hai - thứ ba',
+        hour: '10 AM - 17 PM'
+    },
+    {
+        id: 4,
+        label: 'Khu triển lãm nghệ thuật',
+        image_url: image_info_4,
+        content: 'Dành một giờ để khám phá sâu một phần bộ sưu tập của The Met, từ nghệ thuật Ai Cập cổ đại đến tranh Ấn tượng Pháp, hàng dệt may Hồi giáo hoặc tác phẩm của các nghệ sĩ đương đại. Lưu ý: Số lượng có hạn; ai đến trước được phục vụ trước',
+        open: 'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '10 AM - 17 PM'
+    },
+]
+
+export const DATA_EXHIBITION_RECENTLY_OPENED: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: card_member,
+        title: 'Thẻ thành viên',
+        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.',
+        url: '/card-member'
+    },
+    {
+        id: 2,
+        image_url: live_2,
+        title: 'Bộ sưu tập tác phẩm',
+        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.',
+        url: '/museum-collection'
+    },
+    {
+        id: 3,
+        image_url: find_museum,
+        title: 'Tìm hiểu về bảo tàng',
+        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.',
+        url: '/home'
+    },
+]
+
+export const DATA_EXHIBITION_ABOUT_TO_CLOSE: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: collection,
+        title: 'Bộ sưu tập tác phẩm',
+        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.'
+    },
+    {
+        id: 2,
+        image_url: find_museum,
+        title: 'Tìm hiểu về bảo tàng',
+        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.'
+    },
+    {
+        id: 3,
+        image_url: card_member,
+        title: 'Thẻ thành viên',
+        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.'
+    },
+]
+
+export const DATA_EXHIBITION_IN_PROGRESS: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: find_museum,
+        title: 'Tìm hiểu về bảo tàng',
+        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.'
+    },
+    {
+        id: 2,
+        image_url: card_member,
+        title: 'Thẻ thành viên',
+        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.'
+    },
+    {
+        id: 3,
+        image_url: collection,
+        title: 'Bộ sưu tập tác phẩm',
+        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.'
+    },
+]
+
+export const DATA_INFO_EVENT_PERFORMANCE: IInfoExperience[] = [
+    {
+        id: 1,
+        label: 'Sự kiện tiếp đón thành viên mới',
+        image_url: ticket_1,
+        content: 'Dành một giờ để khám phá sâu một phần bộ sưu tập của TIFFANY, từ nghệ thuật Ai Cập cổ đại đến tranh Ấn tượng Pháp, hàng dệt may Hồi giáo hoặc tác phẩm của các nghệ sĩ đương đại. Lưu ý: Số lượng có hạn; ai đến trước được phục vụ trước',
+        open: 'Giờ mở cửa: thứ hai - chủ nhật',
+        hour: '10 AM - 17 PM'
+    },
+    {
+        id: 2,
+        label: 'Chương trình khai trương',
+        image_url: ticket_2,
+        content: 'Khám phá các tác phẩm nghệ thuật trải dài 5.000 năm nghệ thuật và văn hóa trong bộ sưu tập đa dạng của Bảo tàng. Các tour tham quan khởi hành từ Vélez Blanco Patio, Phòng trưng bày 534. Số lượng có hạn: ai đến trước được phục vụ trước.',
+        open: 'Giờ mở cửa: thứ tư - thứ năm',
+        hour: '10 AM - 17 PM'
+    },
+    {
+        id: 3,
+        label: 'Tác phẩm thuộc giải nghệ thuật',
+        image_url: ticket_3,
+        content: "Visita Guidata dei Capolavori bằng tiếng Ý. Gratuita con l'acquisto del biglietto d'ingresso. Scoprite le opere d'arte attraverso le collezioni del Museo che coprono piu' di 5000 năm về các câu chuyện và nền.",
+        open: 'Giờ mở cửa: thứ hai - thứ ba',
+        hour: '10 AM - 17 PM'
+    },
+    {
+        id: 4,
+        label: 'Trao giải thành viên xuất sắc',
+        image_url: image_exhibition,
+        content: 'Dành một giờ để khám phá sâu một phần bộ sưu tập của The Met, từ nghệ thuật Ai Cập cổ đại đến tranh Ấn tượng Pháp, hàng dệt may Hồi giáo hoặc tác phẩm của các nghệ sĩ đương đại. Lưu ý: Số lượng có hạn; ai đến trước được phục vụ trước',
+        open: 'Giờ mở cửa: thứ sáu - chủ nhật',
+        hour: '10 AM - 17 PM'
+    },
+]
+
+export const DATA_ABOUT_US_1: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: image_about_us_1,
+        title: 'Chính sách và tài liệu',
+        content: 'Mô tả chi tiết',
+        type: 'policy_material'
+    },
+    {
+        id: 2,
+        image_url: image_about_us_2,
+        title: 'Thông tin liên lạc',
+        content: 'Mô tả chi tiết',
+        type: 'contact-information'
+    },
+    {
+        id: 3,
+        image_url: live_3,
+        title: 'Về The Tiffany',
+        content: 'Mô tả chi tiết',
+        type: 'about-us'
+    }
+]
+
+export const DATA_ABOUT_US_2: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: image_about_us_3,
+        title: 'Tình nguyện viên',
+        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+    },
+    {
+        id: 2,
+        image_url: image_about_us_4,
+        title: 'Hỗ trợ bảo tàng',
+        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!'
+    },
+]
+
+export const DATA_ABOUT_US_3: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: image_about_us_5,
+        title: 'Cơ hội nghề nghiệp',
+        content: 'Mô tả chi tiết.',
+        type: 'career_opportunities'
+    },
+    {
+        id: 2,
+        image_url: image_about_us_6,
+        title: 'Thực tập',
+        content: 'Mô tả chi tiết.',
+        type: 'intership'
+    },
+    {
+        id: 3,
+        image_url: image_about_us_7,
+        title: 'Chương trình kiến thức',
+        content: 'Mô tả chi tiết.',
+        type: 'knowledge_program'
+    },
+]
+
+export const DATA_ABOUT_MATERIAL: IICommonLandingPage[] = [
+    {
+        id: 1,
+        image_url: image_about_us_1,
+        title: 'Chính sách và tài liệu',
+        content: 'Mô tả chi tiết',
+        type: 'policy_material_detail'
+    },
+    {
+        id: 2,
+        image_url: image_about_us_2,
+        title: 'Thông tin liên lạc',
+        content: 'Mô tả chi tiết',
+        type: 'contact-information'
+    },
+    {
+        id: 3,
+        image_url: live_3,
+        title: 'Về The Tiffany',
+        content: 'Mô tả chi tiết',
+        type: 'about-us'
+    },
+    {
+        id: 4,
+        image_url: image_policy_1,
+        title: 'Chính sách và tài liệu',
+        content: 'Mô tả chi tiết',
+        type: 'policy_material_detail'
+    },
+    {
+        id: 5,
+        image_url: image_policy_2,
+        title: 'Thông tin liên lạc',
+        content: 'Mô tả chi tiết',
+        type: 'contact-information'
+    },
+    {
+        id: 6,
+        image_url: image_policy_3,
+        title: 'Về The Tiffany',
+        content: 'Mô tả chi tiết',
+        type: 'about-us'
+    }
 ]
