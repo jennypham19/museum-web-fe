@@ -1,7 +1,5 @@
-import IconButton from "@/components/IconButton/IconButton";
-import { Home, Report } from "@mui/icons-material";
+import { Report } from "@mui/icons-material";
 import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material"
-import { useNavigate } from "react-router-dom";
 import ticket_image from "@/assets/images/users/ticket_image.png";
 import Grid from "@mui/material/Grid2";
 import { DATA_TICKET_LOCATION } from "@/constants/data";
@@ -10,9 +8,9 @@ import React, { useRef, useState } from "react";
 import SignpostIcon from '@mui/icons-material/Signpost';
 import DetailContentAboutLoction from "./components/DetailContentAboutLocation";
 import ShoppingCartOfYou from "./components/ShoppingCartOfYou";
+import CommonNavbar from "../Components/CommonNavbar";
 
 const TicketVisit = () => {
-    const navigate = useNavigate();
     const locationRef = useRef<HTMLDivElement>(null);
     const locationContentDetailRef = useRef<HTMLDivElement>(null);
     const [openContentWhenClickLocation, setOpenContentWhenClickLocation] = useState(false);
@@ -49,13 +47,9 @@ const TicketVisit = () => {
   
     return(
         <Box>
-            <Box display='flex' flexDirection='row' py={{ xs: 0, md: 1.5}} px={{xs: 2, md: 10}}>
-                <IconButton
-                    handleFunt={() => navigate('/home')}
-                    icon={<Home sx={{ width: { xs: 20, md: 30}, height: { xs: 20, md: 30}, color: '#000'}}/>}
-                />
-                <Typography mt={{ xs: 1, md: 1}} fontWeight={600} fontSize={{ xs: '12px', md: '18px'}}>/ Mua vé thăm quan</Typography>
-            </Box>
+            <CommonNavbar
+                title="/ Mua vé thăm quan"
+            />
             <Box
                 sx={{
                     height: { xs: 300, md: 480},

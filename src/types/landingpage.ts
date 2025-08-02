@@ -2,7 +2,9 @@ export interface IICommonLandingPage{
     id: number,
     image_url: string,
     title: string,
-    content: string
+    content: string,
+    url?: string, 
+    type?: string,
 }
 
 export interface IPackageMember{
@@ -29,4 +31,26 @@ export interface IImageDetailObject{
     id: number,
     name: string,
     image_detail_url: string
+}
+
+export interface IItemType{
+    id: number,
+    label: string,
+    count: number,
+    id_type: number,
+}
+
+export interface IType{
+    id: number,
+    label: string,
+    children: IItemType[]
+}
+
+export interface IInfoExperience{
+    id: number,
+    label: string,
+    image_url: string,
+    content: string,
+    open: string,
+    hour: string
 }

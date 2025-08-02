@@ -1,14 +1,15 @@
 import { IICommonLandingPage } from "@/types/landingpage";
-import { Box, Button, Card, CardContent, CardMedia, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardMedia, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React from "react";
 
 interface PlanVisitProps{
     data: IICommonLandingPage[];
-    label: string;
-    md?: number
+    label?: string;
+    md?: number,
+    handleNavigate?: (newData: IICommonLandingPage) => void
 }
-const PlanVisit: React.FC<PlanVisitProps> = ({data, label, md}) => {
+const PlanVisit: React.FC<PlanVisitProps> = ({data, label, md, handleNavigate}) => {
     return(
         <Box px={{ xs: 2, md: 6}} py={{ xs: 2, md: 4}}>
             <Grid container spacing={3}>
@@ -30,9 +31,11 @@ const PlanVisit: React.FC<PlanVisitProps> = ({data, label, md}) => {
                                     <Typography fontWeight={600} fontSize={{ xs: '14px', md: '18px'}}>{item.title}</Typography>
                                     <Typography sx={{ whiteSpace: 'normal', wordBreak: 'break-word'}} fontSize={{ xs: '12px', md: '14px'}}>{item.content}</Typography>
                                 </Stack>
-                                <Box pb={2} pr={2} display='flex' justifyContent='flex-end'>
-                                    <Button variant="outlined" sx={{ border: '1px solid #160E0D', color: '#160E0D', fontWeight: 600}}>{label}</Button>
-                                </Box>
+                                {label && handleNavigate && (
+                                    <Box pb={2} pr={2} display='flex' justifyContent='flex-end'>
+                                        <Button onClick={() => item && handleNavigate(item)} variant="outlined" sx={{ border: '1px solid #160E0D', color: '#160E0D', fontWeight: 600}}>{label}</Button>
+                                    </Box>
+                                )}
                            </Card>
                         </Grid>
                     )

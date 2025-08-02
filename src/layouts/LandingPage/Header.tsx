@@ -69,7 +69,7 @@ const MENU_DASHBOARD: MenuProps[] = [
     {
       id: 5,
       label: 'Về chúng tôi',
-      path: 'about-us'
+      path: '/about-us'
     }
   ]
 

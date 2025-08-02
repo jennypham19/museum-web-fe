@@ -74,8 +74,9 @@ const ExhibitionOfTiffanyLight = () => {
                                     height: 50,
                                     width: 120,
                                     background: 'linear-gradient(45deg, #D30000 30%, #780000 90%)',
-                                    fontSize: '18px'
+                                    fontSize: '18px',
                                 }}
+                                onClick={() => navigate('/ticket-visit')}
                             >
                                 Mua vé
                             </Button>
@@ -103,7 +104,7 @@ const ExhibitionOfTiffanyLight = () => {
                 </Grid>
             <LiveStream title="Sự kiện"/>
             <LiveStream title="Trải nghiệm miễn phí"/>
-            <PlanVisit data={DATA_PLAN_VISIT} label="Thăm quan ngay" md={3}/>
+            <PlanVisit data={DATA_PLAN_VISIT} label="Thăm quan ngay" md={3} handleNavigate={() => {}}/>
             <CommonInfo data={DATA_COMMON} />             
             </Box>
 

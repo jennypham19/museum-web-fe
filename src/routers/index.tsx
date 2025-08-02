@@ -47,6 +47,11 @@ const ParkingLot = Loadable(lazy(() => import('@/views/LandingPage/Visit/compone
 
 const DetailArt = Loadable(lazy(() => import('@/views/LandingPage/Components/DetailArt')));
 
+const Exhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/Exhibition')));
+const EventAndPerformance = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/EventAndPerformance')));
+const CollectionMuseum = Loadable(lazy(() => import('@/views/LandingPage/Art/CollectionMuseum')));
+const AboutUs = Loadable(lazy(() => import('@/views/LandingPage/AboutUs/index')));
+
 
 
 // Auth
@@ -99,28 +104,25 @@ const routes: RouteObject[] = [
         ]
       },
       { 
-        path: '/', 
-        element: <Outlet />,
+        path: 'visit-plan', 
+        element: <Outlet/>,
         children: [
-          { 
-            path: 'visit-plan', 
-            element: <Outlet/>,
-            children: [
-              { index: true, element: <VisitPlan/> },
-              { path: 'close-location', element: <ListClosedLocation/>},
-              { path: 'direct-for-visiter', element: <DirectionForVisiter/>},
-              { path: 'direct-parking-lot', element: <ParkingLot/>},
-              { path: 'detail-art/:id', element: <DetailArt/>}
-            ]
-
-          },
-          { path: 'ticket-visit', element: <TicketVisit/>},
-          { path: 'card-member', element: <CardMember/>},
-          { path: 'free-experience', element: <FreeExperience/>},
-          { path: 'map-museum', element: <MapMuseum/>},
-        ]
-
+            { index: true, element: <VisitPlan/> },
+            { path: 'close-location', element: <ListClosedLocation/>},
+            { path: 'direct-for-visiter', element: <DirectionForVisiter/>},
+            { path: 'direct-parking-lot', element: <ParkingLot/>},
+            { path: 'detail-art/:id', element: <DetailArt/>}
+          ]
       },
+      { path: 'ticket-visit', element: <TicketVisit/>},
+      { path: 'card-member', element: <CardMember/>},
+      { path: 'free-experience', element: <FreeExperience/>},
+      { path: 'map-museum', element: <MapMuseum/>},
+      { path: 'exhibition', element: <Exhibition/>},
+      { path: 'event-performance', element: <EventAndPerformance/>},
+      { path: 'museum-collection', element: <CollectionMuseum/>},
+      { path: 'about-us', element: <AboutUs/>},
+
       // Nếu người dùng vào '/', mặc định hiển thị trang home
       { index: true, element: <Navigate to='home' replace /> },
     ]

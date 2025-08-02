@@ -57,7 +57,7 @@ const ExhibitionOfBlueShine = () => {
                     </Grid>
                 </Grid>
             </Box>
-                <PlanVisit data={DATA_PLAN_VISIT} label="Thăm quan ngay" md={3}/>
+                <PlanVisit data={DATA_PLAN_VISIT} label="Thăm quan ngay" md={3} handleNavigate={() => {}}/>
         </Box>
     )
 }

@@ -28,8 +28,19 @@ const VideoThumbnailPlayer: React.FC<VideoThumbnailPlayerProps> = ({ thumbnail, 
                 margin: 'auto',
                 borderRadius: 0,
                 overflow: 'hidden',
+                mb: 2
             }}
         >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundColor: 'rgba(88, 87, 87, 0.5)',
+                    zIndex: 1,
+                }}
+            >
+                        
+            </Box>
             {!isPlaying ? (
                 <CommonImage
                     src={thumbnail}
@@ -38,7 +49,7 @@ const VideoThumbnailPlayer: React.FC<VideoThumbnailPlayerProps> = ({ thumbnail, 
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        display: 'block'
+                        display: 'block', zIndex: 3
                     }}
                 />
             ) : (
@@ -46,7 +57,7 @@ const VideoThumbnailPlayer: React.FC<VideoThumbnailPlayerProps> = ({ thumbnail, 
                     ref={videoRef}
                     src={videoSrc}
                     controls
-                    style={{ width: '100%', height: '100%', display: 'block'}}
+                    style={{ width: '100%', height: '100%', display: 'block', position: 'absolute', zIndex: 2}}
                 />
             )}
             {!isPlaying && (
@@ -61,10 +72,11 @@ const VideoThumbnailPlayer: React.FC<VideoThumbnailPlayerProps> = ({ thumbnail, 
                         color: 'white',
                         fontSize: { xs: 50, md: 65},
                         bgcolor: 'rgba(0, 0, 0, 0.4)',
-                        '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.6)'}
+                        '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.6)'},
+                        zIndex:2
                     }}
                 />
-            )}
+            )}        
         </Box>
     )
 }

@@ -1,7 +1,6 @@
 import IconButton from "@/components/IconButton/IconButton";
 import { Box, Button, Paper, Stack, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom";
-import HomeIcon from '@mui/icons-material/Home';
 import image_plan_visit from "@/assets/images/users/image_plan_visit.png"
 import ReportIcon from '@mui/icons-material/Report';
 import TimerIcon from '@mui/icons-material/Timer';
@@ -12,18 +11,15 @@ import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import LiveStream from "../Dashboard/components/LiveStream";
 import { DATA_ABOUT_MUSEUM } from "@/constants/data";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import CommonNavbar from "../Components/CommonNavbar";
 
 const VisitPlan = () => {
     const navigate = useNavigate();
     return(
         <Box>
-            <Box display='flex' flexDirection='row' py={{ xs: 0, md: 1.5}} px={{ xs: 2, md: 10}}>
-                <IconButton
-                    handleFunt={() => navigate('/home')}
-                    icon={<HomeIcon sx={{ width: { xs: 20, md: 30 }, height: { xs: 20, md: 30 }, color: '#000'}}/>}
-                />
-                <Typography mt={{ xs: 1, md: 1}} fontWeight={600} fontSize={{ xs: '12px', md: '18px'}}>/ Kế hoạch thăm quan</Typography>
-            </Box>
+            <CommonNavbar
+                title="/ Kế hoạch thăm quan"
+            />
             <Box
                 sx={{
                     height: { xs: 300, md: 480},
