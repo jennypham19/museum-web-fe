@@ -26,7 +26,7 @@ export default function ControllerTextField<T extends FieldValues>({
           {...field}
           inputRef={ref}
           fullWidth
-          margin='normal'
+          margin='dense'
           error={!!hasError}
           helperText={helperText}
           {...textFieldProps}

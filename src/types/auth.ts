@@ -1,13 +1,15 @@
 import { HttpResponse } from './common';
+import { IUser } from './user';
 
 export type LoginRequest = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
+  user: IUser
 };
 
 export type ResetPasswordRequest = {

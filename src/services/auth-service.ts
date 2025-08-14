@@ -7,12 +7,17 @@ import {
   VerifyUsernameRequest,
 } from '@/types/auth';
 import type { HttpResponse } from '@/types/common';
+import { IUser } from '@/types/user';
 import HttpClient from '@/utils/HttpClient';
 
 const prefix = 'auth';
 
 export const signIn = (params: LoginRequest) => {
   return HttpClient.post<typeof params, HttpResponse<LoginResponse>>(`${prefix}/login`, params);
+};
+
+export const getCurrentUser = () => {
+  return HttpClient.get<HttpResponse<{success: boolean, data: IUser}>>(`${prefix}/me`);
 };
 
 export const signUp = (params: LoginRequest) => {

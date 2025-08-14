@@ -12,7 +12,6 @@ import AuthLayout from '@/layouts/Auth/AuthLayout';
 import DashboardLayout from '@/layouts/Dashboard';
 import ChangePassword from '@/views/Auth/ChangePassword';
 import ForgotPassword from '@/views/Auth/ForgotPassword';
-import Login from '@/views/Auth/Login';
 import Registration from '@/views/Auth/Registration';
 import AuthGuard from '@/components/AuthGuard';
 import manageRoutes from './Manage';
@@ -24,6 +23,9 @@ const Home = Loadable(lazy(() => import('@/views/Home')));
 // Error
 const NotFound = Loadable(lazy(() => import('@/views/Errors/NotFound')));
 const PermissionDenied = Loadable(lazy(() => import('@/views/Errors/PermissionDenied')));
+
+//Auth
+const Login = Loadable(lazy(() =>  import('@/views/Auth/Login')))
 
 // Landing Page
 
@@ -71,13 +73,13 @@ const routes: RouteObject[] = [
 
   // --- NHÁNH 2: CÁC TRANG XÁC THỰC (CHỈ DÀNH CHO NGƯỜI CHƯA ĐĂNG NHẬP) ---
   {
-    path: 'auth',
+    path: '/auth',
     element: <PublicRoute/>,
     children: [
       {
         element: <AuthLayout/>,
         children: [
-          { index: true, element: <Navigate to={'login'} replace /> },
+          { index: true, element: <Navigate to='login' replace /> },
           { path: 'login', element: <Login /> },
           { path: 'registration', element: <Registration /> },
           { path: 'forgot-password', element: <ForgotPassword /> },
