@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
+import MapMuseum from '@/views/LandingPage/Visit/MapMuseum';
 
 const LandingPageLayout = () => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
@@ -21,9 +22,7 @@ const LandingPageLayout = () => {
   return (
     <>
       {location.pathname === '/map-museum' ? (
-        <Box bgcolor='#D2E7A9' height='100%'>
-          hgfhgfhf
-        </Box>
+        <MapMuseum/>
       ) : (
         <Box
           sx={{
