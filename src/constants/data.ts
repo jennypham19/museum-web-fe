@@ -424,7 +424,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
         price: '2.844.000/ năm',
         members: 1,
         guests: 1,
-        includes: 'Gói bao gồm: 1 thẻ thành viên + 1 thẻ khách',
+        includes: '1 thẻ thành viên + 1 thẻ khách',
         benefits: 'Sự kiện có vé dành riêng cho thành viên \n' + 
         'Quyền ưu tiên vào hàng đợi triển lãm \n' +
         'Giảm giá 15% tại bảo tàng, cộng thêm giảm 10% cho dịch vụ gửi xe \n' +
@@ -437,7 +437,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
         price: '3.200.000/ năm',
         members: 2,
         guests: 2,
-        includes: 'Gói bao gồm: 2 thẻ thành viên + 2 thẻ khách',
+        includes: '2 thẻ thành viên + 2 thẻ khách',
         benefits: 'Tất cả các quyền lợi của hạng Đồng \n' +
         'Đăng kí tham gia gửi tác phẩm vào triển lãm' +
         'Được in ấn về bản tin' 
@@ -448,7 +448,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
         price: '3.832.000/ năm',
         members: 2,
         guests: 2,
-        includes: 'Gói bao gồm: 2 thẻ thành viên + 2 thẻ khách',
+        includes: '2 thẻ thành viên + 2 thẻ khách',
         benefits: 'Tất cả quyền lợi của hạng Bạc \n' + 
         'Buổi sáng cùng các thành viên bảo tàng \n' +
         'Triển lãm hè cùng các nghệ thuật gia nổi tiếng \n' +
@@ -461,7 +461,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
         price: '4.248.000/ năm',
         members: 1,
         guests: 1,
-        includes: 'Gói bao gồm: 1 thẻ thành viên + 1 thẻ khách',
+        includes: '1 thẻ thành viên + 1 thẻ khách',
         benefits: 'Tất cả quyền lợi của hạng Vàng \n'+
         'Được gặp mặt mỗi họp báo hàng tuần cùng nghệ thuật gia \n'+
         'Miễn phí gửi xe và 50% đồ ăn uống tại quầy'
@@ -472,7 +472,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
         price: '4.844.000/ năm',
         members: 2,
         guests: 4,
-        includes: 'Gói bao gồm: 2 thẻ thành viên + 4 thẻ khách',
+        includes: '2 thẻ thành viên + 4 thẻ khách',
         benefits: 'Tất cả quyền lợi cho hạng Bạch Kim \n' +
         'Tham gia phỏng vấn nếu tác phẩm đạt được độ yêu thích \n'+
         'Đăng kí tham gia làm nhà cổ đông của bảo tàng nghệ thuật \n'+
@@ -484,7 +484,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
         price: '5.200.000/ năm',
         members: 1,
         guests: 1,
-        includes: 'Gói bao gồm: 1 thẻ thành viên + 1 thẻ khách',
+        includes: '1 thẻ thành viên + 1 thẻ khách',
         benefits: 'Tất cả quyền lợi của hạng Kim Cương \n'+
         'Tham gia vào kế hoạch triển lãm của bảo tàng \n'+
         'Cơ hội làm việc với các bảo tàng khác trên toàn quốc \n'+

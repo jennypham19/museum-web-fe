@@ -2,18 +2,20 @@ import { Box, Button, Card, CardContent, List, ListItem, ListItemText, Paper, St
 import image_card_member from "@/assets/images/users/image-card-member.png";
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import PersonIcon from '@mui/icons-material/Person';
-import React from "react";
+import React, { useState } from "react";
 import { IPackageMember } from "@/types/landingpage";
 import Grid from "@mui/material/Grid2";
 import { DATA_MEMBER, DATA_PACKAGE_MEMBER } from "@/constants/data";
 import PlanVisit from "../Dashboard/components/PlanVisit";
 import CommonNavbar from "../Components/CommonNavbar";
+import InformationMember from "./components/InfomationMember";
 
 interface MembershipPackageProps{
     data: IPackageMember[];
+    handleOpenInformationMember: (data: IPackageMember) => void;
 }
 
-const MembershipPackage: React.FC<MembershipPackageProps> = ({ data}) => {
+const MembershipPackage: React.FC<MembershipPackageProps> = ({ data, handleOpenInformationMember}) => {
     return(
         <Grid container spacing={3}>
             {data.map((item, index) => {
@@ -41,7 +43,7 @@ const MembershipPackage: React.FC<MembershipPackageProps> = ({ data}) => {
                                     ))}
                                 </Box>
                                 <Typography fontWeight={600} fontSize={{ xs: '13px', md: '14px'}} my={2}>
-                                    {item.includes}
+                                    Gói bao gồm: {item.includes}
                                 </Typography>
                                 <Button
                                     variant="contained"
@@ -52,6 +54,7 @@ const MembershipPackage: React.FC<MembershipPackageProps> = ({ data}) => {
                                         background: 'linear-gradient(45deg, #D30000 30%, #780000 90%)',
                                         fontSize: '18px'
                                     }}
+                                    onClick={() => item && handleOpenInformationMember(item)}
                                 >
                                     Tham gia
                                 </Button>
@@ -77,6 +80,13 @@ const MembershipPackage: React.FC<MembershipPackageProps> = ({ data}) => {
 }
 
 const CardMember = () => {
+    const [openInformationMember, setOpenInformationMember] = useState(false);
+    const [informationMember, setInformationMember] = useState<IPackageMember | null>(null)
+    
+    const handleOpenInformationMember = (data: IPackageMember) => {
+        setInformationMember(data);
+        setOpenInformationMember(true)
+    }
     return(
         <Box>
             <CommonNavbar
@@ -95,50 +105,63 @@ const CardMember = () => {
                     textAlign: 'center'
                 }}
             />
-            <Box px={{ xs: 3, md: 10}} mb={{ xs: 2, md: 6}}>
-                {/* Trở thành thành viên của bảo tàng */}
-                <Box mb={1} mt={{ xs: 4, md: 5}}>
-                    <Typography fontSize={{ xs: '1.4 rem', sm: '1.8rem'}} fontWeight={600} sx={{ borderBottom: '1px solid grey'}}>Trở thành thành viên của bảo tàng</Typography>
-                </Box>
-                <Stack py={1.5} direction={{ xs: 'column', md: 'row'}}>
-                    <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}}>Hạng thành viên:</Typography>
-                    <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Titan</Typography>
-                    <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Kim cương</Typography>
-                    <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Bạch kim</Typography>
-                    <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Vàng</Typography>
-                    <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Bạc</Typography>
-                    <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Đồng</Typography>
-                </Stack>
-                <Paper 
-                    sx={{ 
-                        bgcolor: '#FFFFFF', mt: { xs: 1, md: 2}, 
-                        p: { xs: 3, md: 4}, display: 'flex', flexDirection: 'column', 
-                        borderRadius: '10px', 
-                        boxShadow: '0px 1px 3px 1px rgba(0, 0, 0, 0.03), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)'
-                    }}
-                >
-                    <Stack direction='row' mb={2}>
-                        <ConfirmationNumberIcon sx={{ fontSize: { xs: '20px', md: '30px'}}}/>
-                        <Typography px={{ xs: 1, md: 2}} fontSize={{ xs: '14px', md: '20px'}} fontWeight={600}>Quyền lợi</Typography>
-                    </Stack>
-                    <Typography fontWeight={500} fontSize={{ xs: '13px', md: '17px'}}>
-                        Xem chi tiết một số quyền lợi của hạng thành viên tại phía bên dưới. Bạn hãy xem chi tiết các gói thành viên và quyền ưu đãi khi làm hội viên của bảo tàng.
-                    </Typography>
-                </Paper>
-                {/* End trở thành thành viên của bảo tàng */}
+            {!openInformationMember && (
+                <>
+                    <Box px={{ xs: 3, md: 10}} mb={{ xs: 2, md: 6}}>
+                        {/* Trở thành thành viên của bảo tàng */}
+                        <Box mb={1} mt={{ xs: 4, md: 5}}>
+                            <Typography fontSize={{ xs: '1.4 rem', sm: '1.8rem'}} fontWeight={600} sx={{ borderBottom: '1px solid grey'}}>Trở thành thành viên của bảo tàng</Typography>
+                        </Box>
+                        <Stack py={1.5} direction={{ xs: 'column', md: 'row'}}>
+                            <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}}>Hạng thành viên:</Typography>
+                            <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Titan</Typography>
+                            <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Kim cương</Typography>
+                            <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Bạch kim</Typography>
+                            <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Vàng</Typography>
+                            <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Bạc</Typography>
+                            <Typography px={{ xs: 0, md: 2}} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Đồng</Typography>
+                        </Stack>
+                        <Paper 
+                            sx={{ 
+                                bgcolor: '#FFFFFF', mt: { xs: 1, md: 2}, 
+                                p: { xs: 3, md: 4}, display: 'flex', flexDirection: 'column', 
+                                borderRadius: '10px', 
+                                boxShadow: '0px 1px 3px 1px rgba(0, 0, 0, 0.03), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)'
+                            }}
+                        >
+                            <Stack direction='row' mb={2}>
+                                <ConfirmationNumberIcon sx={{ fontSize: { xs: '20px', md: '30px'}}}/>
+                                <Typography px={{ xs: 1, md: 2}} fontSize={{ xs: '14px', md: '20px'}} fontWeight={600}>Quyền lợi</Typography>
+                            </Stack>
+                            <Typography fontWeight={500} fontSize={{ xs: '13px', md: '17px'}}>
+                                Xem chi tiết một số quyền lợi của hạng thành viên tại phía bên dưới. Bạn hãy xem chi tiết các gói thành viên và quyền ưu đãi khi làm hội viên của bảo tàng.
+                            </Typography>
+                        </Paper>
+                        {/* End trở thành thành viên của bảo tàng */}
 
-                {/* Gói hội viên tiềm năng */}
-                <Box mb={1} mt={{ xs: 4, md: 5}}>
-                    <Typography fontSize={{ xs: '1.4 rem', sm: '1.8rem'}} fontWeight={600}>Gói hội viên tiềm năng</Typography>
-                </Box>
-                <Box mb={1} mt={{ xs: 4, md: 5}}>
-                    <MembershipPackage data={DATA_PACKAGE_MEMBER}/>
-                </Box>
-                {/* Gói hội viên tiềm năng */}
-            </Box>
-            <Box px={{ xs: 0, md: 4}} mb={{ xs: 2, md: 4}}>
-                <PlanVisit data={DATA_MEMBER} label="Đăng ký thành viên" md={6} handleNavigate={() => {}}/>
-            </Box>
+                        {/* Gói hội viên tiềm năng */}
+                        <Box mb={1} mt={{ xs: 4, md: 5}}>
+                            <Typography fontSize={{ xs: '1.4 rem', sm: '1.8rem'}} fontWeight={600}>Gói hội viên tiềm năng</Typography>
+                        </Box>
+                        <Box mb={1} mt={{ xs: 4, md: 5}}>
+                            <MembershipPackage data={DATA_PACKAGE_MEMBER} handleOpenInformationMember={handleOpenInformationMember}/>
+                        </Box>
+                        {/* Gói hội viên tiềm năng */}
+                    </Box>
+                    <Box px={{ xs: 0, md: 4}} mb={{ xs: 2, md: 4}}>
+                        <PlanVisit data={DATA_MEMBER} label="Đăng ký thành viên" md={6} handleNavigate={() => {}}/>
+                    </Box>
+                </>
+            )}
+
+            {openInformationMember && informationMember && (
+                <InformationMember
+                inforMember={informationMember}
+                    handleBack={() => {
+                        setOpenInformationMember(false)
+                    }}
+                />
+            )}
         </Box>
     )
 }
