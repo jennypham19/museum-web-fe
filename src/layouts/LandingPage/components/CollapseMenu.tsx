@@ -76,10 +76,10 @@ const CollapseMenu = ({ menu, icon: Icon } : CollapseMenuProps) => {
         onClose={() => setAnchorEl(null)}
         PaperProps={{
           sx: {
-            bgcolor: '#D30000',
+            bgcolor: '#fff',
             minWidth: anchorEl?.clientWidth || 'auto',
-            // mt: -1.6,
-            borderRadius: 0
+            borderRadius: 2,
+            boxShadow: "0px 4px 12px rgba(0,0,0,0.15)",
           }
         }}
         MenuListProps={{
@@ -95,11 +95,19 @@ const CollapseMenu = ({ menu, icon: Icon } : CollapseMenuProps) => {
                 child.path && navigate(child.path);
                 setAnchorEl(null);
               }}
-              sx={{ color: 'white', '&:hover': { fontWeight: 600}, fontSize: 14, px: 4 }}
+              sx={{
+                color: "black",
+                fontSize: 15,
+                px: 2,
+                "&:hover": {
+                  bgcolor: "#f5f5f5",
+                  borderRadius: 1,
+                },
+              }}
             >
               {child.label}
             </MenuItem>
-            {menu.children && menu.children.length - 1 > index && <Divider sx={{ border: 'solid 1.5px rgba(122, 119, 119, 0.5)'}}/> }
+            {menu.children && menu.children.length - 1 > index && <hr /> }
           </>
         ))}
       </Menu>

@@ -114,11 +114,11 @@ const MENU_DASHBOARD: MenuProps[] = [
                 >
                     <Avatar src={logo_museum} alt="Logo" sx={{ height: 150, width: 150, bgcolor: 'grey.300', borderRadius: '50%', mb: 2 }} />
                     <Stack flexGrow={1} direction="column" spacing={3}>
-                        {MENU_DASHBOARD.map((item) => {
+                        {MENU_DASHBOARD.map((item, index) => {
                             const Icon = item.icon;
                             if(!Icon) return null;
                             return(
-                                <CollapseMenu key={item.label} menu={item} icon={Icon} />
+                                <CollapseMenu key={index} menu={item} icon={Icon} />
                             )
                         })}
                     </Stack>  
