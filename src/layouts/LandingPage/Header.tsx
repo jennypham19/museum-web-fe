@@ -10,6 +10,7 @@ import HoverDropdownMenu from './components/HoverDropdownMenu';
 import InputSearch from '@/components/SearchBar';
 import CommonImage from '@/components/Image/index';
 import logo_museum from "@/assets/images/users/logo_museum.png"
+import { useNavigate } from 'react-router-dom';
 
 interface MenuChildProps{
   label: string,
@@ -74,6 +75,7 @@ const MENU_DASHBOARD: MenuProps[] = [
   ]
 
 const Header = (props: Props) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,8 +106,8 @@ const Header = (props: Props) => {
                 <Box></Box>
                 <Box display='flex' justifyContent='center' alignItems='center'>
                     <Box display='flex' flexDirection='row' px={2} borderRight='solid 1px white'>
-                      <Typography mr={2} variant='subtitle2'>Mua vé</Typography>
-                      <Typography variant='subtitle2'>Thẻ thành viên</Typography>
+                      <Typography sx={{ color: 'white', textDecoration: 'none'}} component='a' href='/ticket-visit' mr={2} variant='subtitle2'>Mua vé</Typography>
+                      <Typography sx={{ color: 'white', textDecoration: 'none'}} component='a' href='/card-member' variant='subtitle2'>Thẻ thành viên</Typography>
                     </Box>
                     <Box px={2}>
                       <Typography variant='subtitle2'>Quyên góp cũ</Typography>

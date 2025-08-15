@@ -93,7 +93,7 @@ const defaultCounts: VisitorCounts = {
   childrenCount: 0,
 };
 
-interface DateItem {
+export interface DateItem {
   id: number;
   date: string;
   detail: string;

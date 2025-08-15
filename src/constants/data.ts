@@ -421,7 +421,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
     {
         id: 1,
         title: 'Gói hạng Đồng',
-        price: '2.844.000/ năm',
+        price: '2.844.000',
         members: 1,
         guests: 1,
         includes: '1 thẻ thành viên + 1 thẻ khách',
@@ -434,18 +434,18 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
     {
         id: 2,
         title: 'Gói hạng Bạc',
-        price: '3.200.000/ năm',
+        price: '3.200.000',
         members: 2,
         guests: 2,
         includes: '2 thẻ thành viên + 2 thẻ khách',
         benefits: 'Tất cả các quyền lợi của hạng Đồng \n' +
-        'Đăng kí tham gia gửi tác phẩm vào triển lãm' +
+        'Đăng kí tham gia gửi tác phẩm vào triển lãm \n' +
         'Được in ấn về bản tin' 
     },
     {
         id: 3,
         title: 'Gói hạng Vàng',
-        price: '3.832.000/ năm',
+        price: '3.832.000',
         members: 2,
         guests: 2,
         includes: '2 thẻ thành viên + 2 thẻ khách',
@@ -458,7 +458,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
     {
         id: 4,
         title: 'Gói hạng Bạch Kim',
-        price: '4.248.000/ năm',
+        price: '4.248.000',
         members: 1,
         guests: 1,
         includes: '1 thẻ thành viên + 1 thẻ khách',
@@ -469,7 +469,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
     {
         id: 5,
         title: 'Gói hạng Kim Cương',
-        price: '4.844.000/ năm',
+        price: '4.844.000',
         members: 2,
         guests: 4,
         includes: '2 thẻ thành viên + 4 thẻ khách',
@@ -481,7 +481,7 @@ export const DATA_PACKAGE_MEMBER: IPackageMember[] = [
     {
         id: 6,
         title: 'Gói hạng Titan',
-        price: '5.200.000/ năm',
+        price: '5.200.000',
         members: 1,
         guests: 1,
         includes: '1 thẻ thành viên + 1 thẻ khách',
