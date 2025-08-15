@@ -64,6 +64,20 @@ class DateTime {
     const year = date.format("YYYY");
     return `${capitalizedWeekday}_${day} th${month}, ${year}`;
   }
+
+  public formatSpecialDate(raw: string){
+    // Tìm phần ngày/tháng/năm bên trong chuỗi
+    // ví dụ match = ["15 th08, 2025", "15", "08", "2025"]
+    const match = raw.match(/(\d{1,2})\s*th(\d{2}),\s*(\d{4})/);
+    if (!match) return raw; // nếu không match thì trả lại nguyên chuỗi
+    const day = match[1];
+    const month = match[2];
+    const year = match[3];
+    const dateObj = dayjs(`${year}-${month}-${day}`);
+    //cộng thêm 1 tháng
+    const adjusted = dateObj.add(1, 'month')
+    return adjusted.format("DD/MM/YYYY");
+  }
 }
 
 export default new DateTime();

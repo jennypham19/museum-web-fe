@@ -2,7 +2,7 @@ import { Box, Button, Card, CardContent, List, ListItem, ListItemText, Paper, St
 import image_card_member from "@/assets/images/users/image-card-member.png";
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import PersonIcon from '@mui/icons-material/Person';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IPackageMember } from "@/types/landingpage";
 import Grid from "@mui/material/Grid2";
 import { DATA_MEMBER, DATA_PACKAGE_MEMBER } from "@/constants/data";
@@ -27,7 +27,7 @@ const MembershipPackage: React.FC<MembershipPackageProps> = ({ data, handleOpenI
                             <CardContent sx={{ flexGrow: 1,  px: { xs: 2, md: 4}}}>
                                 <Typography fontWeight={500} fontSize={{ xs: '18px', md: '22px'}}>{item.title}</Typography>
                                 <Typography fontWeight={800} fontSize={{ xs: '14px', md: '16px'}} mt={1}>
-                                    {item.price}
+                                    {`${item.price}/ năm`}
                                 </Typography>
                                 <Box mt={2} display='flex' flexDirection='row'>
                                     {[...Array(item.members)].map((_, i) => (
@@ -156,7 +156,7 @@ const CardMember = () => {
 
             {openInformationMember && informationMember && (
                 <InformationMember
-                inforMember={informationMember}
+                    inforMember={informationMember}
                     handleBack={() => {
                         setOpenInformationMember(false)
                     }}
