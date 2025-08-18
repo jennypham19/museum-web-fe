@@ -2,6 +2,7 @@ import {
   ForgotPasswordRequest,
   LoginRequest,
   LoginResponse,
+  RegisterRequest,
   ResetPasswordRequest,
   ResetPasswordResponse,
   VerifyUsernameRequest,
@@ -10,7 +11,8 @@ import type { HttpResponse } from '@/types/common';
 import { IUser } from '@/types/user';
 import HttpClient from '@/utils/HttpClient';
 
-const prefix = 'auth';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'; 
+const prefix = `${API_BASE_URL}/api/auth`;
 
 export const signIn = (params: LoginRequest) => {
   return HttpClient.post<typeof params, HttpResponse<LoginResponse>>(`${prefix}/login`, params);
@@ -20,12 +22,12 @@ export const getCurrentUser = () => {
   return HttpClient.get<HttpResponse<{success: boolean, data: IUser}>>(`${prefix}/me`);
 };
 
-export const signUp = (params: LoginRequest) => {
-  return HttpClient.post<LoginRequest, HttpResponse>(`${prefix}/signup`, params);
+export const signUp = (params: RegisterRequest) => {
+  return HttpClient.post<RegisterRequest, HttpResponse>(`${prefix}/register`, params);
 };
 
 export const signOut = () => {
-  return HttpClient.get<null, HttpResponse>(`${prefix}/logout`);
+  return HttpClient.post<null, HttpResponse>(`${prefix}/logout`, null);
 };
 
 export const verifyEmail = (params: VerifyUsernameRequest) => {

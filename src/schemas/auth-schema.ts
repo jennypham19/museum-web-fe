@@ -1,17 +1,18 @@
 import { object, ref, string } from 'yup';
 
-export const usernameValidateSchema = string().required('Email is required');
+export const fullNameValidateSchema = string().required('Id người dùng là bắt buộc');
+export const usernameValidateSchema = string().required('Email là bắt buộc');
 
 const passwordValidateSchema = string()
-  .required('Password is required')
-  .min(8, 'Password must be at least 8 characters')
-  .matches(/[a-zA-Z]/, 'Password must contain at least one letter')
-  .matches(/\d/, 'Password must contain at least one number');
+  .required('Mật khẩu là bắt buộc')
+  // .min(8, 'Password must be at least 8 characters')
+  // .matches(/[a-zA-Z]/, 'Password must contain at least one letter')
+  // .matches(/\d/, 'Password must contain at least one number');
 
 const confirmPasswordValidateSchema = (label: string) =>
   string()
-    .oneOf([ref(label)], "Password and Confirm Password didn't match")
-    .required('Confirm Password is required');
+    .oneOf([ref(label)], "Mật khẩu và Xác nhận mật khẩu không trùng nhau")
+    .required('Xác nhận mật khẩu là bắt buộc');
 
 const passwordSchema = <T extends string>(label: T) =>
   object().shape({
@@ -26,6 +27,7 @@ export const loginSchema = object().shape({
 
 export const registrationSchema = object()
   .shape({
+    full_name: fullNameValidateSchema,
     email: usernameValidateSchema,
   })
   .concat(passwordSchema('password'));

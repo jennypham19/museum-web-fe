@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { act, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 
@@ -34,6 +34,8 @@ import useDerivedState from '@/hooks/useDerivedState';
 import usePrevious from '@/hooks/usePrevious';
 import { useAppSelector } from '@/store';
 import type { MouseEvent } from '@/types/react';
+import ProfileSection from './ProfileSection';
+import { useSidebarTilte } from '@/contexts/SidebarTitleContext';
 
 export const CollapseContext = createContext<boolean | null>(null);
 export const SidebarContext = createContext<boolean | null>(null);
@@ -47,8 +49,8 @@ interface Props {
 const Sidebar = (props: Props) => {
   const { openSidebar, collapsed, onCloseSidebar, onToggleCollapsed } = props;
   const { pathname } = useLocation();
-  const { t } = useTranslation('section');
-  const sections = useMemo(() => Sections(t), [t]);
+  const { profile } = useAppSelector((state) => state.auth)
+  const sections = useMemo(() => Sections(profile), [profile]);
   const theme = useTheme();
   const prevPathName = usePrevious(pathname);
 
@@ -73,12 +75,13 @@ const Sidebar = (props: Props) => {
             <Scrollbar>
               <Box
                 sx={{
-                  borderBottom: 'thin solid #E6E8F0',
+                  // borderBottom: 'thin solid #E6E8F0',
                   height: '64px',
                 }}
               >
                 <Logo />
               </Box>
+              {!collapsed && <ProfileSection/>}
               {sections.map((section, i) => (
                 <MenuSection key={i} pathname={pathname} {...section} />
               ))}
@@ -173,7 +176,7 @@ const MenuItems = (props: MenuItemsProps) => {
   return (
     <List disablePadding>
       {items.reduce<ReactNode[]>((acc, item, i) => {
-        const { title, path, children, info, icon } = item;
+        const { title, path, children,icon } = item;
         const key = `${title}-${level}-${i}`;
         // const partialMatch = pathname.startsWith(path);
         const exactMatch = pathname === path || pathname.startsWith(`${path}/`);
@@ -184,7 +187,6 @@ const MenuItems = (props: MenuItemsProps) => {
               active={exactMatch}
               level={level}
               icon={icon}
-              info={info}
               key={key}
               path={path}
               title={title}
@@ -199,7 +201,6 @@ const MenuItems = (props: MenuItemsProps) => {
               active={exactMatch}
               level={level}
               icon={icon}
-              info={info}
               key={key}
               path={path}
               title={title}
@@ -243,12 +244,20 @@ const MenuItem: FC<MenuItemProps> = (props) => {
 
   const { pathname } = useLocation();
   const prevPathName = usePrevious(pathname);
+  const { setTitle } = useSidebarTilte();
 
   useEffect(() => {
     if (prevPathName !== pathname && collapsed) {
       setAnchor(null);
     }
   }, [pathname, collapsed, prevPathName]);
+  
+  
+  useEffect(() => {
+    if(active && title) {
+      setTitle(title)
+    }
+  }, [active, title, setTitle])
 
   const handleToggle = (): void => {
     setExpanded(!expanded);
@@ -390,15 +399,17 @@ const MenuItem: FC<MenuItemProps> = (props) => {
         size='medium'
         fullWidth
         sx={{
+          borderRadius: 3,
           color: 'neutral.800',
           p: 1.25,
           pl: `${paddingLeft}px`,
           '&:hover': {
-            bgcolor: alpha('#000', 0.08),
+            color: '#fff',
+            bgcolor: '#D30000',
           },
           ...(active && {
-            color: 'info.main',
-            bgcolor: '#e6f4ff',
+            color: '#fff',
+            bgcolor: '#D30000',
           }),
           flexShrink: 0,
         }}
@@ -413,6 +424,7 @@ const MenuItem: FC<MenuItemProps> = (props) => {
             '& .MuiTypography-root': {
               whiteSpace: 'nowrap',
               fontSize: '14px',
+              fontWeight: 700,
             },
           }}
         />

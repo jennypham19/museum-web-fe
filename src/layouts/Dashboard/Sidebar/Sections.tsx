@@ -1,15 +1,15 @@
 import { TFunction } from 'i18next';
 
 import type { SvgIconComponent } from '@mui/icons-material';
-import { HomeOutlined, PeopleOutline, PeopleOutlined } from '@mui/icons-material';
+import { CardMembership, HomeOutlined, PeopleOutline, PeopleOutlined, PermContactCalendar, PostAdd, PriceChange } from '@mui/icons-material';
 
 import { ROUTE_PATH } from '@/constants/routes';
+import { IUser } from '@/types/user';
 
 export interface SectionItem {
   title: string;
   path: string;
   children?: SectionItem[];
-  info?: () => JSX.Element;
   icon?: SvgIconComponent;
 }
 
@@ -18,37 +18,71 @@ interface Section {
   items: SectionItem[];
 }
 
-const Sections = (t: TFunction): Section[] => {
-  return AdminSections(t);
+const Sections = (profile: IUser | null): Section[] => {
+  const employeeMenuItem: SectionItem[] = [
+    {
+      title: 'Trang chủ',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_HOME}`,
+      icon: HomeOutlined,
+    },
+    {
+      title: 'Quản lý bài viết',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_BLOG}`,
+      icon: PostAdd,
+    },
+    {
+      title: 'Quản lý doanh thu',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_TURNOVER}`,
+      icon: PriceChange,
+    },
+    {
+      title: 'Quản lý thông tin',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_INFORMATION}`,
+      icon: PermContactCalendar,
+    },
+    {
+      title: 'Quản lý gói thành viên',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_PACKAGE}`,
+      icon: CardMembership,
+    },
+  ]
+  const managerMenuItem: SectionItem[] = [
+    {
+      title: 'Trang chủ',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_HOME}`,
+      icon: HomeOutlined,
+    },
+    {
+      title: 'Quản lý Bài viết',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_BLOG}`,
+      icon: PostAdd,
+    },
+    {
+      title: 'Quản lý doanh thu',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_TURNOVER}`,
+      icon: PriceChange,
+    },
+    {
+      title: 'Quản lý thông tin',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_INFORMATION}`,
+      icon: PermContactCalendar,
+    },
+    {
+      title: 'Quản lý gói thành viên',
+      path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_PACKAGE}`,
+      icon: CardMembership,
+    },
+  ]
+
+  const isAdmin = profile?.role.toLowerCase().trim() === 'admin';
+  let accountItem: SectionItem[] = isAdmin ? managerMenuItem : employeeMenuItem
+
+  return [
+    {
+      section: null,
+      items: accountItem
+    }
+  ]
 };
-const AdminSections = (t: TFunction): Section[] => [
-  {
-    section: null,
-    items: [
-      {
-        title: t('home'),
-        path: ROUTE_PATH.HOME,
-        icon: HomeOutlined,
-      },
-    ],
-  },
-  {
-    section: null,
-    items: [
-      {
-        title: t('customer'),
-        path: ROUTE_PATH.CUSTOMERS,
-        icon: PeopleOutlined,
-        children: [
-          {
-            title: t('customer'),
-            icon: PeopleOutline,
-            path: ROUTE_PATH.CUSTOMERS_LIST,
-          },
-        ],
-      },
-    ],
-  },
-];
 
 export default Sections;
