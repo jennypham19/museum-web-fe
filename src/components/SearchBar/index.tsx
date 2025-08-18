@@ -69,7 +69,7 @@ const InputSearch: React.FC<InputSearchProps> = (props) => {
                             border:`1px solid ${borderColor}`
                         },
                         ".MuiInputBase-input":{
-                            padding: "12px 14px", // Điều chỉnh padding cho text input, bỏ padding trái vì adornment đã lo
+                            // padding: "12px 14px", // Điều chỉnh padding cho text input, bỏ padding trái vì adornment đã lo
                             paddingLeft:0 // Bỏ padding mặc định bên trái vì đã có adornment,
                         },
                         // Áp dụng border radius cho chính input field

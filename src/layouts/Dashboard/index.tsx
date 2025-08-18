@@ -4,10 +4,12 @@ import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import { SidebarTitleContext } from '@/contexts/SidebarTitleContext'
 
 const DashboardLayout = () => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [title, setTitle] = useState('');
 
   const handleToggleSidebar = () => {
     setOpenSidebar(!openSidebar);
@@ -18,6 +20,7 @@ const DashboardLayout = () => {
   };
 
   return (
+    <SidebarTitleContext.Provider value={{ title, setTitle }}>
     <Box sx={{ display: 'flex' }}>
       <Sidebar
         collapsed={collapsed}
@@ -47,6 +50,7 @@ const DashboardLayout = () => {
         <Footer />
       </Box>
     </Box>
+    </SidebarTitleContext.Provider>
   );
 };
 

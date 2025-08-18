@@ -5,6 +5,18 @@ export const ROUTE_PATH = {
 
   //Manage
   MANAGE: 'manage',
+  MANAGE_HOME: 'home',
+  MANAGE_BLOG: 'blog',
+  MANAGE_TURNOVER: 'turnover',
+  MANAGE_INFORMATION: 'information',
+  MANAGE_PACKAGE: 'package',
+
+   //Employee
+  EMPLOYEE: 'employee',
+  EMPLOYEE_HOME: 'home',
+  EMPLOYEE_BLOG: 'blog',
+  EMPLOYEE_TURNOVER: 'turnover',
+  EMPLOYEE_INFORMATION: 'information',
 
   PRODUCT_CATEGORY: '/products/categories',
   PRODUCT_CATEGORY_CREATE: '/products/categories/create',

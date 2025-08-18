@@ -6,6 +6,12 @@ export type LoginRequest = {
   password: string;
 };
 
+export type RegisterRequest = {
+  full_name: string;
+  email: string;
+  password: string;
+};
+
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;

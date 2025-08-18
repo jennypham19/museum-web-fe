@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { Email, Lock } from '@mui/icons-material';
+import { AccountBalance, AccountCircle, Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Alert, Box, Button, Stack, Typography } from '@mui/material';
+import { Alert, Box, Button, IconButton, InputAdornment, Stack, Typography } from '@mui/material';
 import ControllerTextField from '@/components/ControllerField/ControllerTextField';
 import Page from '@/components/Page';
 
@@ -21,6 +21,7 @@ import logo_museum from "@/assets/images/users/logo_museum.png";
 import CommonImage from '@/components/Image/index';
 
 interface RegistrationFormInputs {
+  full_name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -44,6 +45,8 @@ export default function Registration() {
   const notify = useNotification();
   const { t } = useTranslation('auth');
   const [_error, setError] = useState('');
+  const [showPassword, setShowPassword] = useBoolean(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useBoolean(false);
 
   useEffect(() => {
     setFocus('email');
@@ -58,7 +61,8 @@ export default function Registration() {
   const onSubmit = async (values: RegistrationFormInputs) => {
     setLoading.on();
     try {
-      await signUp(values);
+      const { confirmPassword, ...payload} = values;
+      await signUp(payload);
       notify({
         message: t('registration_success'),
         severity: 'success',
@@ -76,7 +80,7 @@ export default function Registration() {
       <Grid container sx={{ height: '100vh'}}>
         <Grid size={{ xs: 12, md: 6}} sx={{ height: '100%'}}>
           {/* Logo */}
-          <Box p={{ xs: 3, lg: 10}} mb={2} sx={{ display: 'flex', flexDirection: 'row'}}>
+          <Box p={{ xs: 3, lg: 5}} mb={2} sx={{ display: 'flex', flexDirection: 'row'}}>
             <CommonImage src={logo_museum} alt="Museum Tiffany" style={{ height: 60, width: 60 }} />
             <Stack sx={{ height: 60, ml: 2}}>
               <Typography margin="auto 0" fontWeight={700}>MUSEUM TIFFANY</Typography>
@@ -90,81 +94,143 @@ export default function Registration() {
                 fontWeight={500}
                 sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', mb: 3 }}
               >
-                Đăng  !
+                Đăng ký tài khoản
               </Typography>
               <Typography sx={{ mb: 5 }}>
-                Chào mừng tới bảo tàng, vui lòng đăng nhập để tiếp tục sử dụng website
+                Bạn chưa có tài khoản vui lòng lập một tài khoản mới theo thông tin dưới đây
               </Typography>
             </Box>
           </Box>
-          {/* <Box component='form' onSubmit={handleSubmit(onSubmit)}>
-            <Typography variant='h4' component='h1' gutterBottom>
-              Register
-            </Typography>
             {_error && (
               <Alert variant='filled' severity='warning'>
                 {_error}
               </Alert>
             )}
-            <ControllerTextField<RegistrationFormInputs>
-              controllerProps={{
-                name: 'email',
-                defaultValue: '',
-                control: control,
-              }}
-              textFieldProps={{
-                label: 'Email',
-                error: !!errors.email,
-                helperText: errors.email?.message,
-              }}
-              prefixIcon={Email}
-            />
-            <ControllerTextField<RegistrationFormInputs>
-              controllerProps={{
-                name: 'password',
-                defaultValue: '',
-                control: control,
-              }}
-              textFieldProps={{
-                label: 'Password',
-                type: 'password',
-                error: !!errors.password,
-                helperText: errors.password?.message,
-              }}
-              prefixIcon={Lock}
-            />
-            <ControllerTextField<RegistrationFormInputs>
-              controllerProps={{
-                name: 'confirmPassword',
-                defaultValue: '',
-                control: control,
-              }}
-              textFieldProps={{
-                label: 'Confirm Password',
-                type: 'password',
-                error: !!errors.confirmPassword,
-                helperText: errors.confirmPassword?.message,
-              }}
-              prefixIcon={Lock}
-            />
+          <Box 
+            component='form' 
+            onSubmit={handleSubmit(onSubmit)}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              gap: 2,
+              px: { xs: 0, lg: 23}
+            }}
+          >
+            <Stack>
+              <Typography fontWeight={500}>ID người dùng</Typography>
+              <ControllerTextField<RegistrationFormInputs>
+                controllerProps={{
+                  name: 'full_name',
+                  defaultValue: '',
+                  control: control,
+                }}
+                textFieldProps={{
+                  label: '',
+                  error: !!errors.full_name,
+                  helperText: errors.full_name?.message,
+                }}
+                prefixIcon={AccountCircle}
+              />
+            </Stack>
+            <Stack>
+              <Typography fontWeight={500}>Email</Typography>
+              <ControllerTextField<RegistrationFormInputs>
+                controllerProps={{
+                  name: 'email',
+                  defaultValue: '',
+                  control: control,
+                }}
+                textFieldProps={{
+                  label: '',
+                  error: !!errors.email,
+                  helperText: errors.email?.message,
+                }}
+                prefixIcon={Email}
+              />
+            </Stack>
+            <Stack>
+              <Typography fontWeight={500}>Mật khẩu</Typography>
+              <ControllerTextField<RegistrationFormInputs>
+                controllerProps={{
+                  name: 'password',
+                  defaultValue: '',
+                  control: control,
+                }}
+                textFieldProps={{
+                  label: '',
+                  type: showPassword ? 'text' : 'password',
+                  error: !!errors.password,
+                  helperText: errors.password?.message,
+                  slotProps: {
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            aria-label='toggle password visibility'
+                            onClick={() =>  setShowPassword.toggle()}
+                            edge='end'
+                          >
+                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }
+                  }
+                }}
+                prefixIcon={Lock}
+              />
+            </Stack>
+            <Stack>
+              <Typography fontWeight={500}>Xác nhận mật khẩu</Typography>
+              <ControllerTextField<RegistrationFormInputs>
+                controllerProps={{
+                  name: 'confirmPassword',
+                  defaultValue: '',
+                  control: control,
+                }}
+                textFieldProps={{
+                  label: '',
+                  type: showConfirmPassword ? 'text' : 'password',
+                  error: !!errors.confirmPassword,
+                  helperText: errors.confirmPassword?.message,
+                  slotProps: {
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            aria-label='toggle confirm password visibility'
+                            onClick={() => setShowConfirmPassword.toggle()}
+                            edge='end'
+                          >
+                            {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }
+                  }
+                }}
+                prefixIcon={Lock}
+              />
+            </Stack>
             <LoadingButton
               loading={_loading}
               type='submit'
               variant='contained'
               fullWidth
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, bgcolor: '#D30000' }}
             >
-              Register
+              Đăng ký
             </LoadingButton>
             <Button
               onClick={() => navigate(`/${ROUTE_PATH.AUTH}/${ROUTE_PATH.LOGIN}`)}
               variant='outlined'
               fullWidth
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, border: '1px solid #000', color: '#000' }}
             >
-              Back to login
+              Quay lại đăng nhập
             </Button>
-          </Box> */}
+          </Box>
         </Grid>
         <Grid sx={{ bgcolor: 'white', position: 'relative', height: '100%'}} size={{ xs: 12, md: 6}}>
           <ImageLogoCommon/>
