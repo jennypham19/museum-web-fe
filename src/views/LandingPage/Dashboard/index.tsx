@@ -8,11 +8,11 @@ import image_slide from "@/assets/images/users/slide.png";
 
 const DashboardHome = () => {
     return (
-        <Page title='Tiffany Museum'>
+        <Page title='Art Glass Museum'>
             <Box bgcolor='white'>
                 <ImageCarousel
                     image_url={image_slide}
-                    label="Chào mừng đến Tiffany"
+                    label="Chào mừng đến Art Glass Museum"
                 />
                 <LiveStream title="Xem trực tiếp"/>
                 <LocationAndTime/>

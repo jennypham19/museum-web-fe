@@ -31,7 +31,7 @@ import { setProfile } from '@/slices/user';
 import { useAppDispatch } from '@/store';
 import { setAccessToken } from '@/utils/AuthHelper';
 import Grid from "@mui/material/Grid2";
-import logo_museum from "@/assets/images/users/logo_museum.png";
+import logo_museum from "@/assets/images/users/logo.jpg";
 import CommonImage from '@/components/Image/index';
 import { FcGoogle } from "react-icons/fc";
 import ImageLogoCommon from './components/ImageLogoCommon';

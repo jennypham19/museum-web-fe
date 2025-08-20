@@ -39,7 +39,7 @@ const DialogComponent = ({
   return (
     <DialogContainer {...rest} open={!!dialogKey} onClose={handleClose} maxWidth={maxWidth}>
       {isActiveHeader && <DialogHeader onClose={handleClose} title={dialogTitle || ''} marginTop={2} />}
-      <DialogContent sx={{ textAlign: isActiveFooter || isCenter ? "" : "center", maxHeight: 'fit-content'}}>
+      <DialogContent sx={{ textAlign: isCenter ? "" : "center", maxHeight: 'fit-content'}}>
         <Box sx={{ padding: 2 }}>{children}</Box>
       </DialogContent>
       {isActiveFooter && (
