@@ -1,10 +1,10 @@
-import PageWrapper from "@/components/PageWrapper";
+import Page from "@/components/Page";
 
 const Turnover = () => {
     return(
-        <PageWrapper title="Quản lý doanh thu">
+        <Page title="Quản lý doanh thu">
             Quản lý doanh thu
-        </PageWrapper>
+        </Page>
     )
 }
 

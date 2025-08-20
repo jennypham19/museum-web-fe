@@ -1,10 +1,10 @@
-import PageWrapper from "@/components/PageWrapper";
+import Page from "@/components/Page";
 
 const Blog = () => {
     return(
-        <PageWrapper title="Quản lý bài viết">
+        <Page title="Quản lý bài viết">
             Quản lý bài viết
-        </PageWrapper>
+        </Page>
     )
 }
 

@@ -24,6 +24,7 @@ const PageWrapper = (props: Props) => {
           pb: 3,
           maxWidth: '100% !important',
           bgcolor: 'white',
+          
         }}
       >
         {children}

@@ -9,7 +9,7 @@ import CollapsedSideBar from './CollapseSidebar';
 import HoverDropdownMenu from './components/HoverDropdownMenu';
 import InputSearch from '@/components/SearchBar';
 import CommonImage from '@/components/Image/index';
-import logo_museum from "@/assets/images/users/logo_museum.png"
+import logo_museum from "@/assets/images/users/logo.jpg"
 import { useNavigate } from 'react-router-dom';
 
 interface MenuChildProps{
@@ -182,7 +182,7 @@ const Header = (props: Props) => {
           display: 'flex', justifyContent: 'center', alignItems: 'center', px: 6, // padding ngang để giới hạn chiều rộng
           margin: 'auto'
         }}>
-        <Typography fontFamily='Rozha One' variant='h3' fontWeight={700}>AMUSE</Typography>
+        <Typography fontFamily='Rozha One' variant='h3' fontWeight={700}>ART GLASS</Typography>
       </Toolbar>
       <CollapsedSideBar
         collapsed={collapsed}

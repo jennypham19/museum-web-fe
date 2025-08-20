@@ -2,6 +2,7 @@ import { useAppSelector } from "@/store";
 import { Avatar, Box, Skeleton, Typography } from "@mui/material";
 import avatar1 from '@/assets/images/users/avatar-1.png';
 import { getPathImage } from "@/utils/url";
+import { getRoleLabel } from "@/utils/labelEntoVni";
 
 const ProfileSection = () => {
     const { profile, isInitialized } = useAppSelector((state) => state.auth);
@@ -34,7 +35,7 @@ const ProfileSection = () => {
                 {profile.full_name}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ textTransform: 'capitalize'}}>
-                {profile.role}
+                {getRoleLabel(profile.role)}
             </Typography>
         </Box>
     )

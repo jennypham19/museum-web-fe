@@ -1,7 +1,7 @@
 import { Close,} from "@mui/icons-material";
 import { Avatar, Box,Drawer, IconButton, Stack, Typography } from "@mui/material";
 import { createContext } from "react";
-import logo_museum from "@/assets/images/users/logo_museum.png"
+import logo_museum from "@/assets/images/users/logo.jpg"
 import CommonImage from "@/components/Image/index";
 import CollapseMenu from "./components/CollapseMenu";
 import { MenuProps } from "./Header";

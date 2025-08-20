@@ -21,7 +21,7 @@ const DashboardLayout = () => {
 
   return (
     <SidebarTitleContext.Provider value={{ title, setTitle }}>
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'}}>
       <Sidebar
         collapsed={collapsed}
         openSidebar={openSidebar}
@@ -47,7 +47,6 @@ const DashboardLayout = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Outlet />
         </Box>
-        <Footer />
       </Box>
     </Box>
     </SidebarTitleContext.Provider>

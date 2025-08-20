@@ -1,8 +1,7 @@
 export const ROLE = {
-  ADMIN: 'ADMIN',
-  SALES: 'SALES',
-  ACCOUNTANT: 'ACCOUNTANT',
-  WAREHOUSE_STAFF: 'WAREHOUSE_STAFF',
+  ADMIN: 'admin',
+  EMPLOYEE: 'employee',
+  MEMBER: 'member',
 };
 
 export const permissions = {
