@@ -8,6 +8,7 @@ import InputText from "@/components/InputText";
 import { COLORS } from "@/constants/colors";
 import { resizeImage } from "@/utils/common";
 import useNotification from "@/hooks/useNotification";
+import { uploadEmployeeImage } from "@/services/user-service";
 
 export interface FormDataEmployees{
     email: string,
@@ -115,7 +116,8 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) 
     }
 
     const handleChangeAvatar = async(event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
+        const file = event.target.files?.[0];
+        
         if(file && file.type.startsWith('image/')){
             const { blob, previewUrl } = await resizeImage(file, 800);
             const newFile = new File([blob], file.name, { type: "image/jpeg" });
@@ -136,18 +138,28 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) 
     
 
     const handleSave = async() => {
-        if(!validateForm()){
-            return;
-        }
+        // if(!validateForm()){
+        //     return;
+        // }
 
-        const newData = {
-            ...formData,
-            is_active: 1,
-            is_change_type: 0.
-        }
+        const uploadResponse = await uploadEmployeeImage(imageFile!, 'employees');
+        console.log("uploadResponse: ", uploadResponse);
+        // try {
+        //     const uploadResponse = await uploadEmployeeImage(imageFile!, 'employees');
+        //     console.log("uploadResponse: ", uploadResponse);
+            
+        // } catch (error) {
+            
+        // }
 
-        const { passwordConfirm, ...payload} = newData;
-        console.log("payload: ",payload);
+        // const newData = {
+        //     ...formData,
+        //     is_active: 1,
+        //     is_change_type: 1.
+        // }
+
+        // const { passwordConfirm, ...payload} = newData;
+        // console.log("payload: ",payload);
         
     }
     
