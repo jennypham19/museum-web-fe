@@ -17,7 +17,7 @@ const CardInformation = ({ avatar, children } : CardInformationProps) => {
         >
             <Box p={1}>
                 <Grid container>
-                    <Grid size={{ xs: 12, md: 4}}>
+                    <Grid size={{ xs: 12, md: 3}}>
                         <Box height='100%' display='flex' justifyContent='center' alignItems='center'>
                             <Avatar
                                 src={avatar}
@@ -25,7 +25,7 @@ const CardInformation = ({ avatar, children } : CardInformationProps) => {
                             />
                         </Box>
                     </Grid>
-                    <Grid size={{ xs: 12, md: 8}}>
+                    <Grid size={{ xs: 12, md: 9}}>
                         {children}
                     </Grid>
                 </Grid>
