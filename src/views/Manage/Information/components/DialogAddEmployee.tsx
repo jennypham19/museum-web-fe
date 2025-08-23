@@ -8,7 +8,7 @@ import InputText from "@/components/InputText";
 import { COLORS } from "@/constants/colors";
 import { resizeImage } from "@/utils/common";
 import useNotification from "@/hooks/useNotification";
-import { uploadEmployeeImage } from "@/services/user-service";
+import { createUser, uploadEmployeeImage } from "@/services/user-service";
 
 export interface FormDataEmployees{
     email: string,
@@ -41,7 +41,8 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) 
         password: '',
         passwordConfirm: '',
         phone_number: '',
-    })
+    });
+    const [isSubmiting, setIsSubmitting] = useState(false);
 
     let finalDisplayAvatarSrc: string | undefined = undefined;
     if (avatarPreview) {
@@ -110,6 +111,7 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) 
         if(!formData.full_name) newErrors.full_name = 'Vui lòng nhập họ tên';
         if(!formData.password) newErrors.password = 'Vui lòng nhập mật khẩu';
         if(!formData.password) newErrors.passwordConfirm = 'Vui lòng nhập lại mật khẩu';
+        if(!formData.phone_number) newErrors.phone_number = 'Vui lòng nhập lại số điện thoại';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -134,33 +136,46 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) 
         }
     }
 
-    console.log("imageFile: ",imageFile);
-    
-
     const handleSave = async() => {
-        // if(!validateForm()){
-        //     return;
-        // }
+        if(!validateForm()){
+            return;
+        }
+        setIsSubmitting(true)
 
-        const uploadResponse = await uploadEmployeeImage(imageFile!, 'employees');
-        console.log("uploadResponse: ", uploadResponse);
-        // try {
-        //     const uploadResponse = await uploadEmployeeImage(imageFile!, 'employees');
-        //     console.log("uploadResponse: ", uploadResponse);
-            
-        // } catch (error) {
-            
-        // }
+        try {
+            if(imageFile){
+                const uploadResponse = await uploadEmployeeImage(imageFile!, 'employees');
+                if(!uploadResponse.success || !uploadResponse.data?.imageUrl){
+                    throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+                }
+                const newData = {
+                    ...formData,
+                    avatar_url: uploadResponse.data.imageUrl,
+                }
 
-        // const newData = {
-        //     ...formData,
-        //     is_active: 1,
-        //     is_change_type: 1.
-        // }
+                const { passwordConfirm, ...payload} = newData;
+                await createUser(payload);
+            }else{
+                const newData = {
+                    ...formData
+                }
 
-        // const { passwordConfirm, ...payload} = newData;
-        // console.log("payload: ",payload);
-        
+                const { passwordConfirm, ...payload} = newData;
+                await createUser(payload);
+            }
+            notify({
+                message: 'Tạo tài khoản nhân viên thành công', 
+                severity: 'success'
+            })
+            handleClose()
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        }finally{
+            setIsSubmitting(false)
+        }
     }
     
     return (
@@ -258,6 +273,8 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) 
                             label=""
                             placeholder="Nhập thông tin"
                             margin="none"
+                            error={!!errors.phone_number}
+                            helperText={errors.phone_number}
                         />
                     </Grid>
                     <Grid size={{ xs: 12}} sx={{ display: 'flex', justifyContent: 'center'}}>

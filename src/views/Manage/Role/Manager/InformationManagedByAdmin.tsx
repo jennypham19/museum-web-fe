@@ -1,14 +1,19 @@
 import IconButton from "@/components/IconButton/IconButton";
-import { AdminPanelSettings, AttachFile, ChevronRight, Delete, Visibility } from "@mui/icons-material";
+import { AdminPanelSettings, ChevronRight, Delete, ToggleOff, Visibility } from "@mui/icons-material";
 import { Box, Stack, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import avatar from "@/assets/images/users/avatar.png";
 import CardInformation from "../../Information/components/CardInfomation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShowAllInformationEmployee from "../../Information/components/ShowAllInformationEmployee";
 import { IMember, IUser } from "@/types/user";
 import { getRoleLabel } from "@/utils/labelEntoVni";
 import ShowAllInformationMember from "../../Information/components/ShowAllInformationMember";
+import { deleteUser, getUsers, unactiveUser, UserPayload } from "@/services/user-service";
+import DialogConfirm from "../../components/DialogConfirm";
+import useNotification from "@/hooks/useNotification";
+import DialogConfirmSuccess from "../../components/DialogConfirmSuccess";
+import DialogDetailUser from "../../Information/components/DialogDetailUser";
 
 
 export const DATA_INFOR_MEMBER: IMember[] = [
@@ -56,57 +61,42 @@ export const DATA_INFOR_MEMBER: IMember[] = [
     }
 ]
 
-const DATA_INFOR_EMPLOYEE: IUser[] = [
-    {
-        id: 1,
-        code: 'NV 135',
-        full_name: 'Nguyễn Văn Quyết',
-        role: 'employee',
-        permission: 'Quản lý bài viết'
-    },
-    {
-        id: 2,
-        code: 'NV 357',
-        full_name: 'Nguyễn Văn Quyết',
-        role: 'employee',
-        permission: 'Quản lý khách hàng'
-    },
-    {
-        id: 3,
-        code: 'NV 785',
-        full_name: 'Nguyễn Văn Quyết',
-        role: 'employee',
-        permission: 'Quản lý doanh thu'
-    },
-    {
-        id: 4,
-        code: 'NV 286',
-        full_name: 'Nguyễn Văn Quyết',
-        role: 'employee',
-        permission: 'Quản lý bài viết, khách hàng'
-    },
-    {
-        id: 5,
-        code: 'NV 246',
-        full_name: 'Nguyễn Văn Quyết',
-        role: 'employee',
-        permission: 'Quản lý bài viết'
-    },
-    {
-        id: 6,
-        code: 'NV 798',
-        full_name: 'Nguyễn Văn Quyết',
-        role: 'employee',
-        permission: 'Quản lý bài viết'
-    }
-]
 
 const InformationManagedByAdmin = () => {
+    const notify = useNotification();
     const theme = useTheme();
     const mdUp = useMediaQuery(theme.breakpoints.down('md'));
+    //data
+    const page = 1;
+    const rowPerPage = 12;
+    const [users, setUsers] = useState<IUser[]>([]);
+    const [user, setUser] = useState<IUser | null>(null);
+
+    //action
     const [showAll, setShowAll] = useState(false);
     const [showInformationMember, setShowInformationMember] = useState(false);
     const [showInformationEmployee, setShowInformationEmployee] = useState(false);
+    const [openDialogConfirmUnactive, setOpenDialogConfirmUnactive] = useState(false);
+    const [openDialogConfirmUnactiveSuccess, setOpenDialogConfirmUnactiveSuccess] = useState(false);
+    const [openDialogConfirmDelete, setOpenDialogConfirmDelete] = useState(false);
+    const [openDialogConfirmDeleteSuccess, setOpenDialogConfirmDeleteSuccess] = useState(false);
+    const [openDialogDetailUser, setOpenDialogDetailUser] = useState(false)
+
+    const fetchUsersData = async(currentPage: number, currentSize: number, role: string, status?: number |string) => {
+        const usersResponse = await getUsers(currentPage, currentSize, role,  status);
+        const newUser = usersResponse.users as any as IUser[];
+        const listUsers: IUser[] = newUser.map((data, index) => {
+            return {
+                ...data,
+                code: `${data.id}${index}${index + 1}`
+            }
+        })
+        setUsers(listUsers);
+    }
+
+    useEffect(() => {
+        fetchUsersData(page, rowPerPage, 'employee', 1)
+    }, [page, rowPerPage])
 
     const handleShowMember = () => {
         setShowAll(true);
@@ -117,6 +107,54 @@ const InformationManagedByAdmin = () => {
         setShowAll(true);
         setShowInformationEmployee(true)
     }
+
+    // Vô hiệu hóa
+    const handleOpenDialogConfirmUnactive = (user: IUser) => {
+        setUser(user);
+        setOpenDialogConfirmUnactive(true)
+    }
+
+    const handleUnactive = async() => {
+        try {
+            const data: UserPayload = {
+                is_active: 0
+            }
+            user && await unactiveUser(user.id, data);
+            setOpenDialogConfirmUnactive(false)
+            setOpenDialogConfirmUnactiveSuccess(true)
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error' 
+            })
+        }
+    }
+
+    // Xóa
+    const handleOpenDialogConfirmDelete = (user: IUser) => {
+        setUser(user);
+        setOpenDialogConfirmDelete(true)
+    }
+
+    const handleDelete = async() => {
+        try {
+            user && await deleteUser(user.id);
+            setOpenDialogConfirmDelete(false)
+            setOpenDialogConfirmDeleteSuccess(true)
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error' 
+            })
+        }
+    }
+
+    // Xem chi tiết
+    const handleOpenDialogDetailUser = (user: IUser) => {
+        setUser(user);
+        setOpenDialogDetailUser(true)
+    }
+
     return (
         <>
         {!showAll && (
@@ -200,18 +238,18 @@ const InformationManagedByAdmin = () => {
                     )}
                 </Stack>
                 <Grid mt={2} container spacing={3} gap={3}>
-                    {DATA_INFOR_EMPLOYEE.slice(0,6).map((data, index) => {
+                    {users.slice(0,6).map((data, index) => {
                         return (
                             <Grid key={index} size={{ xs: 12, md: 4}}>
                                 <CardInformation
-                                    avatar={avatar}
+                                    avatar={data.avatar_url ? data.avatar_url : avatar}
                                 >
                                     <Stack direction='row' justifyContent='space-between'>
-                                        <Typography fontSize={{ xs: '14px', md: '16px'}} pt={1} fontWeight={700}>{data.code}</Typography>
+                                        <Typography fontSize={{ xs: '14px', md: '16px'}} pt={1} fontWeight={700}>{`NV ${data.code}`}</Typography>
                                         <Stack direction='row'>
                                             <IconButton
                                                 title="Xem chi tiết"
-                                                handleFunt={() => {}}
+                                                handleFunt={() => data && handleOpenDialogDetailUser(data)}
                                                 icon={<Visibility color="warning"/>}
                                                 backgroundColor="transparent"
                                                 width='0'
@@ -220,14 +258,22 @@ const InformationManagedByAdmin = () => {
                                             <IconButton
                                                 title="Gán quyền"
                                                 handleFunt={() => {}}
-                                                icon={<AdminPanelSettings color="warning"/>}
+                                                icon={<AdminPanelSettings color="primary"/>}
+                                                backgroundColor="transparent"
+                                                width='0'
+                                                height='0'
+                                            />
+                                            <IconButton
+                                                title="Vô hiệu hóa"
+                                                handleFunt={() => data && handleOpenDialogConfirmUnactive(data)}
+                                                icon={<ToggleOff color="success"/>}
                                                 backgroundColor="transparent"
                                                 width='0'
                                                 height='0'
                                             />
                                             <IconButton
                                                 title="Xóa"
-                                                handleFunt={() => {}}
+                                                handleFunt={() => data && handleOpenDialogConfirmDelete(data)}
                                                 icon={<Delete color="error"/>}
                                                 backgroundColor="transparent"
                                                 width='0'
@@ -235,9 +281,9 @@ const InformationManagedByAdmin = () => {
                                             />
                                         </Stack>
                                     </Stack>
-                                    <Typography fontSize={{ xs: '14px', md: '16px'}} mb={1}>{`Họ tên: ${data.full_name}`}</Typography>
+                                    <Typography fontSize={{ xs: '14px', md: '16px'}} my={1}>{`Họ tên: ${data.full_name}`}</Typography>
                                     <Typography fontSize={{ xs: '14px', md: '16px'}} mb={1}>{`Chức vụ: ${getRoleLabel(data.role)}`}</Typography>
-                                    <Typography fontSize={{ xs: '14px', md: '16px'}}>{`Phân quyền: ${data.permission}`}</Typography>
+                                    {data.permission && <Typography fontSize={{ xs: '14px', md: '16px'}}>{`Phân quyền: ${data.permission}`}</Typography>}
                                 </CardInformation>
                             </Grid>    
                         )
@@ -245,13 +291,13 @@ const InformationManagedByAdmin = () => {
                 </Grid>
             </Box>
         )}
-        {showAll && showInformationEmployee && DATA_INFOR_EMPLOYEE &&  (
+        {showAll && showInformationEmployee && users &&  (
             <ShowAllInformationEmployee
-                data={DATA_INFOR_EMPLOYEE}
                 handleBack={() => {
                     setShowAll(false)
                     setShowInformationEmployee(false)
                 }}
+
             />
         )}
         {showAll && showInformationMember && DATA_INFOR_MEMBER && (
@@ -261,6 +307,55 @@ const InformationManagedByAdmin = () => {
                     setShowAll(false)
                     setShowInformationMember(false)
                 }}
+            />
+        )}
+        {openDialogConfirmUnactive && user && (
+            <DialogConfirm
+                open={openDialogConfirmUnactive}
+                onClose={() => {
+                    setOpenDialogConfirmUnactive(false)
+                }}
+                title={`Bạn có muốn vô hiệu hóa tài khoản của ${user.full_name} này không?`}
+                handleAgree={handleUnactive}
+            />
+        )}
+        {openDialogConfirmUnactiveSuccess && (
+            <DialogConfirmSuccess
+                open={openDialogConfirmUnactiveSuccess}
+                onClose={() => {
+                    setOpenDialogConfirmUnactiveSuccess(false)
+                    fetchUsersData(page, rowPerPage, 'employee', 1)
+                }}
+                title={`Bạn đã vô hiệu hóa tài khoản thành công.`}
+            />
+        )}
+        {openDialogConfirmDelete && user && (
+            <DialogConfirm
+                open={openDialogConfirmDelete}
+                onClose={() => {
+                    setOpenDialogConfirmDelete(false)
+                }}
+                title={`Bạn có muốn xóa tài khoản của ${user.full_name} này không?`}
+                handleAgree={handleDelete}
+            />
+        )}
+        {openDialogConfirmDeleteSuccess && (
+            <DialogConfirmSuccess
+                open={openDialogConfirmDeleteSuccess}
+                onClose={() => {
+                    setOpenDialogConfirmDeleteSuccess(false)
+                    fetchUsersData(page, rowPerPage, 'employee', 1)
+                }}
+                title={`Bạn đã xóa tài khoản thành công.`}
+            />
+        )}
+        {openDialogDetailUser && user && (
+            <DialogDetailUser
+                open={openDialogDetailUser}
+                onClose={() => {
+                    setOpenDialogDetailUser(false)
+                }}
+                userDetail={user}
             />
         )}
         </>
