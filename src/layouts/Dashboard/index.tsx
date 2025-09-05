@@ -20,8 +20,22 @@ const DashboardLayout = () => {
   };
 
   return (
+    <Box
+      sx={{
+        overflowY: 'auto',
+        '&::-webkit-scrollbar': { width: '6px', height: '6px' },
+        '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(0,0,0,0.2)', borderRadius: 1 },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#f1f1f1',
+        },
+      }}
+    >
     <SidebarTitleContext.Provider value={{ title, setTitle }}>
-    <Box sx={{ display: 'flex'}}>
+    <Box 
+      sx={{ 
+        display: 'flex',
+      }}
+    >
       <Sidebar
         collapsed={collapsed}
         openSidebar={openSidebar}
@@ -50,6 +64,7 @@ const DashboardLayout = () => {
       </Box>
     </Box>
     </SidebarTitleContext.Provider>
+    </Box>
   );
 };
 

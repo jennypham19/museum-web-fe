@@ -9,7 +9,7 @@ import CollapsedSideBar from './CollapseSidebar';
 import HoverDropdownMenu from './components/HoverDropdownMenu';
 import InputSearch from '@/components/SearchBar';
 import CommonImage from '@/components/Image/index';
-import logo_museum from "@/assets/images/users/logo.jpg"
+import logo_museum from "@/assets/images/users/logo.png"
 import { useNavigate } from 'react-router-dom';
 
 interface MenuChildProps{
@@ -126,7 +126,7 @@ const Header = (props: Props) => {
                     <CommonImage
                       src={logo_museum}
                       alt="museum logo"
-                      sx={{ height: 80, mb: 2.5, px: 2 }}
+                      sx={{ height: 60, mb: 2.5, px: 2 }}
                     />
                   <Stack flexGrow={1} direction="row" spacing={3}>
                     {MENU_DASHBOARD.map((item) => (

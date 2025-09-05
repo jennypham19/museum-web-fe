@@ -1,7 +1,7 @@
 import { TFunction } from 'i18next';
 
 import type { SvgIconComponent } from '@mui/icons-material';
-import { CardMembership, HomeOutlined, PeopleOutline, PeopleOutlined, PermContactCalendar, PostAdd, PriceChange } from '@mui/icons-material';
+import { Build, CardMembership, Groups, HomeOutlined, List, PeopleOutline, PeopleOutlined, PermContactCalendar, PostAdd, PriceChange, Settings } from '@mui/icons-material';
 
 import { ROUTE_PATH } from '@/constants/routes';
 import { IUser } from '@/types/user';
@@ -72,6 +72,28 @@ const Sections = (profile: IUser | null): Section[] => {
       path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_PACKAGE}`,
       icon: CardMembership,
     },
+    {
+      title: 'Quản lý chung',
+      path: '#',
+      icon: Settings,
+      children: [
+        {
+          title: 'Thao tác',
+          path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_ACTION}`,
+          icon: Build
+        },
+        {
+          title: 'Chức năng',
+          path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_MENU}`,
+          icon: List
+        },
+        {
+          title: 'Nhóm quyền',
+          path: `/${ROUTE_PATH.MANAGE}/${ROUTE_PATH.MANAGE_ROLE}`,
+          icon: Groups
+        },
+      ]
+    }
   ]
 
   const isAdmin = profile?.role.toLowerCase().trim() === 'admin';
