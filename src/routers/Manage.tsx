@@ -8,6 +8,9 @@ const Blog = Loadable(lazy(() => import('@/views/Manage/Blog/index')));
 const Turnover = Loadable(lazy(() => import('@/views/Manage/Turnover/index')));
 const Information = Loadable(lazy(() => import('@/views/Manage/Information/index')));
 const Package = Loadable(lazy(() => import('@/views/Manage/Packages/index')));
+const Action = Loadable(lazy(() => import('@/views/Manage/Permission/Actions/index')));
+const Menu = Loadable(lazy(() => import('@/views/Manage/Permission/Menus/index')));
+const GroupRole = Loadable(lazy(() => import('@/views/Manage/Permission/GroupRole/index')));
 
 const manageRoutes: RouteObject[] = [
     { index: true, element: <Navigate to={ROUTE_PATH.MANAGE_HOME} replace/>},
@@ -16,6 +19,9 @@ const manageRoutes: RouteObject[] = [
     { path: ROUTE_PATH.MANAGE_TURNOVER, element: <Turnover/>},
     { path: ROUTE_PATH.MANAGE_INFORMATION, element: <Information/>},
     { path: ROUTE_PATH.MANAGE_PACKAGE, element: <Package/>},
+    { path: ROUTE_PATH.MANAGE_ACTION, element: <Action/>},
+    { path: ROUTE_PATH.MANAGE_MENU, element: <Menu/>},
+    { path: ROUTE_PATH.MANAGE_ROLE, element: <GroupRole/>},
 ];
 
 export default manageRoutes;

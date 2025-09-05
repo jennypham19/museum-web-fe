@@ -78,7 +78,7 @@ const Packages = () => {
             setPackages(data);
             packageResponse.data?.totalPackages && setTotal(packageResponse.data?.totalPackages);
         } catch (error: any) {
-            setError(error);
+            setError(error.message);
             setPackages([]);
             setTotal(0)
         }finally{
@@ -358,13 +358,7 @@ const Packages = () => {
                                         <Alert severity="error" sx={{ my: 2}}>{error}</Alert>
                                     )}
                                     {!loading && !error && (
-                                        <Box
-                                            sx={{
-                                                overflowY: { xs: "auto", sm: "auto", md: 'auto', lg:"auto", xl:"hidden"},
-                                                '&::-webkit-scrollbar': { width: '6px', height: '6px' },
-                                                '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(0,0,0,0.2)', borderRadius: 1 },
-                                            }}          
-                                        >
+                                        <Box>
                                             <Grid sx={{ p: 3}} container spacing={3}>
                                                 {packages.map((item, index) => {
                                                     return (

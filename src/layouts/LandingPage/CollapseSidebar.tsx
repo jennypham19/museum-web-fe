@@ -1,7 +1,7 @@
 import { Close,} from "@mui/icons-material";
 import { Avatar, Box,Drawer, IconButton, Stack, Typography } from "@mui/material";
 import { createContext } from "react";
-import logo_museum from "@/assets/images/users/logo.jpg"
+import logo_museum from "@/assets/images/users/logo.png"
 import CommonImage from "@/components/Image/index";
 import CollapseMenu from "./components/CollapseMenu";
 import { MenuProps } from "./Header";
@@ -112,7 +112,7 @@ const MENU_DASHBOARD: MenuProps[] = [
                         py: 1.5,
                     }} 
                 >
-                    <Avatar src={logo_museum} alt="Logo" sx={{ height: 150, width: 150, bgcolor: 'grey.300', borderRadius: '50%', mb: 2 }} />
+                    <Avatar src={logo_museum} alt="Logo" sx={{ height: 150, width: 150, bgcolor: 'white', borderRadius: '50%', mb: 2 }} />
                     <Stack flexGrow={1} direction="column" spacing={3}>
                         {MENU_DASHBOARD.map((item, index) => {
                             const Icon = item.icon;

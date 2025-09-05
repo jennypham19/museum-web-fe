@@ -10,6 +10,9 @@ export const ROUTE_PATH = {
   MANAGE_TURNOVER: 'turnover',
   MANAGE_INFORMATION: 'information',
   MANAGE_PACKAGE: 'package',
+  MANAGE_ACTION: 'action',
+  MANAGE_MENU: 'menu',
+  MANAGE_ROLE: 'group-role',
 
    //Employee
   EMPLOYEE: 'employee',

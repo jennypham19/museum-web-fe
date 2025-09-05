@@ -172,7 +172,6 @@ interface MenuItemsProps {
 }
 const MenuItems = (props: MenuItemsProps) => {
   const { items, pathname, level } = props;
-
   return (
     <List disablePadding>
       {items.reduce<ReactNode[]>((acc, item, i) => {
@@ -180,7 +179,7 @@ const MenuItems = (props: MenuItemsProps) => {
         const key = `${title}-${level}-${i}`;
         // const partialMatch = pathname.startsWith(path);
         const exactMatch = pathname === path || pathname.startsWith(`${path}/`);
-
+        
         if (children) {
           acc.push(
             <MenuItem
@@ -348,7 +347,7 @@ const MenuItem: FC<MenuItemProps> = (props) => {
           size='medium'
           fullWidth
           sx={{
-            color: 'neutral.800',
+            color: '#000',
             p: 1.25,
             pl: `${paddingLeft}px`,
             textAlign: 'left',
@@ -356,7 +355,7 @@ const MenuItem: FC<MenuItemProps> = (props) => {
               bgcolor: alpha('#FFFFFF', 0.08),
             },
             ...(active && {
-              color: 'info.main',
+              color: '#000',
               bgcolor: alpha('#FFFFFF', 0.08),
             }),
           }}
@@ -367,6 +366,7 @@ const MenuItem: FC<MenuItemProps> = (props) => {
               whiteSpace: 'nowrap',
               '& .MuiTypography-root': {
                 fontSize: '14px',
+                fontWeight: 700,
               },
             }}
           />

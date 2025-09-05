@@ -9,7 +9,7 @@ import { FaFacebookF, FaInstagram, FaPinterestP, FaYoutube} from 'react-icons/fa
 import { useNavigate } from 'react-router-dom';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import CommonImage from '@/components/Image/index';
-import image_museum from "@/assets/images/users/logo_museum.png";
+import image_museum from "@/assets/images/users/logo.png";
 import React from 'react';
 
 interface TextProps{
@@ -88,17 +88,17 @@ const Footer = () => {
             <Box p={{ xs: 3, md: 6}} display='flex' flexDirection='row'>
               <CommonImage
                 src={image_museum}
-                sx={{ height: 120}}
+                sx={{ height: 100}}
               />
-              <Stack pl={3} direction='column'>
-                <Typography fontSize={{ xs: '16px', md: '24px', whiteSpace: 'normal', wordBreak: 'break-word'}} fontWeight={600}>Bảo tàng triển lãm đèn Tiffany</Typography>
-                <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Cơ sở 1 - 32 Trường Chinh - Khương Trung - Thanh Xuân - Hà Nội</Typography>
+              <Stack pl={6} direction='column'>
+                <Typography fontSize={{ xs: '16px', md: '24px', whiteSpace: 'normal', wordBreak: 'break-word'}} fontWeight={600}>Bảo tàng nghệ thuật kính màu</Typography>
+                <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Cơ sở 1 - Trại Da Vinci - Ba Trại - Hà Nội</Typography>
                 <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Hotline: 1900 8976</Typography>
               </Stack>
             </Box>
             <Box px={{ xs: 3, md: 6}} pb={{ xs: 4, md: 6}} display='flex' flexDirection='row'>
               <Stack pl={{ xs: 0, md: 18}} direction='column'>
-                <Typography fontSize={{ xs: '16px', md: '24px', whiteSpace: 'normal', wordBreak: 'break-word'}} fontWeight={600}>Bảo tàng triển lãm đèn Tiffany</Typography>
+                <Typography fontSize={{ xs: '16px', md: '24px', whiteSpace: 'normal', wordBreak: 'break-word'}} fontWeight={600}>Bảo tàng nghệ thuật kính màu</Typography>
                 <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Cơ sở 2 - 123 Võ Chí Công - Ba Đình - Hà Nội</Typography>
                 <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Hotline: 1900 8976</Typography>
               </Stack>
