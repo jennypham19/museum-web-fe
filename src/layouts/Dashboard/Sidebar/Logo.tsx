@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { CollapseContext } from '.';
 import { ROUTE_PATH } from '@/constants/routes';
-import logo_museum from "@/assets/images/users/logo.png"
+import logo_museum from "@/assets/images/users/logo_1.png"
 
 const Logo = () => {
   const collapsed = useContext(CollapseContext);

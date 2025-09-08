@@ -1,8 +1,8 @@
 import Page from "@/components/Page";
 import useNotification from "@/hooks/useNotification";
-import { IMenu } from "@/types/permisstion";
+import { IAction, IMenu } from "@/types/permisstion";
 import { Alert, Box, Button, CircularProgress, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import SearchBox from "../../components/SearchBox";
 import { COLORS } from "@/constants/colors";
 import { Add, Delete, Edit } from "@mui/icons-material";
@@ -10,9 +10,9 @@ import IconButton from "@/components/IconButton/IconButton";
 import CustomPagination from "@/components/Pagination/CustomPagination";
 import Grid from "@mui/material/Grid2"
 import InputText from "@/components/InputText";
-import InputSearch from "@/components/SearchBar";
-import InputSelect from "@/components/InputSelect";
 import DialogAction from "./components/DialogAction";
+import { createMenu, getMenu, getMenus } from "@/services/permission-service";
+import { debounce } from "lodash";
 
 export interface FormDataActionMenu {
     code: string;
@@ -46,11 +46,44 @@ const Menus = () => {
     const [menus, setMenus] = useState<IMenu[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [data, setData] = useState<IMenu | null>(null);
     const [formData, setFormData] = useState<FormDataMenus>({
-        code: '', name: '', parentCode: '', path: '', icon: '', actions: []
+        code: '' , name: '', parentCode: '', path: '', icon: '', actions: []
     })
     const [errors, setErrors] = useState<FormErrors>({});
     const [menu, setMenu] = useState<IMenu | null>(null);
+    const [errorAction, setErrorAction] = useState('');
+
+    const fetchMenusData = useCallback(async (page: number, limit: number, searchTerm?: string) => {
+        setLoading(true);
+        try {
+            const menusRes = await getMenus({ page: page, limit: limit, searchTerm: searchTerm });
+            const data = menusRes.data?.menus as any as IMenu[];
+            setMenus(data);
+        } catch (error: any) {
+            setError(error.message);
+            setMenus([]);
+            setTotal(0)
+        }finally{
+            setLoading(false)
+        }
+    }, []);
+
+    const debounceGetMenus = useMemo(
+        () => debounce((page: number, limit: number, searchTerm?: string) => {
+            fetchMenusData(page, limit, searchTerm)
+        }, 500),
+        [fetchMenusData]
+    )
+
+    useEffect(() => {
+        if(searchTerm){
+            debounceGetMenus(page, rowsPerPage, searchTerm);
+        }else {
+            debounceGetMenus.cancel();
+            fetchMenusData(page, rowsPerPage);
+        }
+    }, [page, rowsPerPage, searchTerm])
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
@@ -65,13 +98,44 @@ const Menus = () => {
             type: 'add',
             open: true
         });
+        setData(null)
         setFormData({
             code: '', name: '', parentCode: '', path: '', icon: '', actions: []
         })
     }
 
+    const handleOpenAddMenuChildren = (menu: IMenu) => {
+        setOpenMenu({
+            type: 'add-child',
+            open: true
+        });
+        setData(menu)
+        setFormData({
+            code: menu ? menu.code : '', name: '', parentCode: '', path: '', icon: '', actions: []
+        })
+    }
+
+    const handleOpenEditMenu = async(menu: IMenu) => {
+        const res = await getMenu(menu.id);
+        const data = res.data as any as IMenu;
+        setFormData({
+            code: data.code,
+            name: data. name,
+            path: data.path,
+            icon: data.icon,
+            actions: data.actions as any as IAction[]
+        })
+        setOpenMenu({
+            type: 'edit',
+            open: true
+        })
+    }
+
     const handleInputChange = (name: string, value: any) => {
         setFormData(prev => ({ ...prev, [name]: value}))
+        if(errors[name as keyof typeof errors]){
+            setErrors(prev => ({ ...prev, [name]: undefined}))
+        }
     }
 
     const handleCancel = () => {
@@ -89,8 +153,63 @@ const Menus = () => {
         })
     }
 
-    const handleSave = async() => {
+    const validateForm = () : boolean => {
+        const newErrors: FormErrors = {};
+        if(!formData.code) newErrors.code = 'Vui lòng nhập mã';
+        if(!formData.name) newErrors.name = 'Vui lòng nhập tên';
+        if(!formData.path) newErrors.path = 'Vui lòng nhập đường dẫn';
+        if(!formData.icon) newErrors.icon = 'Vui lòng nhập biểu tượng';
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
 
+    const handleSave = async() => {
+        if(!validateForm()) {
+            return
+        }
+
+        if(formData.actions.length === 0){
+            setErrorAction('Thao tác không được để trống');
+            return
+        }
+        try {
+            let res: any;
+            let payload: any;
+            switch (openMenu.type) {
+                case 'add':
+                    payload = { ...formData};
+                    res = await createMenu(payload);
+                    break;
+                case 'add-child':
+                    payload = { 
+                        ...formData,
+                        parentCode: data && data.code
+                    };
+                    res = await createMenu(payload);
+                    break;
+                case 'edit':
+                    payload = { ...formData};
+                    console.log("payload: ",payload);
+                    
+                    break;
+                default:
+  
+                    break;
+            }
+
+            notify({
+                message: res.message,
+                severity: 'success'
+            })
+            setFormData({ code: '', name: '', path: '', icon: '', parentCode: '', actions: []
+            });
+            fetchMenusData(page, rowsPerPage);
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        }
     }
 
     const handleOpenDialogAction = () => {
@@ -102,12 +221,11 @@ const Menus = () => {
             ...prev,
             actions: [...prev.actions, data]
         }));
+        setErrorAction('')
     }
 
-    console.log("data: ", formData);
-    
     return (
-        <Page title="Quản lý chung - Chức năng">
+        <Page title="Quản lý quyền - Chức năng">
             <Box>
                 <SearchBox
                     initialValue={searchTerm}
@@ -156,15 +274,22 @@ const Menus = () => {
                                                             <TableCell align="center">{index + 1}</TableCell>
                                                             <TableCell align="center">{menu.code}</TableCell>
                                                             <TableCell align="center">{menu.name}</TableCell>
-                                                            <TableCell align="center">{menu.parentCode}</TableCell>
+                                                            <TableCell align="center">{menu.parentName || ''}</TableCell>
                                                             <TableCell align="center">
                                                                 <IconButton
-                                                                    handleFunt={() => {}}
+                                                                    handleFunt={() => menu && handleOpenAddMenuChildren(menu)}
+                                                                    icon={<Add color="primary"/>}
+                                                                    tooltip="Thêm chức năng con"
+                                                                />
+                                                                <IconButton
+                                                                    handleFunt={() => menu && handleOpenEditMenu(menu)}
                                                                     icon={<Edit color="info"/>}
+                                                                    tooltip="Chỉnh sửa"
                                                                 />
                                                                 <IconButton
                                                                     handleFunt={() => {}}
                                                                     icon={<Delete color="error"/>}
+                                                                    tooltip="Xóa"
                                                                 />
                                                             </TableCell>
                                                         </TableRow>
@@ -191,20 +316,22 @@ const Menus = () => {
                         <Grid size={{ xs: 12, md: 5}}>
                             <Box m={3} bgcolor='#fff' p={2}>
                                 <Typography mb={1} textAlign='center' fontWeight={700} variant="h5">
-                                    {openMenu.type === 'edit' ? 'Chỉnh sửa chức năng' : 'Thêm mới chức năng'}
+                                    {openMenu.type === 'edit' ? 'Chỉnh sửa chức năng' : openMenu.type === 'add-child' ? 'Thêm mới chức năng con' : 'Thêm mới chức năng'}
                                 </Typography>
                                 <Grid container spacing={3}>
-                                    <Grid size={{ xs: 12}}>
-                                        <Typography fontWeight={700} fontSize='15px'>Chức năng cha</Typography>
-                                        <InputSelect
-                                            name="parentCode"
-                                            label=""
-                                            value={formData.parentCode ? formData.parentCode : ''}
-                                            onChange={handleInputChange}
-                                            options={[]}
-                                            placeholder="Chọn thông tin"
-                                        />
-                                    </Grid>
+                                    {openMenu.type === 'add-child' && data && (
+                                        <Grid size={{ xs: 12}}>
+                                            <Typography fontWeight={700} fontSize='15px'>Chức năng cha</Typography>
+                                            <InputText
+                                                name="name"
+                                                onChange={() => {}}
+                                                value={`${data.code} - ${data.name}`}
+                                                type="text"
+                                                label=""
+                                                disabled
+                                            />
+                                        </Grid>
+                                    )}
                                     <Grid size={{ xs: 12}}>
                                         <Typography fontWeight={700} fontSize='15px'>Mã</Typography>
                                         <InputText
@@ -218,6 +345,7 @@ const Menus = () => {
                                             error={!!errors.code}
                                             helperText={errors.code}
                                             disabled={openMenu.type === 'edit'}
+                                            onlyPositiveNumber={true}
                                         />
                                     </Grid>
                                     <Grid size={{ xs: 12}}>
@@ -312,6 +440,7 @@ const Menus = () => {
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>
+                                        {errorAction && <Typography mt={1} color="error" variant="subtitle1" fontWeight={700}>{errorAction}</Typography>}
                                     </Grid>
                                     <Grid size={{ xs: 12}} sx={{ display: 'flex', justifyContent: 'center'}}>
                                         <Button
@@ -373,15 +502,22 @@ const Menus = () => {
                                                                     <TableCell align="center">{index + 1}</TableCell>
                                                                     <TableCell align="center">{menu.code}</TableCell>
                                                                     <TableCell align="center">{menu.name}</TableCell>
-                                                                    <TableCell align="center">{menu.parentCode}</TableCell>
+                                                                    <TableCell align="center">{menu.parentName || ''}</TableCell>
                                                                     <TableCell align="center">
                                                                         <IconButton
-                                                                            handleFunt={() => {}}
+                                                                            handleFunt={() => menu && handleOpenAddMenuChildren(menu)}
+                                                                            icon={<Add color="primary"/>}
+                                                                            tooltip="Thêm chức năng con"
+                                                                        />
+                                                                        <IconButton
+                                                                            handleFunt={() => menu && handleOpenEditMenu(menu)}
                                                                             icon={<Edit color="info"/>}
+                                                                            tooltip="Chỉnh sửa"
                                                                         />
                                                                         <IconButton
                                                                             handleFunt={() => {}}
                                                                             icon={<Delete color="error"/>}
+                                                                            tooltip="Xóa"
                                                                         />
                                                                     </TableCell>
                                                                 </TableRow>
