@@ -1,7 +1,7 @@
 import { Close,} from "@mui/icons-material";
 import { Avatar, Box,Drawer, IconButton, Stack, Typography } from "@mui/material";
 import { createContext } from "react";
-import logo_museum from "@/assets/images/users/logo.png"
+import logo_museum from "@/assets/images/users/logo_1.png"
 import CommonImage from "@/components/Image/index";
 import CollapseMenu from "./components/CollapseMenu";
 import { MenuProps } from "./Header";
@@ -99,8 +99,8 @@ const MENU_DASHBOARD: MenuProps[] = [
                 </IconButton>
                 </Box>
                 <Box py={2} display='flex' flexDirection='row' justifyContent='center' borderBottom='1px solid #eee'>
-                    <Typography mr={2} variant='subtitle2'>Mua vé</Typography>
-                    <Typography variant='subtitle2'>Thẻ thành viên</Typography>
+                    <Typography sx={{ color: '#000', textDecoration: 'none'}} mr={2} component='a' href='/ticket-visit' variant='subtitle2'>Mua vé</Typography>
+                    <Typography sx={{ color: '#000', textDecoration: 'none'}} component='a' href='/card-member' variant='subtitle2'>Thẻ thành viên</Typography>
                 </Box>
                 <Box
                     sx={{

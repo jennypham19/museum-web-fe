@@ -9,7 +9,7 @@ import { FaFacebookF, FaInstagram, FaPinterestP, FaYoutube} from 'react-icons/fa
 import { useNavigate } from 'react-router-dom';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import CommonImage from '@/components/Image/index';
-import image_museum from "@/assets/images/users/logo.png";
+import image_museum from "@/assets/images/users/logo_1.png";
 import React from 'react';
 
 interface TextProps{

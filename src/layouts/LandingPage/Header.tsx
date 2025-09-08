@@ -126,7 +126,7 @@ const Header = (props: Props) => {
                     <CommonImage
                       src={logo_museum}
                       alt="museum logo"
-                      sx={{ height: 60, mb: 2.5, px: 2 }}
+                      sx={{ height: 100, mb: 2.5, px: 1 }}
                     />
                   <Stack flexGrow={1} direction="row" spacing={3}>
                     {MENU_DASHBOARD.map((item) => (

@@ -5,3 +5,14 @@ export interface IAction {
     createdAt?: string,
     updatedAt?: string,
 }
+
+export interface IMenu {
+    id: number,
+    code: string,
+    name: string,
+    parentCode?: string,
+    path?: string,
+    icon?: string | null
+    createdAt?: string,
+    updatedAt?: string,
+}

@@ -17,7 +17,7 @@ import { registrationSchema } from '@/schemas/auth-schema';
 import { signUp } from '@/services/auth-service';
 import Grid from "@mui/material/Grid2"
 import ImageLogoCommon from './components/ImageLogoCommon';
-import logo_museum from "@/assets/images/users/logo.png";
+import logo_museum from "@/assets/images/users/logo_1.png";
 import CommonImage from '@/components/Image/index';
 
 interface RegistrationFormInputs {
