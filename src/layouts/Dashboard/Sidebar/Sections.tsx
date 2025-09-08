@@ -1,7 +1,7 @@
 import { TFunction } from 'i18next';
 
 import type { SvgIconComponent } from '@mui/icons-material';
-import { Build, CardMembership, Groups, HomeOutlined, List, PeopleOutline, PeopleOutlined, PermContactCalendar, PostAdd, PriceChange, Settings } from '@mui/icons-material';
+import { AdminPanelSettings, Build, CardMembership, Groups, HomeOutlined, List, PeopleOutline, PeopleOutlined, PermContactCalendar, PostAdd, PriceChange, Settings } from '@mui/icons-material';
 
 import { ROUTE_PATH } from '@/constants/routes';
 import { IUser } from '@/types/user';
@@ -73,9 +73,9 @@ const Sections = (profile: IUser | null): Section[] => {
       icon: CardMembership,
     },
     {
-      title: 'Quản lý chung',
+      title: 'Quản lý quyền',
       path: '#',
-      icon: Settings,
+      icon: AdminPanelSettings,
       children: [
         {
           title: 'Thao tác',

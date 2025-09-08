@@ -196,7 +196,7 @@ const Actions = () => {
                         {!loading && !error && (
                             <Box my={2}>
                                 <TableContainer component={Paper}>
-                                    <Table stickyHeader aria-label="group-task">
+                                    <Table stickyHeader aria-label="action">
                                         <TableHead>
                                             <TableRow sx={{ height: 50}}>
                                                 {['STT', 'Mã', 'Tên', 'Thao tác'].map((header, index) => (
@@ -310,9 +310,6 @@ const Actions = () => {
                             </Box>
                         </Grid>
                         <Grid size={{ xs: 12, md: 8}}>
-                            {actions.length === 0 ? (
-                                <Typography m={3} fontWeight={700}>Không tồn tại bản ghi nào cả</Typography>
-                            ) : (
                                 <>
                                     {loading && (
                                         <Box display='flex' justifyContent='center' my={3}>
@@ -375,7 +372,6 @@ const Actions = () => {
                                         </Box>
                                     )}
                                 </>
-                            )}
                         </Grid>
                     </Grid>
                 )}
