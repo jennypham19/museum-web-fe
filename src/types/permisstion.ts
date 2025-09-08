@@ -11,8 +11,10 @@ export interface IMenu {
     code: string,
     name: string,
     parentCode?: string,
+    parentName?: string,
     path?: string,
     icon?: string | null
     createdAt?: string,
     updatedAt?: string,
+    actions?: IAction[]
 }

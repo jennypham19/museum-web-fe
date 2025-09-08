@@ -48,7 +48,7 @@ const Actions = () => {
             const actionsRes = await getActions({ page: page, limit: limit, searchTerm: searchTerm});
             const data = actionsRes.data?.actions as any as IAction[];
             setActions(data);
-            actionsRes.data?.totalActions && setTotal(actionsRes.data.totalActions);
+            actionsRes.data?.total && setTotal(actionsRes.data.total);
         } catch (error: any) {
             setError(error.message);
             setActions([]);
@@ -169,7 +169,7 @@ const Actions = () => {
     }
 
     return (
-        <Page title="Quản lý chung - Thao tác">
+        <Page title="Quản lý cuyền - Thao tác">
             <Box>
                 <SearchBox
                     initialValue={searchTerm}
