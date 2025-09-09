@@ -1,11 +1,16 @@
 import { HttpResponse } from "@/types/common";
-import { IAction, IMenu } from "@/types/permisstion";
+import { IAction, IMenu, IPermission } from "@/types/permisstion";
 import HttpClient from "@/utils/HttpClient";
 import { FormDataActions } from "@/views/Manage/Permission/Actions";
 import { FormDataMenus } from "@/views/Manage/Permission/Menus";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'; 
 const prefix = `${API_BASE_URL}/api/permissions`;
+
+interface GroupPermissionResquest{
+  name: string,
+  permission: IMenu[]
+}
 
 interface GetParams{
     page: number;
@@ -16,13 +21,20 @@ interface GetParams{
 interface PaginatedResponse<T>{
     actions: T[];
     menus: T[];
+    permissions: T[];
     totalPages: number;
     currentPage: number;
     total: number;
 }
 
+interface GroupPermissionRes{
+  id: number,
+  name: string
+}
+
 export type ActionsResponse = PaginatedResponse<IAction>;
 export type MenusResponse = PaginatedResponse<IMenu>;
+export type PermissionsResponse = PaginatedResponse<IPermission>;
 
 //Lấy danh sách
 export const getActions = (params: GetParams) => {
@@ -52,4 +64,25 @@ export const getMenus = (params: GetParams) => {
 //Lấy chi tiết chức năng
 export const getMenu = (id: number) => {
     return HttpClient.get<any, HttpResponse<IMenu>>(`${prefix}/menu/${id}`)
+}
+
+// Cập nhật chức năng
+export const updateMenu = (id: number, payload: FormDataMenus ) => {
+    return HttpClient.put<any, HttpResponse<IMenu>>(`${prefix}/update-menu/${id}`, payload)
+}
+
+// Lấy danh sách chức năng kèm thao tác
+export const getAllModules = () => {
+    return HttpClient.get<any, HttpResponse<IMenu>>(`${prefix}/menu-with-action`);
+}
+
+// Tạo nhóm quyền
+export const createRoleGroup = (data: GroupPermissionResquest) => {
+  const endpoint = `${prefix}/create-permission-group`;
+  return HttpClient.post<any, HttpResponse<GroupPermissionRes>>(endpoint,data)
+}
+
+// Lấy danh sách nhóm quyền
+export const getPermissions = (params: GetParams) => {
+    return HttpClient.get<any, HttpResponse<PermissionsResponse>>(`${prefix}/role-groups`, { params })
 }

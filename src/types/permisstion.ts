@@ -16,5 +16,14 @@ export interface IMenu {
     icon?: string | null
     createdAt?: string,
     updatedAt?: string,
-    actions?: IAction[]
+    actions?: IAction[],
+    children?: IMenu[]
+}
+
+export interface IPermission {
+    id: number,
+    name: string,
+    createdAt?: string,
+    updatedAt?: string,
+    permissions: IMenu[]
 }
