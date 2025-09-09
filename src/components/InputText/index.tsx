@@ -201,7 +201,7 @@ const InputText: React.FC<CustomInputProps> = ({
         // Kiểm tra số dương hợp lệ (số thực hoặc số nguyên dương)
         const numVal = Number(val);
         
-        if(!isNaN(numVal) && numVal > 0 && /^\d*\.?\d*$/.test(val)){
+        if(!isNaN(numVal) && /^\d*\.?\d*$/.test(val)){
           onChange(name,val);
         }
         // Nếu không hợp lệ thì bỏ qua, không gọi onChange => không update value

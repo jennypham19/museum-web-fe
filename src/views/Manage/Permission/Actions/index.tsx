@@ -174,6 +174,7 @@ const Actions = () => {
                 <SearchBox
                     initialValue={searchTerm}
                     onSearch={handleSearch}
+                    placeholder="Tìm kiếm theo mã, tên"
                 >
                     <Button
                         sx={{ border: COLORS.BUTTON, bgcolor: COLORS.BUTTON}}

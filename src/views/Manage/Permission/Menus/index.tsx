@@ -11,7 +11,7 @@ import CustomPagination from "@/components/Pagination/CustomPagination";
 import Grid from "@mui/material/Grid2"
 import InputText from "@/components/InputText";
 import DialogAction from "./components/DialogAction";
-import { createMenu, getMenu, getMenus } from "@/services/permission-service";
+import { createMenu, getMenu, getMenus, updateMenu } from "@/services/permission-service";
 import { debounce } from "lodash";
 
 export interface FormDataActionMenu {
@@ -52,7 +52,6 @@ const Menus = () => {
     })
     const [errors, setErrors] = useState<FormErrors>({});
     const [menu, setMenu] = useState<IMenu | null>(null);
-    const [errorAction, setErrorAction] = useState('');
 
     const fetchMenusData = useCallback(async (page: number, limit: number, searchTerm?: string) => {
         setLoading(true);
@@ -118,6 +117,7 @@ const Menus = () => {
     const handleOpenEditMenu = async(menu: IMenu) => {
         const res = await getMenu(menu.id);
         const data = res.data as any as IMenu;
+        setMenu(data)
         setFormData({
             code: data.code,
             name: data. name,
@@ -168,10 +168,6 @@ const Menus = () => {
             return
         }
 
-        if(formData.actions.length === 0){
-            setErrorAction('Thao tác không được để trống');
-            return
-        }
         try {
             let res: any;
             let payload: any;
@@ -189,11 +185,9 @@ const Menus = () => {
                     break;
                 case 'edit':
                     payload = { ...formData};
-                    console.log("payload: ",payload);
-                    
+                    res = menu && await updateMenu(menu?.id, payload)
                     break;
                 default:
-  
                     break;
             }
 
@@ -201,7 +195,7 @@ const Menus = () => {
                 message: res.message,
                 severity: 'success'
             })
-            setFormData({ code: '', name: '', path: '', icon: '', parentCode: '', actions: []
+            setFormData({ code: data ? data?.code : '', name: '', path: '', icon: '', parentCode: '', actions: []
             });
             fetchMenusData(page, rowsPerPage);
         } catch (error: any) {
@@ -221,7 +215,6 @@ const Menus = () => {
             ...prev,
             actions: [...prev.actions, data]
         }));
-        setErrorAction('')
     }
 
     return (
@@ -230,6 +223,7 @@ const Menus = () => {
                 <SearchBox
                     initialValue={searchTerm}
                     onSearch={handleSearch}
+                    placeholder="Tìm kiếm theo mã, tên"
                 >
                     <Button
                         sx={{ border: COLORS.BUTTON, bgcolor: COLORS.BUTTON}}
@@ -440,7 +434,6 @@ const Menus = () => {
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>
-                                        {errorAction && <Typography mt={1} color="error" variant="subtitle1" fontWeight={700}>{errorAction}</Typography>}
                                     </Grid>
                                     <Grid size={{ xs: 12}} sx={{ display: 'flex', justifyContent: 'center'}}>
                                         <Button
@@ -550,6 +543,7 @@ const Menus = () => {
                     }}
                     menuCode={formData.code}
                     onSave={handleSaveAction}
+                    formData={formData}
                 />
             )}
         </Page>

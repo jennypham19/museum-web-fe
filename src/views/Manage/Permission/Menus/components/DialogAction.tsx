@@ -7,20 +7,23 @@ import InputSelect from "@/components/InputSelect";
 import { COLORS } from "@/constants/colors";
 import { getActions } from "@/services/permission-service";
 import { IAction } from "@/types/permisstion";
+import { FormDataMenus } from "..";
 
 interface DialogActionProps{
     open: boolean,
     onClose: () => void;
     menuCode: string,
     onSave: (data: { code: string, name: string}) => void;
+    formData: FormDataMenus
 }
 
-const DialogAction: React.FC<DialogActionProps> = ({ open, onClose, menuCode, onSave }) => {
+const DialogAction: React.FC<DialogActionProps> = ({ open, onClose, menuCode, onSave, formData }) => {
     const [actions, setActions] = useState<IAction[]>([]);
     const [data, setData] = useState<{code: string, name: string}>({
         code: '',
         name: ''
-    })
+    });
+    const [error, setError] = useState('')
 
     const [code, setCode] = useState<string>("");
     useEffect(() => {
@@ -53,6 +56,11 @@ const DialogAction: React.FC<DialogActionProps> = ({ open, onClose, menuCode, on
     },[code]);
 
     const handleSave = (data: { code: string, name: string}) => {
+        const existAction = formData.actions.find((act) => act.code === data.code);
+        if(existAction){
+            setError(`Đã tồn tại thao tác ${existAction.code} - ${existAction.name}`);
+            return
+        }
         onSave(data)
         handleClose()
     }
@@ -95,6 +103,11 @@ const DialogAction: React.FC<DialogActionProps> = ({ open, onClose, menuCode, on
                         disabled
                     />
                 </Grid>
+                {error &&
+                    <Grid size={{ xs: 12}}>
+                        <Typography variant="subtitle2" color="error" fontWeight={700}>{error}</Typography>
+                    </Grid>
+                }
                 <Grid size={{ xs: 12}} sx={{ display: 'flex', justifyContent: 'center'}}>
                     <Button
                         sx={{
