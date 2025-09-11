@@ -96,13 +96,6 @@ const Footer = () => {
                 <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Hotline: 1900 8976</Typography>
               </Stack>
             </Box>
-            <Box px={{ xs: 3, md: 6}} pb={{ xs: 4, md: 6}} display='flex' flexDirection='row'>
-              <Stack pl={{ xs: 0, md: 18}} direction='column'>
-                <Typography fontSize={{ xs: '16px', md: '24px', whiteSpace: 'normal', wordBreak: 'break-word'}} fontWeight={600}>Bảo tàng nghệ thuật kính màu</Typography>
-                <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Cơ sở 2 - 123 Võ Chí Công - Ba Đình - Hà Nội</Typography>
-                <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Hotline: 1900 8976</Typography>
-              </Stack>
-            </Box>
           </Grid>
           <Grid size={{ xs: 12, md: 8}} sx={{ borderBottom: '1px solid'}}>
             <Grid container>

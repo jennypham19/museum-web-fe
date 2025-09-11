@@ -6,10 +6,11 @@ import SearchBox from "../../components/SearchBox";
 import { COLORS } from "@/constants/colors";
 import { Add, Delete, Edit, Mode } from "@mui/icons-material";
 import { IMenu, IPermission } from "@/types/permisstion";
-import { createRoleGroup, getAllModules, getPermissions } from "@/services/permission-service";
+import { createRoleGroup, getAllModules, getPermissions, getPermissionWithMenuAction, updateRoleGroup } from "@/services/permission-service";
 import { debounce } from "lodash";
 import IconButton from "@/components/IconButton/IconButton";
 import TableData from "../../components/TableData";
+import CustomPagination from "@/components/Pagination/CustomPagination";
 
 const GroupRole = () => {
     const notify = useNotification();
@@ -20,6 +21,7 @@ const GroupRole = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [permissions, setPermissions] = useState<IPermission[]>([]);
+    const [permissionData, setPermissionData] = useState<IPermission | null>(null);
     const [openRoleGroup, setOpenRoleGroup] = useState<{type: string, open: boolean}>({
         type: '',
         open: false
@@ -88,8 +90,65 @@ const GroupRole = () => {
             type: 'add',
             open: true
         });
+        setGroupName('')
+        setChecked({})  
     }
 
+    const extractChecked = (permissions: IMenu[]) => {
+        const checkedMap: Record<string, boolean> = {};
+
+        const dfs = (menu: IMenu) => {
+            if(menu.actions) {
+                menu.actions.forEach((act) => {
+                    checkedMap[`${menu.code}_${act.name}`] = true;
+                });
+            }
+            if(menu.children){
+                menu.children.forEach(dfs);
+            }
+        };
+
+        permissions.forEach(dfs);
+        return checkedMap;
+    }
+
+    const handleOpenEditRoleGroup = async(id: number) => {
+        setOpenRoleGroup({
+            type: 'edit',
+            open: true
+        })
+        const res = await getPermissionWithMenuAction(id);
+        const data = res.data as any as IPermission;
+        setPermissionData(data)
+        setGroupName(data.name);
+        if(data.permissions) {
+            const checkedMap = extractChecked(data.permissions);
+            setChecked(checkedMap)
+        }
+    }
+
+    const handleClose = () => {
+        switch (openRoleGroup.type) {
+            case 'add':
+                setOpenRoleGroup({
+                    type: 'add',
+                    open: false
+                });
+                break;
+            case 'edit': 
+                setOpenRoleGroup({
+                    type: 'edit',
+                    open: false
+                });
+                break;
+            default:
+                break;
+        } 
+        setGroupName('')
+        setChecked({})
+        fetchPermissionsData(page, rowsPerPage)                            
+    }
+    
     const validateForm = () : boolean => {
         let newErrors: string = '';
         if(!groupName.trim()){
@@ -159,20 +218,40 @@ const GroupRole = () => {
         }
 
         // prepare payload
-        const permission = modules.map((m) => buildPermission(m, checked)).filter((p) => p !== null);
+        const permissions = modules.map((m) => buildPermission(m, checked)).filter((p) => p !== null);
 
         const data = {
             "name": groupName,
-            permission
+            permissions
         }
+
+        console.log("data: ",data);
+        
         try {
-            const res = await createRoleGroup(data);
+            let res: any;
+            switch (openRoleGroup.type) {
+                case 'add':
+                    res = await createRoleGroup(data);
+                    setChecked({})
+                    setGroupName('')
+                    break;
+                case 'edit':
+                    res = permissionData && await updateRoleGroup(permissionData?.id, data);
+                    setGroupName(res.data.name)
+                    if(res.permissions) {
+                        const checkedMap = extractChecked(data.permissions);
+                        setChecked(checkedMap)
+                    }
+                    break;
+                default:
+                    break;
+            }
+            
             notify({
                 message: res.message,
                 severity: 'success'
             })
-            setChecked({})
-            setGroupName('')
+
         } catch (error: any) {
             notify({
                 message: error.message,
@@ -249,7 +328,7 @@ const GroupRole = () => {
                                             <TableCell align="center">{permission.name}</TableCell>
                                             <TableCell align="center">
                                                 <IconButton
-                                                    // handleFunt={() => menu && handleOpenEditMenu(menu)}
+                                                    handleFunt={() => permission && handleOpenEditRoleGroup(permission.id)}
                                                     icon={<Edit color="info"/>}
                                                     tooltip="Chỉnh sửa"
                                                 />
@@ -262,6 +341,14 @@ const GroupRole = () => {
                                         </TableRow>
                                     )}
                                 />
+                                <Box display='flex' justifyContent='center'>
+                                    <CustomPagination
+                                        page={page}
+                                        rowsPerPage={rowsPerPage}
+                                        count={total}
+                                        onPageChange={handlePageChange}
+                                    />
+                                </Box>
                             </Box>
                         )}
                     </>
@@ -315,14 +402,7 @@ const GroupRole = () => {
                             <Button 
                                 sx={{ width: '150px', border:"1px solid #1C1A1B", color: '#000'}} 
                                 variant="outlined" 
-                                onClick={() => {
-                                    setOpenRoleGroup({
-                                        type: 'add',
-                                        open: false
-                                    })
-                                    setGroupName('')
-                                    setChecked({})
-                                }}
+                                onClick={handleClose}
                             >
                                 Hủy
                             </Button>

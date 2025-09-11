@@ -36,6 +36,7 @@ import { useAppSelector } from '@/store';
 import type { MouseEvent } from '@/types/react';
 import ProfileSection from './ProfileSection';
 import { useSidebarTilte } from '@/contexts/SidebarTitleContext';
+import { IPermission } from '@/types/permisstion';
 
 export const CollapseContext = createContext<boolean | null>(null);
 export const SidebarContext = createContext<boolean | null>(null);
@@ -45,12 +46,13 @@ interface Props {
   collapsed: boolean;
   onCloseSidebar: () => void;
   onToggleCollapsed: () => void;
+  menuData: IPermission | null;
 }
 const Sidebar = (props: Props) => {
-  const { openSidebar, collapsed, onCloseSidebar, onToggleCollapsed } = props;
+  const { openSidebar, collapsed, onCloseSidebar, onToggleCollapsed, menuData } = props;
   const { pathname } = useLocation();
   const { profile } = useAppSelector((state) => state.auth)
-  const sections = useMemo(() => Sections(profile), [profile]);
+  const sections = useMemo(() => Sections(menuData), [menuData]);
   const theme = useTheme();
   const prevPathName = usePrevious(pathname);
 

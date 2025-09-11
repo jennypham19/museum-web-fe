@@ -14,6 +14,7 @@ import DialogConfirm from "../../components/DialogConfirm";
 import useNotification from "@/hooks/useNotification";
 import DialogConfirmSuccess from "../../components/DialogConfirmSuccess";
 import DialogDetailUser from "../../Information/components/DialogDetailUser";
+import DialogAttactPermission from "../components/DialogAttactPermissions";
 
 
 export const DATA_INFOR_MEMBER: IMember[] = [
@@ -66,6 +67,7 @@ const InformationManagedByAdmin = () => {
     const notify = useNotification();
     const theme = useTheme();
     const mdUp = useMediaQuery(theme.breakpoints.down('md'));
+
     //data
     const page = 1;
     const rowPerPage = 12;
@@ -80,9 +82,10 @@ const InformationManagedByAdmin = () => {
     const [openDialogConfirmUnactiveSuccess, setOpenDialogConfirmUnactiveSuccess] = useState(false);
     const [openDialogConfirmDelete, setOpenDialogConfirmDelete] = useState(false);
     const [openDialogConfirmDeleteSuccess, setOpenDialogConfirmDeleteSuccess] = useState(false);
-    const [openDialogDetailUser, setOpenDialogDetailUser] = useState(false)
+    const [openDialogDetailUser, setOpenDialogDetailUser] = useState(false);
+    const [openDialogAttactPermission, setOpenDialogAttactPermission] = useState(false);
 
-    const fetchUsersData = async(currentPage: number, currentSize: number, role: string, status?: number |string) => {
+    const fetchUsersData = async(currentPage: number, currentSize: number, role: string[], status?: number |string) => {
         const usersResponse = await getUsers(currentPage, currentSize, role,  status);
         const newUser = usersResponse.users as any as IUser[];
         const listUsers: IUser[] = newUser.map((data, index) => {
@@ -95,7 +98,7 @@ const InformationManagedByAdmin = () => {
     }
 
     useEffect(() => {
-        fetchUsersData(page, rowPerPage, 'employee', 1)
+        fetchUsersData(page, rowPerPage, ["employee","admin"], 1)
     }, [page, rowPerPage])
 
     const handleShowMember = () => {
@@ -153,6 +156,12 @@ const InformationManagedByAdmin = () => {
     const handleOpenDialogDetailUser = (user: IUser) => {
         setUser(user);
         setOpenDialogDetailUser(true)
+    }
+
+    // Gán quyền
+    const handleOpenDialogAttactPermission = (user: IUser) => {
+        setUser(user);
+        setOpenDialogAttactPermission(true)
     }
 
     return (
@@ -215,13 +224,12 @@ const InformationManagedByAdmin = () => {
                     {mdUp ? (
                         <>
                             <Typography fontWeight={700}>Quản lý phân quyền</Typography>
-                            <Tooltip title = 'Xem tất cả'>
-                                <IconButton
-                                    handleFunt={handleShowEmployee}
-                                    icon={<ChevronRight/>}
-                                    backgroundColor="transparent"
-                                />
-                            </Tooltip>
+                            <IconButton
+                                tooltip="Xem tất cả"
+                                handleFunt={handleShowEmployee}
+                                icon={<ChevronRight/>}
+                                backgroundColor="transparent"
+                            />
                         </>
                     ) : (
                         <>
@@ -257,7 +265,7 @@ const InformationManagedByAdmin = () => {
                                             />
                                             <IconButton
                                                 title="Gán quyền"
-                                                handleFunt={() => {}}
+                                                handleFunt={() => data && handleOpenDialogAttactPermission(data)}
                                                 icon={<AdminPanelSettings color="primary"/>}
                                                 backgroundColor="transparent"
                                                 width='0'
@@ -324,7 +332,7 @@ const InformationManagedByAdmin = () => {
                 open={openDialogConfirmUnactiveSuccess}
                 onClose={() => {
                     setOpenDialogConfirmUnactiveSuccess(false)
-                    fetchUsersData(page, rowPerPage, 'employee', 1)
+                    fetchUsersData(page, rowPerPage, ['admin', 'employee'], 1)
                 }}
                 title={`Bạn đã vô hiệu hóa tài khoản thành công.`}
             />
@@ -344,7 +352,7 @@ const InformationManagedByAdmin = () => {
                 open={openDialogConfirmDeleteSuccess}
                 onClose={() => {
                     setOpenDialogConfirmDeleteSuccess(false)
-                    fetchUsersData(page, rowPerPage, 'employee', 1)
+                    fetchUsersData(page, rowPerPage, ['admin', 'employee'], 1)
                 }}
                 title={`Bạn đã xóa tài khoản thành công.`}
             />
@@ -356,6 +364,15 @@ const InformationManagedByAdmin = () => {
                     setOpenDialogDetailUser(false)
                 }}
                 userDetail={user}
+            />
+        )}
+        {openDialogAttactPermission && user && (
+            <DialogAttactPermission
+                user={user}
+                open={openDialogAttactPermission}
+                onClose={() => {
+                    setOpenDialogAttactPermission(false)
+                }}
             />
         )}
         </>

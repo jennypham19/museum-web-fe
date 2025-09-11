@@ -1,6 +1,7 @@
 import type { HttpResponse } from '@/types/common';
 import { IUser } from '@/types/user';
 import HttpClient from '@/utils/HttpClient';
+import QueryString from 'qs';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'; 
 const prefix = `${API_BASE_URL}/api/users`;
@@ -53,7 +54,7 @@ export const createUser = (payload: { email: string; full_name: string; password
 export const getUsers = async(
   page: number,
   limit: number,
-  role: string,
+  role: string[],
   status?: number | string,
   searchTerm?: string
 ): Promise<UsersResponse> => {
@@ -76,7 +77,13 @@ export const getUsers = async(
     success: boolean,
     message: string,
     data: UsersResponse;
-  }>(url, { params });
+  }>(url, { 
+    params,
+    // cấu hình paramsSerializer để ép axios serialize array kiểu role=employee&role=admin (Sequelize xử lý ngon hơn)
+    paramsSerializer: (params) =>
+      QueryString.stringify(params, { arrayFormat: "repeat"}),
+    // => role=employee&role=admin
+  });
   if(response.data && response.success && response.data){
     return response.data;
   }else{

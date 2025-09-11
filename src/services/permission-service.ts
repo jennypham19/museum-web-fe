@@ -9,7 +9,7 @@ const prefix = `${API_BASE_URL}/api/permissions`;
 
 interface GroupPermissionResquest{
   name: string,
-  permission: IMenu[]
+  permissions: IMenu[]
 }
 
 interface GetParams{
@@ -22,6 +22,7 @@ interface PaginatedResponse<T>{
     actions: T[];
     menus: T[];
     permissions: T[];
+    roleGroups:T[];
     totalPages: number;
     currentPage: number;
     total: number;
@@ -30,6 +31,11 @@ interface PaginatedResponse<T>{
 interface GroupPermissionRes{
   id: number,
   name: string
+}
+
+interface UserPermissionRequest{
+  userId: number | string,
+  roleGroupId: number
 }
 
 export type ActionsResponse = PaginatedResponse<IAction>;
@@ -85,4 +91,31 @@ export const createRoleGroup = (data: GroupPermissionResquest) => {
 // Lấy danh sách nhóm quyền
 export const getPermissions = (params: GetParams) => {
     return HttpClient.get<any, HttpResponse<PermissionsResponse>>(`${prefix}/role-groups`, { params })
+}
+
+//Lấy chi tiết nhóm quyền
+export const getPermissionWithMenuAction = (id: number) => {
+    return HttpClient.get<any, HttpResponse<IPermission>>(`${prefix}/role-group-with-menu-action/${id}`)
+}
+
+// Edit nhóm quyền
+export const updateRoleGroup = (id: number, data: GroupPermissionResquest) => {
+  const endpoint = `${prefix}/update-permission-group/${id}`;
+  return HttpClient.put<any, HttpResponse<GroupPermissionRes>>(endpoint,data)
+}
+
+// Lấy danh sách nhóm quyền kèm chức năng
+export const getRoleGroupsWithMenu = (params: GetParams) => {
+    return HttpClient.get<any, HttpResponse<PermissionsResponse>>(`${prefix}/role-groups-with-menu`, { params })
+}
+
+// Gán nhóm quyền cho user
+export const assignedGroupToUser = (data: UserPermissionRequest) => {
+  const endpoint = `${prefix}/assign-group-to-user`;
+  return HttpClient.post<any, HttpResponse>(endpoint, data)
+}
+
+// Lấy nhóm quyền theo id user
+export const getRoleGroupToUser = (id: number) => {
+  return HttpClient.get<any, HttpResponse<IPermission>>(`${prefix}/get-assigned-group-to-user/${id}`)
 }

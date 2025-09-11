@@ -37,7 +37,7 @@ const IconButton: React.FC<IconButtonProps> = ({
         if (handleFunt) handleFunt()
     }
     return(
-        <Tooltip title={tooltip} placement={tooltipPlacement} arrow disableFocusListener disableHoverListener>
+        <Tooltip title={tooltip} placement={tooltipPlacement} arrow>
             <span>
                  {/* span wrapper để Tooltip hoạt động với disabled button */}
                 <MuiIconButton

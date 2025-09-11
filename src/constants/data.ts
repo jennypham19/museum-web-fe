@@ -64,6 +64,7 @@ import image_about_us_7 from "@/assets/images/users/image_about_us_7.png";
 import image_policy_1 from "@/assets/images/users/image_policy_1.png";
 import image_policy_2 from "@/assets/images/users/image_policy_2.png";
 import image_policy_3 from "@/assets/images/users/image_policy_3.png";
+import { CategoryProps } from "@/types/post";
 
 
 
@@ -1053,4 +1054,19 @@ export const DATA_ABOUT_MATERIAL: IICommonLandingPage[] = [
         content: 'Mô tả chi tiết',
         type: 'about-us'
     }
+];
+
+export const CategoryPost: CategoryProps[] = [
+    {
+        category: 1,
+        category_label: 'Sự kiện'
+    },
+    {
+        category: 2,
+        category_label: 'Triển lãm'
+    },
+    {
+        category: 3,
+        category_label: 'Bộ sưu tập'
+    },
 ]
