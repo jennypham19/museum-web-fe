@@ -42,7 +42,7 @@ const STATUS_USER: IStatus[] = [
 ]
 
 const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({ 
-    handleBack, 
+    handleBack
 }) => {
     const notify = useNotification();
     const [openCreateEmployee, setOpenCreateEmployee] = useState(false);
@@ -301,6 +301,9 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     open={openCreateEmployee}
                     onClose={() => {
                         setOpenCreateEmployee(false)
+                    }}
+                    onReload={() => {
+                        fetchUsersData(page, rowPerPage, ['employee', 'admin'], status)
                     }}
                 />
             )}

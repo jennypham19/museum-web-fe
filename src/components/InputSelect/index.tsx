@@ -155,11 +155,11 @@ const InputSelect: React.FC<InputSelectProps> = ({
       error={error}
       sx={{
         "& .MuiOutlinedInput-notchedOutline": {
-          border: "1px solid rgb(82, 81, 81)",
+          border: "1px solid rgb(53, 50, 50)",
           borderRadius: "8px",
         },
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-          border: "1px solid rgb(82, 81, 81)",
+          border: "1px solid rgb(53, 50, 50)",
         },
         ...sx,
       }}
