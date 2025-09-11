@@ -12,6 +12,7 @@ import useNotification from "@/hooks/useNotification";
 import { debounce } from "lodash";
 import IconButton from "@/components/IconButton/IconButton";
 import CustomPagination from "@/components/Pagination/CustomPagination";
+import TableData from "../../components/TableData";
 
 export interface FormDataActions {
     code: string;
@@ -196,46 +197,29 @@ const Actions = () => {
                         )}
                         {!loading && !error && (
                             <Box my={2}>
-                                <TableContainer component={Paper}>
-                                    <Table stickyHeader aria-label="action">
-                                        <TableHead>
-                                            <TableRow sx={{ height: 50}}>
-                                                {['STT', 'Mã', 'Tên', 'Thao tác'].map((header, index) => (
-                                                    <TableCell sx={{ textAlign: 'center', fontWeight: 700, bgcolor: '#a6cfebff'}} key={index}>{header}</TableCell>
-                                                ))}
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {actions.length === 0 ? (
-                                                <TableRow>
-                                                    <TableCell colSpan={4} align="center">
-                                                        Không tồn tại bản ghi nào
-                                                    </TableCell>
-                                                </TableRow>
-                                            ): (
-                                                actions.map((action, index) => {
-                                                    return(
-                                                        <TableRow key={index}>
-                                                            <TableCell align="center">{index + 1}</TableCell>
-                                                            <TableCell align="center">{action.code}</TableCell>
-                                                            <TableCell align="center">{action.name}</TableCell>
-                                                            <TableCell align="center">
-                                                                <IconButton
-                                                                    handleFunt={() => action && handleOpenEditAction(action)}
-                                                                    icon={<Edit color="info"/>}
-                                                                />
-                                                                <IconButton
-                                                                    handleFunt={() => {}}
-                                                                    icon={<Delete color="error"/>}
-                                                                />
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    )
-                                                })
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                                <TableData
+                                    label="action"
+                                    array={['STT', 'Mã', 'Tên', 'Thao tác']}
+                                    data={actions}
+                                    colSpan={4}
+                                    renderRow={(action, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{index + 1}</TableCell>
+                                            <TableCell align="center">{action.code}</TableCell>
+                                            <TableCell align="center">{action.name}</TableCell>
+                                            <TableCell align="center">
+                                                <IconButton
+                                                    handleFunt={() => action && handleOpenEditAction(action)}
+                                                    icon={<Edit color="info"/>}
+                                                />
+                                                <IconButton
+                                                    handleFunt={() => {}}
+                                                    icon={<Delete color="error"/>}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                />
                                 <Box display='flex' justifyContent='center' mt={2}>
                                     <CustomPagination
                                         count={total}
@@ -322,46 +306,29 @@ const Actions = () => {
                                     )}
                                     {!loading && !error && (
                                         <Box my={3} mr={3}>
-                                            <TableContainer component={Paper}>
-                                                <Table stickyHeader aria-label="group-task">
-                                                    <TableHead>
-                                                        <TableRow sx={{ height: 50}}>
-                                                            {['STT', 'Mã', 'Tên', 'Thao tác'].map((header, index) => (
-                                                                <TableCell sx={{ textAlign: 'center', fontWeight: 700, bgcolor: '#a6cfebff'}} key={index}>{header}</TableCell>
-                                                            ))}
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        {actions.length === 0 ? (
-                                                            <TableRow>
-                                                                <TableCell colSpan={4} align="center">
-                                                                    Không tồn tại bản ghi nào
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        ): (
-                                                            actions.map((action, index) => {
-                                                                return(
-                                                                    <TableRow key={index}>
-                                                                        <TableCell align="center">{index + 1}</TableCell>
-                                                                        <TableCell align="center">{action.code}</TableCell>
-                                                                        <TableCell align="center">{action.name}</TableCell>
-                                                                        <TableCell align="center">
-                                                                            <IconButton
-                                                                                handleFunt={() => action && handleOpenEditAction(action)}
-                                                                                icon={<Edit color="info"/>}
-                                                                            />
-                                                                            <IconButton
-                                                                                handleFunt={() => {}}
-                                                                                icon={<Delete color="error"/>}
-                                                                            />
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                )
-                                                            })
-                                                        )}
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
+                                            <TableData
+                                                label="action"
+                                                array={['STT', 'Mã', 'Tên', 'Thao tác']}
+                                                data={actions}
+                                                colSpan={4}
+                                                renderRow={(action, index) => (
+                                                    <TableRow key={index}>
+                                                        <TableCell align="center">{index + 1}</TableCell>
+                                                        <TableCell align="center">{action.code}</TableCell>
+                                                        <TableCell align="center">{action.name}</TableCell>
+                                                        <TableCell align="center">
+                                                            <IconButton
+                                                                handleFunt={() => action && handleOpenEditAction(action)}
+                                                                icon={<Edit color="info"/>}
+                                                            />
+                                                            <IconButton
+                                                                handleFunt={() => {}}
+                                                                icon={<Delete color="error"/>}
+                                                            />
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )}
+                                            />
                                             <Box display='flex' justifyContent='center' mt={2}>
                                                 <CustomPagination
                                                     count={total}

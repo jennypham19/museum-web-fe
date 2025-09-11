@@ -13,6 +13,7 @@ import InputText from "@/components/InputText";
 import DialogAction from "./components/DialogAction";
 import { createMenu, getMenu, getMenus, updateMenu } from "@/services/permission-service";
 import { debounce } from "lodash";
+import TableData from "../../components/TableData";
 
 export interface FormDataActionMenu {
     code: string;
@@ -245,54 +246,37 @@ const Menus = () => {
                         )}
                         {!loading && !error && (
                             <Box my={2}>
-                                <TableContainer component={Paper}>
-                                    <Table stickyHeader aria-label="action">
-                                        <TableHead>
-                                            <TableRow sx={{ height: 50}}>
-                                                {['STT', 'Mã', 'Tên chức năng', 'Chức năng cha', 'Thao tác'].map((header, index) => (
-                                                    <TableCell key={index} align="center" sx={{ fontWeight: 700, bgcolor: '#a6cfebff'}}>{header}</TableCell>
-                                                ))}
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {menus.length === 0 ? (
-                                                <TableRow>
-                                                    <TableCell colSpan={5} align="center">
-                                                        Không tồn tại bản ghi nào
-                                                    </TableCell>
-                                                </TableRow>
-                                            ) : (
-                                                menus.map((menu, index) => {
-                                                    return(
-                                                        <TableRow key={index}>
-                                                            <TableCell align="center">{index + 1}</TableCell>
-                                                            <TableCell align="center">{menu.code}</TableCell>
-                                                            <TableCell align="center">{menu.name}</TableCell>
-                                                            <TableCell align="center">{menu.parentName || ''}</TableCell>
-                                                            <TableCell align="center">
-                                                                <IconButton
-                                                                    handleFunt={() => menu && handleOpenAddMenuChildren(menu)}
-                                                                    icon={<Add color="primary"/>}
-                                                                    tooltip="Thêm chức năng con"
-                                                                />
-                                                                <IconButton
-                                                                    handleFunt={() => menu && handleOpenEditMenu(menu)}
-                                                                    icon={<Edit color="info"/>}
-                                                                    tooltip="Chỉnh sửa"
-                                                                />
-                                                                <IconButton
-                                                                    handleFunt={() => {}}
-                                                                    icon={<Delete color="error"/>}
-                                                                    tooltip="Xóa"
-                                                                />
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    )
-                                                })
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                                <TableData
+                                    label="menu"
+                                    array={['STT', 'Mã', 'Tên chức năng', 'Chức năng cha', 'Thao tác']}
+                                    colSpan={5}
+                                    data={menus}
+                                    renderRow={(menu, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{index + 1}</TableCell>
+                                            <TableCell align="center">{menu.code}</TableCell>
+                                            <TableCell align="center">{menu.name}</TableCell>
+                                            <TableCell align="center">{menu.parentName || ''}</TableCell>
+                                            <TableCell align="center">
+                                                <IconButton
+                                                    handleFunt={() => menu && handleOpenAddMenuChildren(menu)}
+                                                    icon={<Add color="primary"/>}
+                                                    tooltip="Thêm chức năng con"
+                                                />
+                                                <IconButton
+                                                    handleFunt={() => menu && handleOpenEditMenu(menu)}
+                                                    icon={<Edit color="info"/>}
+                                                    tooltip="Chỉnh sửa"
+                                                />
+                                                <IconButton
+                                                    handleFunt={() => {}}
+                                                    icon={<Delete color="error"/>}
+                                                    tooltip="Xóa"
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                />
                                 <Box display='flex' justifyContent='center' mt={2}>
                                     <CustomPagination
                                         count={total}
@@ -472,54 +456,37 @@ const Menus = () => {
                                 )}
                                 {!loading && !error && (
                                     <Box my={3} mr={3}>
-                                        <TableContainer component={Paper}>
-                                            <Table stickyHeader aria-label="action">
-                                                <TableHead>
-                                                    <TableRow sx={{ height: 50}}>
-                                                        {['STT', 'Mã', 'Tên chức năng', 'Chức năng cha', 'Thao tác'].map((header, index) => (
-                                                            <TableCell key={index} align="center" sx={{ fontWeight: 700, bgcolor: '#a6cfebff'}}>{header}</TableCell>
-                                                        ))}
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {menus.length === 0 ? (
-                                                        <TableRow>
-                                                            <TableCell colSpan={5} align="center">
-                                                                Không tồn tại bản ghi nào
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ) : (
-                                                        menus.map((menu, index) => {
-                                                            return(
-                                                                <TableRow key={index}>
-                                                                    <TableCell align="center">{index + 1}</TableCell>
-                                                                    <TableCell align="center">{menu.code}</TableCell>
-                                                                    <TableCell align="center">{menu.name}</TableCell>
-                                                                    <TableCell align="center">{menu.parentName || ''}</TableCell>
-                                                                    <TableCell align="center">
-                                                                        <IconButton
-                                                                            handleFunt={() => menu && handleOpenAddMenuChildren(menu)}
-                                                                            icon={<Add color="primary"/>}
-                                                                            tooltip="Thêm chức năng con"
-                                                                        />
-                                                                        <IconButton
-                                                                            handleFunt={() => menu && handleOpenEditMenu(menu)}
-                                                                            icon={<Edit color="info"/>}
-                                                                            tooltip="Chỉnh sửa"
-                                                                        />
-                                                                        <IconButton
-                                                                            handleFunt={() => {}}
-                                                                            icon={<Delete color="error"/>}
-                                                                            tooltip="Xóa"
-                                                                        />
-                                                                    </TableCell>
-                                                                </TableRow>
-                                                            )
-                                                        })
-                                                    )}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
+                                        <TableData
+                                            label="menu"
+                                            array={['STT', 'Mã', 'Tên chức năng', 'Chức năng cha', 'Thao tác']}
+                                            colSpan={5}
+                                            data={menus}
+                                            renderRow={(menu, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell align="center">{index + 1}</TableCell>
+                                                    <TableCell align="center">{menu.code}</TableCell>
+                                                    <TableCell align="center">{menu.name}</TableCell>
+                                                    <TableCell align="center">{menu.parentName || ''}</TableCell>
+                                                    <TableCell align="center">
+                                                        <IconButton
+                                                            handleFunt={() => menu && handleOpenAddMenuChildren(menu)}
+                                                            icon={<Add color="primary"/>}
+                                                            tooltip="Thêm chức năng con"
+                                                        />
+                                                        <IconButton
+                                                            handleFunt={() => menu && handleOpenEditMenu(menu)}
+                                                            icon={<Edit color="info"/>}
+                                                            tooltip="Chỉnh sửa"
+                                                        />
+                                                        <IconButton
+                                                            handleFunt={() => {}}
+                                                            icon={<Delete color="error"/>}
+                                                            tooltip="Xóa"
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                            )}
+                                        />
                                         <Box display='flex' justifyContent='center' mt={2}>
                                             <CustomPagination
                                                 count={total}

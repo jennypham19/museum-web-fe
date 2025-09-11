@@ -25,9 +25,10 @@ type FormErrors = {
 interface DialogAddEmployeeProps{
     onClose: () => void;
     open: boolean;
+    onReload: () => void;
 }
 
-const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) => {
+const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose, onReload }) => {
     const notify = useNotification();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
@@ -51,7 +52,8 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose }) 
         finalDisplayAvatarSrc = getPathImage(initialAvatarUrl);
     }
     const handleClose = () => {
-        onClose()
+        onClose();
+        onReload()
     }
 
     const phoneRegex = /^(0|\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])[0-9]{7}$/;

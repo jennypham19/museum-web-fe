@@ -303,9 +303,9 @@ const InformationManagedByAdmin = () => {
             <ShowAllInformationEmployee
                 handleBack={() => {
                     setShowAll(false)
-                    setShowInformationEmployee(false)
+                    setShowInformationEmployee(false);
+                    fetchUsersData(page, rowPerPage, ['admin', 'employee'], 1)
                 }}
-
             />
         )}
         {showAll && showInformationMember && DATA_INFOR_MEMBER && (
