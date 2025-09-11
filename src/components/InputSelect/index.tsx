@@ -164,7 +164,12 @@ const InputSelect: React.FC<InputSelectProps> = ({
         ...sx,
       }}
     >
-      <InputLabel id={`${name}-label`}>{label}</InputLabel>
+      <InputLabel
+        sx={{ fontSize: '14px', mt: 0.5}} 
+        id={`${name}-label`}
+      >
+        {label}
+      </InputLabel>
       <Select
         labelId={`${name}-label`}
         id={`${name}-select`}
@@ -173,11 +178,10 @@ const InputSelect: React.FC<InputSelectProps> = ({
         onChange={handleChange}
         label={label}
         multiple={multiple}
-        displayEmpty
         MenuProps={MenuProps}
         renderValue={(selected) => {
           if ((multiple && Array.isArray(selected) && selected.length === 0) || !selected) {
-            return <span style={{ color: '#aaa' }}>{placeholder || label}</span>;
+            return <span style={{ color: '#aaa' }}>{placeholder}</span>;
           }
           return getSelectedLabel();
         }}

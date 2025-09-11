@@ -1,15 +1,34 @@
 import Box from '@mui/material/Box';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { SidebarTitleContext } from '@/contexts/SidebarTitleContext'
+import { useAppSelector } from '@/store';
+import { IPermission } from '@/types/permisstion';
+import { getRoleGroupToUser } from '@/services/permission-service';
 
 const DashboardLayout = () => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [title, setTitle] = useState('');
+
+  const { profile } = useAppSelector((state) => state.auth);
+  const [menuData, setMenuData] = useState<IPermission | null>(null);
+
+  useEffect(() => {
+    if(profile){
+      const getRoleGroupAssignedUser = async(id: number) => {
+        const res = await getRoleGroupToUser(id);
+        const data = res.data as any as IPermission;
+        const menuCodes = data?.permissions.map(el => el.code);
+        localStorage.setItem('menuCodes', JSON.stringify(menuCodes));
+        setMenuData(data)
+      }
+      getRoleGroupAssignedUser(profile?.id);      
+    }
+  }, [profile])
 
   const handleToggleSidebar = () => {
     setOpenSidebar(!openSidebar);
@@ -41,6 +60,7 @@ const DashboardLayout = () => {
         openSidebar={openSidebar}
         onCloseSidebar={handleToggleSidebar}
         onToggleCollapsed={handleToggleCollapsed}
+        menuData={menuData ? menuData :  null}
       />
       <Box
         sx={{

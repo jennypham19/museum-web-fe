@@ -74,7 +74,7 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
           sx: {
             bgcolor: '#D30000',
             minWidth: anchorEl?.clientWidth || 'auto',
-            mt: -1.6,
+            mt: -2.85,
             borderRadius: 0
           }
         }}
