@@ -5,7 +5,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import Grid from "@mui/material/Grid2"
 import CommonImage from "@/components/Image/index";
 import detail_image from "@/assets/images/users/detail_image.png"
-import { FaFacebookF, FaInstagram, FaPinterestP, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { MdLanguage } from "react-icons/md";
 import VideoThumbnailPlayer from "./components/VideoThumbnailPlayer";
 import video from "@/assets/images/users/videoplayback.mp4"
 
@@ -27,7 +28,7 @@ const DetailArticleCollection = () => {
                     icon={<HomeIcon sx={{ width: { xs: 20, md: 30 }, height: { xs: 20, md: 30 }, color: '#000'}}/>}
                 />
                 <Typography mt={{ xs: 1, md: 1}} fontWeight={600} fontSize={{ xs: '12px', md: '18px'}}>
-                    / Kế hoạch thăm quan/ Khám phá nhiều hơn/ Bài viết chi tiết
+                    / Khám phá nhiều hơn/ Bài viết chi tiết
                 </Typography>
             </Box>
             <Box display='flex' flexDirection='column' py={{ xs: 1.6, md: 2}} px={{ xs: 2, md: 10}}>
@@ -50,6 +51,7 @@ const DetailArticleCollection = () => {
                                     background: 'linear-gradient(45deg, #D30000 30%, #780000 90%)',
                                     fontSize: '15px'
                                 }}
+                                onClick={() => navigate('/ticket-visit')}
                             >
                                 Mua vé
                             </Button>
@@ -102,7 +104,7 @@ const DetailArticleCollection = () => {
                                 />
                                 <IconButton
                                     handleFunt={() => {}}
-                                    icon={<FaPinterestP size={20} color='#fff'/>}
+                                    icon={<MdLanguage size={20} color='#fff'/>}
                                     backgroundColor="black"
                                     borderRadius='50%'
                                     sx={{ mr: 3, mt: { xs: 0, md: 0.5}, width: { xs: 28, md: 36}, height: { xs: 28, md: 36}}}

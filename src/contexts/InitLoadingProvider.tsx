@@ -16,9 +16,8 @@ const InitLoadingProvider: FCC = ({ children }) => {
     try {
       const token = getAccessToken();
       if (token) {
-        const userProfile = profile;
-        if (userProfile) {
-          dispatch(setProfile(userProfile));
+        if (profile) {
+          dispatch(setProfile(profile));
           dispatch(setIsAuth(true));
         } else {
           throw new Error('User profile not found in response');
