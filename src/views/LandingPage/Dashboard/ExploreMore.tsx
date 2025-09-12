@@ -17,7 +17,7 @@ const ExploreMore = () => {
                     handleFunt={() => navigate(-1)}
                     icon={<HomeIcon sx={{ width: { xs: 20, md: 30 }, height: { xs: 20, md: 30 }, color: '#000'}}/>}
                 />
-                <Typography mt={{ xs: 1, md: 1}} fontWeight={600} fontSize={{ xs: '12px', md: '18px'}}>/ Kế hoạch thăm quan/ Khám phá nhiều hơn</Typography> 
+                <Typography mt={{ xs: 1, md: 1}} fontWeight={600} fontSize={{ xs: '12px', md: '18px'}}>/ Khám phá nhiều hơn</Typography> 
             </Box>
             <Box display='flex' flexDirection='column' py={{ xs: 1.5, md: 2}} px={{ xs: 2, md: 10}}>
                 <Typography variant="h5" fontWeight={600}>Các tác phẩm nổi tiếng của Tiffany</Typography>
