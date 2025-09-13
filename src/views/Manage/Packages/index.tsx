@@ -224,7 +224,7 @@ const Packages = () => {
                                                                 Gói bao gồm: {item.includes}
                                                             </Typography>
                                                         </CardContent>
-                                                        <Box height={{ xs: '100%', md: 250}} bgcolor='#E6E6E6' sx={{ px: { xs: 2, md: 4}, py: 2}}>
+                                                        <Box height={{ xs: '100%', md: 280}} bgcolor='#E6E6E6' sx={{ px: { xs: 2, md: 4}, py: 2}}>
                                                             <Typography fontWeight={700} fontSize='14px'>
                                                                 {`QUYỀN LỢI CHO HẠNG ${item.title.split(' ')[2].toUpperCase()}`}
                                                             </Typography>

@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import {
   Box,
   TextField,
-  Typography,
   Grid,
   InputAdornment,
-  Button,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -17,6 +15,10 @@ interface SourceLinks {
   instagram: string;
   youtube: string;
   website: string;
+}
+ 
+interface SourceLinksFormProps{
+  onSourceLinks: (field: string) => void;
 }
 
 const SourceLinksForm: React.FC = () => {
