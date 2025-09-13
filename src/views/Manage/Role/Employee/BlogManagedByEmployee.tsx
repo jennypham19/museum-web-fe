@@ -94,7 +94,7 @@ const BlogManagedByEmployee = ({ onSearch, searchTerm } : BlogManagedByEmployeeP
             )}
             {showAll && openBlog.type && (
                 <CreateBlog
-                    handleBack={() => {
+                    onBack={() => {
                         setShowAll(false)
                         setOpenBlog({
                             open: false,

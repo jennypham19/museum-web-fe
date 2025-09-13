@@ -57,7 +57,8 @@ interface CustomInputProps {
     | 'value' | 'onChange' | 'label' | 'disabled' | 'slotProps' | 'sx' 
   >;
   onlyPositiveNumber?: boolean;
-  from?: string
+  from?: string;
+  startAdornment?: React.ReactNode;
 }
 
 const InputText: React.FC<CustomInputProps> = ({
@@ -82,7 +83,8 @@ const InputText: React.FC<CustomInputProps> = ({
   dateTimePickerProps = {},
   onlyPositiveNumber = false,
   maxDate,
-  from
+  from,
+  startAdornment
 }) => {
 
   const commonSlotTextFieldProps = {
@@ -240,7 +242,8 @@ const InputText: React.FC<CustomInputProps> = ({
                     border: from ? "1px solid grey" : "1px solid rgb(53, 50, 50)",
                 },
                 color: from ? 'white' : 'black'
-            }
+            },
+            startAdornment: startAdornment,
         }}
         sx={{
           ...sx,

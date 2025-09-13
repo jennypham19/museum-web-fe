@@ -4,10 +4,8 @@ import {
   Button,
   Grid,
   IconButton,
-  Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { COLORS } from "@/constants/colors";
 
 interface ImagePreview {
   file: File;
@@ -27,7 +25,7 @@ const ImagesUpload: React.FC = () => {
     }));
 
     setImages((prev) => [...prev, ...newImages]);
-
+    
     // reset input để có thể chọn lại cùng 1 file
     event.target.value = "";
   };
