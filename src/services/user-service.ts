@@ -31,17 +31,6 @@ export const getCurrentUser = () => {
   return HttpClient.get<HttpResponse<IUser>>(`${prefix}/me`);
 };
 
-export const uploadEmployeeImage = (file: File, type: string): Promise<HttpResponse<{ imageUrl: string }>> => {
-  const formData = new FormData();
-  formData.append('type', type);
-  formData.append('image', file);
-  
-  return HttpClient.post(
-    `${prefix}/upload-image`, 
-    formData,
-    { headers: { 'Content-Type': 'multipart/form-data' } }
-  );
-};
 
 export const createUser = (payload: { email: string; full_name: string; password: string, avatar_url?: string, phone_number?: string }) => {
     return HttpClient.post(`${prefix}/create-user`, payload);

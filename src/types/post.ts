@@ -25,20 +25,6 @@ export interface ISource{
   linkWeb: string
 }
 
-export interface FormDataPostAboutCollection{
-  category: number,
-  date: Dayjs | null,
-  title: string,
-  summary: string,
-  author: string,
-  period: string,
-  content: string,
-  source?: ISource | null,
-  images?: IImage[],
-  videos?: IVideo[],
-  authorName: string
-}
-
 export interface IPost{
   category: number | null,
   date: Dayjs | null,
@@ -53,3 +39,36 @@ export interface IPost{
   images?: IImage[],
   videos?: IVideo[]
 }
+
+export interface SourceLinks {
+  link_facebook: string;
+  link_instagram: string;
+  link_youtube: string;
+  link_web: string;
+}
+
+export interface Images {
+  name: string,
+  url: string
+}
+
+export interface Videos {
+  name: string,
+  url: string
+}
+
+export interface FormDataPostAboutCollection{
+  category: number,
+  date: Dayjs | null,
+  title: string,
+  summary: string,
+  author: string,
+  period: string,
+  content: string,
+  source?: SourceLinks | null,
+  images?: Images[],
+  videos?: Videos[],
+  authorName: string
+}
+
+

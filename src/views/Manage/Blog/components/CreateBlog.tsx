@@ -8,7 +8,7 @@ import { CategoryPost } from "@/constants/data";
 import InputText from "@/components/InputText";
 import dayjs from "dayjs";
 import Collection from "./categorys/Collection";
-import { FormDataPostAboutCollection } from "@/types/post";
+import { FormDataPostAboutCollection, SourceLinks } from "@/types/post";
 import useNotification from "@/hooks/useNotification";
 import useAuth from "@/hooks/useAuth";
 import { COLORS } from "@/constants/colors";
@@ -40,6 +40,11 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
     });
     const [errors, setErrors] = useState<FormErrors>({});
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [errorFile, setErrorFile] = useState<{type: string, text: string}>({
+        type: '',
+        text: ''
+    })
 
     const handleBack = () => {
         onBack();
@@ -64,7 +69,13 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
     }
 
     const handleFileSelect = (file: File) => {
-        setImageFile(file)
+        setImageFile(file);
+        setErrorFile({ type: '', text: ''})
+    }
+
+    const handleFilesSelect = (files: File[]) => {
+        setImageFiles(prev => [...prev, ...files]);
+        setErrorFile({ type: '', text: ''})
     }
 
     const validateForm = (): boolean => {
@@ -77,10 +88,20 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
         if (!formData.content.trim() || formData.content === '<p><br></p>') newErrors.content = 'Nội dung không được để trống.';
 
         if (!imageFile) {
-            notify({ severity: 'error', message: 'Vui lòng tải lên hình ảnh.' });
+            setErrorFile({
+                type: 'file',
+                text: 'Vui lòng tải lên hình ảnh.'
+            })
+        }
+
+        if(imageFiles.length === 0) {
+            setErrorFile({
+                type: 'files',
+                text: 'Vui lòng tải các hình ảnh trong tài liệu tham khảo.'
+            })
         }
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0 && !!imageFile;
+        return Object.keys(newErrors).length === 0 && !!imageFile && imageFiles.length > 0;
     };
 
     const handleSubmit = async () => {
@@ -88,6 +109,13 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
             return;
         }
     }
+
+    const handleSourceLinks = (data: SourceLinks) => {
+        setFormData(prev => ({ ...prev, source: data}))
+    }
+
+    console.log("formData: ", formData);
+    
 
     return(
         <Box>
@@ -138,6 +166,9 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
                             formData={formData}
                             onContentChange={handleContentChange}
                             errors={errors}
+                            onSourceLinks={handleSourceLinks}
+                            onFilesSelect={handleFilesSelect}
+                            errorFile={errorFile}
                         />
                     )}
                 </Grid>

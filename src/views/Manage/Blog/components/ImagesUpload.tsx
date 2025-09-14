@@ -7,29 +7,26 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-interface ImagePreview {
-  file: File;
-  url: string;
+
+interface ImagesUploadProps{
+  onFilesSelect: (files: File[]) => void;
 }
 
-const ImagesUpload: React.FC = () => {
-  const [images, setImages] = useState<ImagePreview[]>([]);
+const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect }) => {
+  const [images, setImages] = useState<string[]>([]);
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
-
-    const newImages: ImagePreview[] = Array.from(files).map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-    }));
-
-    setImages((prev) => [...prev, ...newImages]);
     
+    onFilesSelect(Array.from(files));
+    const urls = Array.from(files).map((file) => URL.createObjectURL(file));
+
+    setImages((prev) => [...prev, ...urls]);
     // reset input để có thể chọn lại cùng 1 file
     event.target.value = "";
   };
-
+  
   const handleRemove = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
@@ -57,7 +54,7 @@ const ImagesUpload: React.FC = () => {
               }}
             >
               <img
-                src={img.url}
+                src={img}
                 alt={`upload-${index}`}
                 style={{ width: "100%", height: 200, objectFit: "fill" }}
               />

@@ -2,101 +2,93 @@ import React, { useState } from "react";
 import {
   Box,
   TextField,
-  Grid,
   InputAdornment,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import LanguageIcon from "@mui/icons-material/Language";
+import Grid from "@mui/material/Grid2";
+import { SourceLinks } from "@/types/post";
+import InputText from "@/components/InputText";
 
-interface SourceLinks {
-  facebook: string;
-  instagram: string;
-  youtube: string;
-  website: string;
-}
- 
 interface SourceLinksFormProps{
-  onSourceLinks: (field: string) => void;
+  onSourceLinks: (data: SourceLinks) => void;
 }
 
-const SourceLinksForm: React.FC = () => {
+const SourceLinksForm: React.FC<SourceLinksFormProps> = ({ onSourceLinks }) => {
   const [links, setLinks] = useState<SourceLinks>({
-    facebook: "",
-    instagram: "",
-    youtube: "",
-    website: "",
+    link_facebook: "",
+    link_instagram: "",
+    link_youtube: "",
+    link_web: "",
   });
 
-  const handleChange = (field: keyof SourceLinks, value: string) => {
-    setLinks((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (name: string, value: any) => {
+    setLinks((prev) => ({ ...prev, [name]: value }));
+    onSourceLinks(links)
   };
 
   return (
     <Box mt={2}>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <TextField
+        <Grid size={{ xs: 12, md: 6}}>
+          <InputText
             label="Facebook"
-            fullWidth
-            value={links.facebook}
-            onChange={(e) => handleChange("facebook", e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <FacebookIcon color="primary" />
-                </InputAdornment>
-              ),
-            }}
+            name="link_facebook"
+            type="text"
+            value={links.link_facebook}
+            onChange={handleChange}
+            startAdornment={(
+              <InputAdornment position="start">
+                <FacebookIcon color="primary"/>
+              </InputAdornment>
+            )}
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <TextField
+        <Grid size={{ xs: 12, md: 6}}>
+          <InputText
             label="Instagram"
-            fullWidth
-            value={links.instagram}
-            onChange={(e) => handleChange("instagram", e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <InstagramIcon sx={{ color: "#E1306C" }} />
-                </InputAdornment>
-              ),
-            }}
+            name="link_instagram"
+            type="text"
+            value={links.link_instagram}
+            onChange={handleChange}
+            startAdornment={(
+              <InputAdornment position="start">
+                <InstagramIcon sx={{ color: '#E1306C'}}/>
+              </InputAdornment>
+            )}
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <TextField
+        <Grid size={{ xs: 12, md: 6}}>
+          <InputText
             label="YouTube"
-            fullWidth
-            value={links.youtube}
-            onChange={(e) => handleChange("youtube", e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <YouTubeIcon sx={{ color: "red" }} />
-                </InputAdornment>
-              ),
-            }}
+            name="link_youtube"
+            type="text"
+            value={links.link_youtube}
+            onChange={handleChange}
+            startAdornment={(
+              <InputAdornment position="start">
+                <YouTubeIcon sx={{ color: '#E1306C'}}/>
+              </InputAdornment>
+            )}
           />
         </Grid>
 
-        <Grid item xs={6}>
-          <TextField
+        <Grid size={{ xs: 6}}>
+          <InputText
             label="Website khác"
-            fullWidth
-            value={links.website}
-            onChange={(e) => handleChange("website", e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LanguageIcon color="action" />
-                </InputAdornment>
-              ),
-            }}
+            name="link_web"
+            type="text"
+            value={links.link_web}
+            onChange={handleChange}
+            startAdornment={(
+              <InputAdornment position="start">
+                <LanguageIcon color="action"/>
+              </InputAdornment>
+            )}
           />
         </Grid>
       </Grid>
