@@ -8,7 +8,8 @@ import InputText from "@/components/InputText";
 import { COLORS } from "@/constants/colors";
 import { resizeImage } from "@/utils/common";
 import useNotification from "@/hooks/useNotification";
-import { createUser, uploadEmployeeImage } from "@/services/user-service";
+import { createUser } from "@/services/user-service";
+import { uploadImage } from "@/services/upload-service";
 
 export interface FormDataEmployees{
     email: string,
@@ -47,9 +48,11 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose, on
 
     let finalDisplayAvatarSrc: string | undefined = undefined;
     if (avatarPreview) {
+        console.log("avatarPreview: ",avatarPreview);
+        
         finalDisplayAvatarSrc = avatarPreview;
     } else if (initialAvatarUrl) {
-        finalDisplayAvatarSrc = getPathImage(initialAvatarUrl);
+        finalDisplayAvatarSrc = initialAvatarUrl;
     }
     const handleClose = () => {
         onClose();
@@ -146,7 +149,7 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose, on
 
         try {
             if(imageFile){
-                const uploadResponse = await uploadEmployeeImage(imageFile!, 'employees');
+                const uploadResponse = await uploadImage(imageFile!, 'employees');
                 if(!uploadResponse.success || !uploadResponse.data?.imageUrl){
                     throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
                 }

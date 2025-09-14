@@ -3,13 +3,12 @@ import Grid from "@mui/material/Grid2";
 import InputText from "@/components/InputText";
 import ImageUpload from "../ImageUpload";
 import Editor from "@/components/Editor";
-import { InputAdornment, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import ImagesUpload from "../ImagesUpload";
 import SourceLinksForm from "../SourceLinksForm";
 import VideoUpload from "../VideoUpload";
-import { FormDataPostAboutCollection } from "@/types/post";
+import { FormDataPostAboutCollection, SourceLinks } from "@/types/post";
 import { FormErrors } from "../CreateBlog";
-import { Facebook } from "@mui/icons-material";
 
 interface CollectionProps{
     onInputChange: (name: string, value: any) => void;
@@ -17,9 +16,12 @@ interface CollectionProps{
     formData: FormDataPostAboutCollection;
     onContentChange: (value: string) => void;
     errors: FormErrors;
+    onSourceLinks: (data: SourceLinks) => void;
+    onFilesSelect: (files: File[]) => void;
+    errorFile: {type: string, text: string}
 }
 
-const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData, onContentChange, errors }) => {
+const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData, onContentChange, errors, onSourceLinks, onFilesSelect, errorFile }) => {
     const [image, setImage] = useState<string>('')
 
     const handleInputChange = (name: string, value: any) => {
@@ -33,6 +35,10 @@ const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData
     const handleImage = (image: string) => {
         setImage(image)
     }
+
+    console.log("errorFile: ", errorFile);
+    
+
     return(
         <>
             <Grid size={{ xs: 12}}>
@@ -81,11 +87,6 @@ const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData
                     onChange={handleInputChange}
                     error={!!errors.period}
                     helperText={errors.period}
-                    startAdornment={(
-                        <InputAdornment position="start">
-                            <Facebook color="primary" />
-                        </InputAdornment>
-                    )}
                 />
             </Grid>
             <Grid size={{ xs: 12}}>
@@ -93,6 +94,7 @@ const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData
                     onFileSelect={onFileSelect}
                     onImage={handleImage}
                 />
+                {errorFile.type === 'file' && (<Typography color="error" variant="caption" sx={{ mt: 1 }}>{errorFile.text}</Typography>)}
             </Grid>
             <Grid size={{ xs: 12}}>
                 <Editor
@@ -104,11 +106,16 @@ const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData
             <Typography fontWeight={700} variant="h6"> Tài liệu tham khảo</Typography>
             <Grid size={{ xs: 12}}>
                 <Typography fontWeight={700}>Trích nguồn</Typography>
-                <SourceLinksForm/>
+                <SourceLinksForm
+                    onSourceLinks={onSourceLinks}
+                />
             </Grid>
             <Grid size={{ xs: 12}}>
                 <Typography fontWeight={700}>Hình ảnh</Typography>
-                <ImagesUpload/>
+                <ImagesUpload
+                    onFilesSelect={onFilesSelect}
+                />
+                {errorFile.type === 'files' && (<Typography color="error" variant="caption">{errorFile.text}</Typography>)}
             </Grid>
             <Grid size={{ xs: 12}}>
                 <Typography fontWeight={700}>Video</Typography>

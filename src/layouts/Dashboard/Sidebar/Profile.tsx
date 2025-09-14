@@ -96,7 +96,7 @@ const Profile = () => {
                   </ListItemIcon>
                   <ListItemText
                     onClick={() => navigate(ROUTE_PATH.TO_PROFILE)}
-                    primary='Edit Profile'
+                    primary='Thông tin cá nhân'
                     sx={{
                       '& .MuiTypography-root': {
                         fontSize: '14px',
@@ -111,7 +111,7 @@ const Profile = () => {
                   </ListItemIcon>
                   <ListItemText
                     onClick={handleLogout}
-                    primary='Logout'
+                    primary='Đăng xuất'
                     sx={{
                       '& .MuiTypography-root': {
                         fontSize: '14px',
