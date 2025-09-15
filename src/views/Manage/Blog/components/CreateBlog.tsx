@@ -1,6 +1,6 @@
 import IconButton from "@/components/IconButton/IconButton";
 import { ArrowBack } from "@mui/icons-material";
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { Backdrop, Box, Button, CircularProgress, Paper, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import InputSelect from "@/components/InputSelect";
@@ -12,6 +12,7 @@ import { FormDataPostAboutCollection, SourceLinks } from "@/types/post";
 import useNotification from "@/hooks/useNotification";
 import useAuth from "@/hooks/useAuth";
 import { COLORS } from "@/constants/colors";
+import { uploadImage, uploadImages, uploadVideos } from "@/services/upload-service";
 
 
 interface CreateBlogProps {
@@ -41,10 +42,11 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
-    const [errorFile, setErrorFile] = useState<{type: string, text: string}>({
-        type: '',
-        text: ''
-    })
+    const [videoFiles, setVideoFiles] = useState<File[]>([]);
+    const [errorImg, setErrorImg] = useState<string>('');
+    const [errorImgs, setErrorImgs] = useState<string>('');
+    const [errorVideos, setErrorVideos] = useState<string>('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleBack = () => {
         onBack();
@@ -70,12 +72,17 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
 
     const handleFileSelect = (file: File) => {
         setImageFile(file);
-        setErrorFile({ type: '', text: ''})
+        setErrorImg('');
     }
 
     const handleFilesSelect = (files: File[]) => {
         setImageFiles(prev => [...prev, ...files]);
-        setErrorFile({ type: '', text: ''})
+        setErrorImgs('');
+    }
+
+    const handleFilesVideoSelect = (files: File[]) => {
+        setVideoFiles(prev => [...prev, ...files]);
+        setErrorVideos('');
     }
 
     const validateForm = (): boolean => {
@@ -88,34 +95,66 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
         if (!formData.content.trim() || formData.content === '<p><br></p>') newErrors.content = 'Nội dung không được để trống.';
 
         if (!imageFile) {
-            setErrorFile({
-                type: 'file',
-                text: 'Vui lòng tải lên hình ảnh.'
-            })
+            setErrorImg('Vui lòng tải lên hình ảnh.');
         }
-
-        if(imageFiles.length === 0) {
-            setErrorFile({
-                type: 'files',
-                text: 'Vui lòng tải các hình ảnh trong tài liệu tham khảo.'
-            })
+        if (imageFiles.length === 0) {
+            setErrorImgs('Vui lòng tải lên các hình ảnh.')
+        }
+        if (videoFiles.length === 0) {
+            setErrorVideos('Vui lòng tải lên các video.')
         }
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0 && !!imageFile && imageFiles.length > 0;
+        return Object.keys(newErrors).length === 0 && !!imageFile && imageFiles.length > 0 && videoFiles.length > 0;
     };
+
+
 
     const handleSubmit = async () => {
         if(!validateForm()) {
             return;
         }
+
+        setIsSubmitting(true);
+        try {
+            // 1 ảnh
+            const uploadResponse = await uploadImage(imageFile!, 'posts/collections/image');
+            if(!uploadResponse.success || !uploadResponse.data?.file){
+                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+            }
+            
+            // nhiều ảnh
+            const uploadImgsResponses = await uploadImages(imageFiles, 'posts/collections/image');
+            if(!uploadImgsResponses.success || !uploadImgsResponses.data?.files){
+                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+            }
+            
+            // nhiều video
+            const uploadVidsResponses = await uploadVideos(videoFiles, 'posts/collections/video');
+            if(!uploadVidsResponses.success || !uploadVidsResponses.data?.files){
+                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+            }
+
+            const payload = {
+                ...formData,
+                date: formData.date ? formData.date.toISOString() : '',
+                nameUrl: uploadResponse.data.file.fileName,
+                imageUrl: uploadResponse.data.file.imageUrl,
+                images: uploadImgsResponses.data.files,
+                videos: uploadVidsResponses.data.files
+            };
+
+            console.log("payload: ", payload);
+        } catch (error: any) {
+            notify({ severity: 'error', message: error.message })
+        } finally {
+            setIsSubmitting(false);
+        }
+   
     }
 
     const handleSourceLinks = (data: SourceLinks) => {
         setFormData(prev => ({ ...prev, source: data}))
     }
-
-    console.log("formData: ", formData);
-    
 
     return(
         <Box>
@@ -168,14 +207,16 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
                             errors={errors}
                             onSourceLinks={handleSourceLinks}
                             onFilesSelect={handleFilesSelect}
-                            errorFile={errorFile}
+                            onFilesVideoSelect={handleFilesVideoSelect}
+                            error={{ errorImg, errorImgs, errorVideos }}
                         />
                     )}
                 </Grid>
                 <Stack display='flex' direction="row" justifyContent="flex-end" spacing={2} sx={{ my: 3 }}>
                     <Button
-                        sx={{ bgcolor: COLORS.BUTTON, width: 120}}
+                        sx={{ bgcolor: COLORS.BUTTON, width: 120, position: 'relative'}}
                         onClick={handleSubmit}
+                        disabled={isSubmitting}
                     >
                         Tạo
                     </Button>
@@ -188,6 +229,13 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
                     </Button>
                 </Stack>
             </Paper>
+            {/* Mask xoay khi submit */}
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
+                open={isSubmitting}
+            >
+                <CircularProgress color="inherit"/>
+            </Backdrop>
         </Box>
     )
 }

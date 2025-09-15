@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css'; // Import theme "snow"
 import { Box, styled } from "@mui/material";
 import { FC, useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
+import { uploadImage } from "@/services/upload-service";
 
 // Custom styled component để tùy chỉnh giao diện của editor
 const EditorContainer = styled(Box)(({ theme }) => ({
@@ -46,10 +47,14 @@ const Editor: FC<EditorProps> = ({ value, onChange, placeholder }) => {
                 const { blob } = await resizeImage(file, 800);
                 // Gửi blob đã resize
                 const resizedFile = new File([blob], file.name, { type: blob.type });
-                
+                const image = await uploadImage(resizedFile, 'posts/collections');
+                const imageUrl = `${image.data?.imageUrl}`;
                 //Chèn ảnh vào editor
                 const quill = quillRef.current?.getEditor();
                 const range = quill?.getSelection();
+                if(range) {
+                    quill?.insertEmbed(range.index, 'image', imageUrl);
+                }
             } catch (error: any) {
                 console.error("Resize or upload failed: ", error);
             }
