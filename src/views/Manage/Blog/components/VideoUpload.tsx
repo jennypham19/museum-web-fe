@@ -7,24 +7,21 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-interface VideoPreview {
-  file: File;
-  url: string;
+interface VideosUploadProps{
+  onFilesSelect: (files: File[]) => void;
 }
 
-const VideoUpload: React.FC = () => {
-  const [videos, setVideos] = useState<VideoPreview[]>([]);
+const VideoUpload: React.FC<VideosUploadProps> = ({ onFilesSelect }) => {
+  const [videos, setVideos] = useState<string[]>([]);
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
 
-    const newVideos: VideoPreview[] = Array.from(files).map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-    }));
+    onFilesSelect(Array.from(files));
+    const urls = Array.from(files).map((file) => URL.createObjectURL(file));
 
-    setVideos((prev) => [...prev, ...newVideos]);
+    setVideos((prev) => [...prev, ...urls]);
 
     // reset input để có thể chọn lại cùng 1 file
     event.target.value = "";
@@ -59,7 +56,7 @@ const VideoUpload: React.FC = () => {
               }}
             >
               <video
-                src={video.url}
+                src={video}
                 controls
                 style={{ width: "100%", height: 200, objectFit: "fill" }}
               />

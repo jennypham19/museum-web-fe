@@ -6,10 +6,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 interface ImageUploadProps {
   onFileSelect: (file: File) => void;
   initialImage?: string;
-  onImage?: (image: string) => void;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, initialImage, onImage }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, initialImage }) => {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -26,7 +25,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, initialImage, o
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
-        if(onImage) onImage(reader.result as string);
       };
       reader.readAsDataURL(file);
     }

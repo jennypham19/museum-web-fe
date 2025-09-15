@@ -18,12 +18,11 @@ interface CollectionProps{
     errors: FormErrors;
     onSourceLinks: (data: SourceLinks) => void;
     onFilesSelect: (files: File[]) => void;
-    errorFile: {type: string, text: string}
+    onFilesVideoSelect: (files: File[]) => void;
+    error: { errorImg: string, errorImgs: string, errorVideos: string }
 }
 
-const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData, onContentChange, errors, onSourceLinks, onFilesSelect, errorFile }) => {
-    const [image, setImage] = useState<string>('')
-
+const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData, onContentChange, errors, onSourceLinks, onFilesSelect, onFilesVideoSelect, error }) => {
     const handleInputChange = (name: string, value: any) => {
         onInputChange(name, value)
     }
@@ -31,13 +30,6 @@ const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData
     const handleContentChange = (value: string) => {
         onContentChange(value);
     }
-
-    const handleImage = (image: string) => {
-        setImage(image)
-    }
-
-    console.log("errorFile: ", errorFile);
-    
 
     return(
         <>
@@ -92,9 +84,8 @@ const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData
             <Grid size={{ xs: 12}}>
                 <ImageUpload
                     onFileSelect={onFileSelect}
-                    onImage={handleImage}
                 />
-                {errorFile.type === 'file' && (<Typography color="error" variant="caption" sx={{ mt: 1 }}>{errorFile.text}</Typography>)}
+                {error.errorImg && (<Typography color="error" variant="caption" sx={{ mt: 1 }}>{error.errorImg}</Typography>)}
             </Grid>
             <Grid size={{ xs: 12}}>
                 <Editor
@@ -103,23 +94,26 @@ const Collection: FC<CollectionProps> = ({ onInputChange, onFileSelect, formData
                 />
                 {errors.content && (<Typography color="error" variant="caption" sx={{ mt: 1 }}>{errors.content}</Typography>)}
             </Grid>
+            <Grid size={{ xs: 12}}>
+                <Typography fontWeight={700}>Hình ảnh</Typography>
+                <ImagesUpload
+                    onFilesSelect={onFilesSelect}
+                />
+                {error.errorImgs && (<Typography color="error" variant="caption">{error.errorImgs}</Typography>)}
+            </Grid>
+            <Grid size={{ xs: 12}}>
+                <Typography fontWeight={700}>Video</Typography>
+                <VideoUpload
+                    onFilesSelect={onFilesVideoSelect}
+                />
+                {error.errorVideos && (<Typography color="error" variant="caption">{error.errorVideos}</Typography>)}
+            </Grid>
             <Typography fontWeight={700} variant="h6"> Tài liệu tham khảo</Typography>
             <Grid size={{ xs: 12}}>
                 <Typography fontWeight={700}>Trích nguồn</Typography>
                 <SourceLinksForm
                     onSourceLinks={onSourceLinks}
                 />
-            </Grid>
-            <Grid size={{ xs: 12}}>
-                <Typography fontWeight={700}>Hình ảnh</Typography>
-                <ImagesUpload
-                    onFilesSelect={onFilesSelect}
-                />
-                {errorFile.type === 'files' && (<Typography color="error" variant="caption">{errorFile.text}</Typography>)}
-            </Grid>
-            <Grid size={{ xs: 12}}>
-                <Typography fontWeight={700}>Video</Typography>
-                <VideoUpload/>
             </Grid>
             <Grid size={{ xs: 12}}>
                 <InputText
