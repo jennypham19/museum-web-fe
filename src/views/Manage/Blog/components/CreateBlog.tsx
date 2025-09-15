@@ -13,6 +13,7 @@ import useNotification from "@/hooks/useNotification";
 import useAuth from "@/hooks/useAuth";
 import { COLORS } from "@/constants/colors";
 import { uploadImage, uploadImages, uploadVideos } from "@/services/upload-service";
+import { createPostCollection } from "@/services/post-service";
 
 
 interface CreateBlogProps {
@@ -137,13 +138,23 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
             const payload = {
                 ...formData,
                 date: formData.date ? formData.date.toISOString() : '',
-                nameUrl: uploadResponse.data.file.fileName,
+                nameUrl: uploadResponse.data.file.fileName ? uploadResponse.data.file.fileName : '',
                 imageUrl: uploadResponse.data.file.imageUrl,
                 images: uploadImgsResponses.data.files,
                 videos: uploadVidsResponses.data.files
             };
-
             console.log("payload: ", payload);
+            let res: any;
+            switch (formData.category) {
+                case 3:
+                    res= await createPostCollection(payload);
+                    console.log("res: ", res);
+                    
+                    break;
+            
+                default:
+                    break;
+            }
         } catch (error: any) {
             notify({ severity: 'error', message: error.message })
         } finally {
