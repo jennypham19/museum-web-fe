@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,10 +10,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ImagesUploadProps{
   onFilesSelect: (files: File[]) => void;
+  initialImages?: string[]
 }
 
-const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect }) => {
+const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect, initialImages }) => {
   const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (initialImages) {
+      setImages(initialImages);
+    }
+  }, [initialImages]);
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;

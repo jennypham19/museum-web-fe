@@ -18,7 +18,7 @@ interface PostCollectionRequest{
     images: Images[];
     videos: Videos[];
     source?: SourceLinks | null;
-    authorName: string
+    authorId: number;
 }
 export const createPostCollection = (payload: PostCollectionRequest) => {
     return HttpClient.post(`${prefix}/create-post-collection`, payload)
