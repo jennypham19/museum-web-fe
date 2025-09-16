@@ -26,7 +26,7 @@ export interface ISource{
 }
 
 export interface IPost{
-  category: number | null,
+  category: number,
   date: Dayjs | null,
   title: string,
   summary: string,
@@ -35,6 +35,7 @@ export interface IPost{
   nameUrl?: string,
   imageUrl: string
   content: string,
+  authorName: string,
   source?: ISource | null,
   images?: IImage[],
   videos?: IVideo[]
@@ -66,8 +67,8 @@ export interface FormDataPostAboutCollection{
   period: string,
   content: string,
   source?: SourceLinks | null,
-  images?: Images[],
-  videos?: Videos[],
+  images: Images[],
+  videos: Videos[],
   authorName: string
 }
 

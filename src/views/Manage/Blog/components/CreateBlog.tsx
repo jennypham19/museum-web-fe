@@ -8,7 +8,7 @@ import { CategoryPost } from "@/constants/data";
 import InputText from "@/components/InputText";
 import dayjs from "dayjs";
 import Collection from "./categorys/Collection";
-import { FormDataPostAboutCollection, SourceLinks } from "@/types/post";
+import { FormDataPostAboutCollection, IPost, ISource, SourceLinks } from "@/types/post";
 import useNotification from "@/hooks/useNotification";
 import useAuth from "@/hooks/useAuth";
 import { COLORS } from "@/constants/colors";
@@ -141,15 +141,18 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
                 nameUrl: uploadResponse.data.file.fileName ? uploadResponse.data.file.fileName : '',
                 imageUrl: uploadResponse.data.file.imageUrl,
                 images: uploadImgsResponses.data.files,
-                videos: uploadVidsResponses.data.files
+                videos: uploadVidsResponses.data.files,
+                authorId: profile?.id ? profile.id : 0
             };
-            console.log("payload: ", payload);
             let res: any;
             switch (formData.category) {
                 case 3:
                     res= await createPostCollection(payload);
-                    console.log("res: ", res);
-                    
+                    notify({
+                        message: res.message,
+                        severity: 'success'
+                    });
+                    handleBack()
                     break;
             
                 default:
