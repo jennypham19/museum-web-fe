@@ -1,6 +1,6 @@
 import { SectionItem } from "@/layouts/Dashboard/Sidebar/Sections";
 import { IMenu, IPermission } from "@/types/permisstion";
-import { AdminPanelSettings, Build, CardMembership, Groups, HomeOutlined, List, PermContactCalendar, PostAdd, PriceChange, SvgIconComponent } from "@mui/icons-material";
+import { AdminPanelSettings, Build, CardMembership, Groups, HomeOutlined, List, PermContactCalendar, PostAdd, PriceChange, SvgIconComponent, Museum, Event, Collections, Palette, Image } from "@mui/icons-material";
 
 export const iconMap: Record<string, SvgIconComponent> = {
     HomeOutlined,
@@ -11,7 +11,12 @@ export const iconMap: Record<string, SvgIconComponent> = {
     AdminPanelSettings,
     Build,
     List,
-    Groups
+    Groups,
+    Museum,
+    Event,
+    Collections,
+    Palette,
+    Image
 }
 
 export const mapMenuToSectionItems = (menus: IMenu[]): SectionItem[] => {

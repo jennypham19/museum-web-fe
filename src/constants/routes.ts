@@ -13,6 +13,10 @@ export const ROUTE_PATH = {
   MANAGE_ACTION: 'action',
   MANAGE_MENU: 'menu',
   MANAGE_ROLE: 'group-role',
+  MANAGE_EVENT: 'event',
+  MANAGE_EXHIBITION: 'exhibition',
+  MANAGE_COLLECTION: 'collection',
+  MANAGE_PAINTING: 'painting',
 
    //Employee
   EMPLOYEE: 'employee',
