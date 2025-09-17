@@ -26,13 +26,13 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   
 
   const handlePrevious = () => {
-    if (page > 0) {
+    if (page > 1) {
       onPageChange(page - 1);
     }
   };
 
   const handleNext = () => {
-    if (page < totalPages - 1) {
+    if (page < totalPages) {
       onPageChange(page + 1);
     }
   };
@@ -46,7 +46,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
     const totalBlocks = totalPageNumbersToShow + 2;
 
     if (totalPages <= totalBlocks) {
-      return Array.from({ length: totalPages }, (_, i) => i);
+      return Array.from({ length: totalPages }, (_, i) => i + 1); // 1-based
     }
 
     const leftSiblingIndex = Math.max(page - siblingCount, 0);
@@ -55,7 +55,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
     const shouldShowLeftEllipsis = leftSiblingIndex > 1;
     const shouldShowRightEllipsis = rightSiblingIndex < totalPages - 2;
 
-    const firstPageIndex = 0;
+    const firstPageIndex = 1;
     const lastPageIndex = totalPages - 1;
 
     if (!shouldShowLeftEllipsis && shouldShowRightEllipsis) {
@@ -89,7 +89,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
       <Stack direction="row" spacing={0.5} alignItems="center">
         <IconButton
           onClick={handlePrevious}
-          disabled={page === 0}
+          disabled={page === 1}
           aria-label="previous page"
           size="small"
           sx={{ mr: 1 }}
@@ -134,7 +134,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                   boxShadow: isActive ? theme.shadows[2] : 'none',
                 }}
               >
-                {pageNumber + 1}
+                {pageNumber}
               </Button>
             );
           }
@@ -142,7 +142,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
 
         <IconButton
           onClick={handleNext}
-          disabled={page >= totalPages - 1}
+          disabled={page > totalPages - 1}
           aria-label="next page"
           size="small"
           sx={{ ml: 1 }}

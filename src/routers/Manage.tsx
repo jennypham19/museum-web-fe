@@ -11,6 +11,10 @@ const Package = Loadable(lazy(() => import('@/views/Manage/Packages/index')));
 const Action = Loadable(lazy(() => import('@/views/Manage/Permission/Actions/index')));
 const Menu = Loadable(lazy(() => import('@/views/Manage/Permission/Menus/index')));
 const GroupRole = Loadable(lazy(() => import('@/views/Manage/Permission/GroupRole/index')));
+const Event = Loadable(lazy(() => import('@/views/Manage/Display/Event/index')));
+const Exhibition = Loadable(lazy(() => import('@/views/Manage/Display/Exhibition/index')));
+const Collection = Loadable(lazy(() => import('@/views/Manage/Display/Collections/index')));
+const Painting = Loadable(lazy(() => import('@/views/Manage/Display/Picture/index')));
 
 const manageRoutes: RouteObject[] = [
     { index: true, element: <Navigate to={ROUTE_PATH.MANAGE_HOME} replace/>},
@@ -22,6 +26,10 @@ const manageRoutes: RouteObject[] = [
     { path: ROUTE_PATH.MANAGE_ACTION, element: <Action/>},
     { path: ROUTE_PATH.MANAGE_MENU, element: <Menu/>},
     { path: ROUTE_PATH.MANAGE_ROLE, element: <GroupRole/>},
+    { path: ROUTE_PATH.MANAGE_EVENT, element: <Event/>},
+    { path: ROUTE_PATH.MANAGE_EXHIBITION, element: <Exhibition/>},
+    { path: ROUTE_PATH.MANAGE_COLLECTION, element: <Collection/>},
+    { path: ROUTE_PATH.MANAGE_PAINTING, element: <Painting/>},
 ];
 
 export default manageRoutes;

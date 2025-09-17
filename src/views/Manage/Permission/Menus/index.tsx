@@ -60,6 +60,7 @@ const Menus = () => {
             const menusRes = await getMenus({ page: page, limit: limit, searchTerm: searchTerm });
             const data = menusRes.data?.menus as any as IMenu[];
             setMenus(data);
+            menusRes.data?.total && setTotal(menusRes.data.total)
         } catch (error: any) {
             setError(error.message);
             setMenus([]);
