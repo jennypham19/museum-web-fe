@@ -15,6 +15,7 @@ interface ImagesUploadProps{
 
 const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect, initialImages }) => {
   const [images, setImages] = useState<string[]>([]);
+  const [imagesFile, setImagesFile] = useState<File[]>([]);
 
   useEffect(() => {
     if (initialImages) {
@@ -25,8 +26,9 @@ const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect, initialImage
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
-    
+
     onFilesSelect(Array.from(files));
+    setImagesFile(Array.from(files))
     const urls = Array.from(files).map((file) => URL.createObjectURL(file));
 
     setImages((prev) => [...prev, ...urls]);
@@ -36,6 +38,7 @@ const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect, initialImage
   
   const handleRemove = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
+    onFilesSelect(imagesFile.filter((_, i) => i !== index));
   };
 
   return (
