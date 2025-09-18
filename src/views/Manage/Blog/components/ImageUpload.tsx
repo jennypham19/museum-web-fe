@@ -4,7 +4,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ImageUploadProps {
-  onFileSelect: (file: File) => void;
+  onFileSelect: (file: File | null) => void;
   initialImage?: string;
 }
 
@@ -35,6 +35,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, initialImage })
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+    onFileSelect(null)
   };
 
   const handleBoxClick = () => {
