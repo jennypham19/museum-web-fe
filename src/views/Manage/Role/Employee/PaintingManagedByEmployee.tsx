@@ -14,7 +14,8 @@ import useNotification from "@/hooks/useNotification";
 import InputText from "@/components/InputText";
 import ImageUpload from "../../Blog/components/ImageUpload";
 import ImagesUpload from "../../Blog/components/ImagesUpload";
-import InputMaskTextField from "@/components/InputMaskTextField";
+import { uploadImage, uploadImages } from "@/services/upload-service";
+import { createPainting } from "@/services/display-service";
 
 export type FormErrors = {
     [K in keyof FormDataPainting]?: string;
@@ -41,7 +42,7 @@ const PaintingManagedByEmployee = () => {
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [errorImg, setErrorImg] = useState<string>('');
     const [errorImgs, setErrorImgs] = useState<string>('');
-    const [time, setTime] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [openPainting, setOpenPainting] = useState<{type: string, open: boolean}>({
         type: '',
         open: false
@@ -104,10 +105,40 @@ const PaintingManagedByEmployee = () => {
         if(!validateForm()) {
             return;
         }
+        setIsSubmitting(true)
         try {
+            // 1 ảnh
+            const uploadResponse = await uploadImage(imageFile!, 'display/paintings/image');
+            if(!uploadResponse.success || !uploadResponse.data?.file){
+                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+            }
+
+            // nhiều ảnh
+            const uploadImgsResponses = await uploadImages(imageFiles, 'display/paintings/image');
+            if(!uploadImgsResponses.success || !uploadImgsResponses.data?.files){
+                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+            }
+
+            const payload = {
+                ...formData,
+                imageUrl: uploadResponse.data.file.imageUrl,
+                images: uploadImgsResponses.data.files
+            }
+
+            console.log("payload: ",payload);
+            let res: any;
+            switch (openPainting.type) {
+                case 'add':
+                    res = await createPainting(payload)
+                    break;
             
+                default:
+                    break;
+            }
         } catch (error: any) {
             notify({ message: error.message, severity: 'error'})
+        }finally {
+            setIsSubmitting(false )
         }
     }
 
@@ -214,15 +245,6 @@ const PaintingManagedByEmployee = () => {
                                         error={!!errors.name}
                                         helperText={errors.name}
                                     />
-                                    {/* <InputMaskTextField
-                                        label=''
-                                        placeholder="hh:mm"
-                                        mask='99:99'
-                                        value={time}
-                                        onChange={setTime}
-                                        fullWidth
-                                        name="openTime"
-                                    /> */}
                                 </Grid>
                                 <Grid size={{ xs: 12}}>
                                     <Typography fontWeight={700} fontSize='15px'>Tác giả</Typography>
@@ -289,6 +311,7 @@ const PaintingManagedByEmployee = () => {
                                 </Button>
                             </Stack>
                         </Box>
+                        <Backdrop open={isSubmitting}/>
                     </Grid>
                     <Grid size={{ xs: 12, md: 8 }}>
                         {loading && (
