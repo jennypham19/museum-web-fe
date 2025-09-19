@@ -2,32 +2,34 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Box, Typography, Button, IconButton } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { resizeImage } from '@/utils/common';
 
 interface ImageUploadProps {
   onFileSelect: (file: File | null) => void;
-  initialImage?: string;
+  initialImage?: string | null;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, initialImage }) => {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  
   useEffect(() => {
-    if (initialImage) {
-      setPreview(initialImage);
-    }
+    if(initialImage){
+      setPreview(initialImage)
+    }else{
+      setPreview(null);
+    };
   }, [initialImage]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      onFileSelect(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      const { blob, previewUrl } = await resizeImage(file, 800);
+      const newFile = new File([blob], file.name, { type: "image/jpeg" });
+      onFileSelect(newFile);
+      setPreview(previewUrl);
     }
+    event.target.value = "";
   };
 
   const handleRemoveImage = () => {

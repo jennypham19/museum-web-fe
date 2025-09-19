@@ -6,6 +6,7 @@ import {
   IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { resizeImage } from "@/utils/common";
 
 
 interface ImagesUploadProps{
@@ -23,13 +24,19 @@ const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect, initialImage
     }
   }, [initialImages]);
 
-  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async(event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
+    const resized = await Promise.all(
+      Array.from(files).map(async (file) => {
+        return resizeImage(file, 800)
+      })
+    );
 
-    onFilesSelect(Array.from(files));
-    setImagesFile(Array.from(files))
-    const urls = Array.from(files).map((file) => URL.createObjectURL(file));
+    const resizedFiles = resized.map((r) => new File([r.blob], r.name!, { type: "image/jpeg" }))
+    onFilesSelect(resizedFiles);
+    setImagesFile(resizedFiles)
+    const urls = resized.map((file) => file.previewUrl);
 
     setImages((prev) => [...prev, ...urls]);
     // reset input để có thể chọn lại cùng 1 file
@@ -56,7 +63,7 @@ const ImagesUpload: React.FC<ImagesUploadProps> = ({ onFilesSelect, initialImage
 
       <Grid container spacing={2} mt={2}>
         {images.map((img, index) => (
-          <Grid item xs={6} sm={4} md={3} key={index}>
+          <Grid item xs={12} sm={4} md={3} key={index}>
             <Box
               sx={{
                 position: "relative",

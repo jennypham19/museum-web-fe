@@ -71,7 +71,7 @@ const CreateBlog: React.FC<CreateBlogProps> = ({ onBack }) => {
         }
     }
 
-    const handleFileSelect = (file: File) => {
+    const handleFileSelect = (file: File | null) => {
         setImageFile(file);
         setErrorImg('');
     }
