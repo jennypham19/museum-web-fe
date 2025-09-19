@@ -48,7 +48,7 @@ const Editor: FC<EditorProps> = ({ value, onChange, placeholder }) => {
                 // Gửi blob đã resize
                 const resizedFile = new File([blob], file.name, { type: blob.type });
                 const image = await uploadImage(resizedFile, 'posts/collections');
-                const imageUrl = `${image.data?.imageUrl}`;
+                const imageUrl = `${image.data?.file.imageUrl}`;
                 //Chèn ảnh vào editor
                 const quill = quillRef.current?.getEditor();
                 const range = quill?.getSelection();

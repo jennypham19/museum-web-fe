@@ -12,7 +12,7 @@ import { FormErrors } from "../CreateBlog";
 
 interface CollectionProps{
     onInputChange: (name: string, value: any) => void;
-    onFileSelect: (file: File) => void;
+    onFileSelect: (file: File | null) => void;
     formData: FormDataPostAboutCollection;
     onContentChange: (value: string) => void;
     errors: FormErrors;

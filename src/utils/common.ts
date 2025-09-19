@@ -59,7 +59,7 @@ export const findDuplicateKey = (data: any, iteratee: string) => {
 export const resizeImage = (
         file: File,
         maxSize: number
-    ): Promise<{ blob: Blob; previewUrl: string }> => {
+    ): Promise<{ blob: Blob; previewUrl: string; name?: string }> => {
         return new Promise((resolve, reject) => {
         const img = new Image();
         const reader = new FileReader();
@@ -76,15 +76,15 @@ export const resizeImage = (
             let height = img.height;
 
             if (width > height) {
-            if (width > maxSize) {
-                height = Math.round((height *= maxSize / width));
-                width = maxSize;
-            }
+              if (width > maxSize) {
+                  height = Math.round((height *= maxSize / width));
+                  width = maxSize;
+              }
             } else {
-            if (height > maxSize) {
-                width = Math.round((width *= maxSize / height));
-                height = maxSize;
-            }
+              if (height > maxSize) {
+                  width = Math.round((width *= maxSize / height));
+                  height = maxSize;
+              }
             }
 
             canvas.width = width;
@@ -98,12 +98,13 @@ export const resizeImage = (
             canvas.toBlob(
             (blob) => {
                 if (blob) {
-                resolve({
-                    blob,
-                    previewUrl: URL.createObjectURL(blob),
-                });
+                  resolve({
+                      blob,
+                      previewUrl: URL.createObjectURL(blob),
+                      name: file.name
+                  });
                 } else {
-                reject(new Error("Resize failed"));
+                  reject(new Error("Resize failed"));
                 }
             },
             "image/jpeg",

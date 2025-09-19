@@ -40,6 +40,8 @@ const PaintingManagedByEmployee = () => {
     });
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [image, setImage] = useState<string | null>(null);
+    const [images, setImages] = useState<string[]>([]);
     const [errorImg, setErrorImg] = useState<string>('');
     const [errorImgs, setErrorImgs] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -69,6 +71,10 @@ const PaintingManagedByEmployee = () => {
         setErrors({});
         setErrorImg('');
         setErrorImgs('');
+        setImage(null);     // reset ảnh chính
+        setImages([]);      // reset nhiều ảnh
+        setImageFile(null);
+        setImageFiles([]);
     }
 
     const handleInputChange = (name: string, value: any) => {
@@ -79,10 +85,16 @@ const PaintingManagedByEmployee = () => {
     }
     const handleFileSelect = (file: File | null) => {
         setImageFile(file);
-        setErrorImg('')
+        setErrorImg('');
+        if (file) {
+            const previewUrl = URL.createObjectURL(file);
+            setImage(previewUrl);   // 👈 cái này mới đẩy vào ImageUpload
+        } else {
+            setImage(null);
+        }
     }
     const handleFilesSelect = (files: File[]) => {
-        setImageFiles(files);
+        setImageFiles(prev => [...prev, ...files]);
         setErrorImgs('')
     }
 
@@ -101,6 +113,7 @@ const PaintingManagedByEmployee = () => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0 && !!imageFile && imageFiles.length > 0;
     }
+
     const handleSubmit = async () => {
         if(!validateForm()) {
             return;
@@ -125,11 +138,22 @@ const PaintingManagedByEmployee = () => {
                 images: uploadImgsResponses.data.files
             }
 
-            console.log("payload: ",payload);
             let res: any;
             switch (openPainting.type) {
                 case 'add':
-                    res = await createPainting(payload)
+                    res = await createPainting(payload);
+                    notify({
+                        message: res.message,
+                        severity: 'success'
+                    });
+                    setFormData({ name: '', author: '', period: '', description: '', images: []})
+                    setErrors({});
+                    setErrorImg('');
+                    setErrorImgs('');
+                    setImageFile(null);
+                    setImageFiles([]);
+                    setImage(null);
+                    setImages([])
                     break;
             
                 default:
@@ -144,21 +168,21 @@ const PaintingManagedByEmployee = () => {
 
     return (
         <Box>
-            <SearchBox
-                initialValue={searchTerm}
-                onSearch={handleSearch}
-                placeholder="Tìm kiếm theo tên, tác giả, thời kỳ"
-            >
-                <Button
-                    sx={{ border: COLORS.BUTTON, bgcolor: COLORS.BUTTON}}
-                    startIcon={<Add/>}
-                    onClick={handleOpenAddPainting}
-                >
-                    Thêm mới tác phẩm
-                </Button>
-            </SearchBox>
             {!openPainting.open && (
                 <>
+                    <SearchBox
+                        initialValue={searchTerm}
+                        onSearch={handleSearch}
+                        placeholder="Tìm kiếm theo tên, tác giả, thời kỳ"
+                    >
+                        <Button
+                            sx={{ border: COLORS.BUTTON, bgcolor: COLORS.BUTTON}}
+                            startIcon={<Add/>}
+                            onClick={handleOpenAddPainting}
+                        >
+                            Thêm mới tác phẩm
+                        </Button>
+                    </SearchBox>
                     {loading && (
                         <Backdrop open={loading}/>
                         )}
@@ -230,6 +254,7 @@ const PaintingManagedByEmployee = () => {
                                     <Typography fontWeight={700} fontSize='15px'>Hình ảnh</Typography>
                                     <ImageUpload
                                         onFileSelect={handleFileSelect}
+                                        initialImage={image}
                                     />
                                     {errorImg && (<Typography color="error" variant="caption" sx={{ mt: 1}}>{errorImg}</Typography>)}
                                 </Grid>
@@ -291,6 +316,7 @@ const PaintingManagedByEmployee = () => {
                                     <Typography fontWeight={700} fontSize='15px'>Hình ảnh bổ sung thêm</Typography>
                                     <ImagesUpload
                                         onFilesSelect={handleFilesSelect}
+                                        initialImages={images}
                                     />
                                     {errorImgs && (<Typography color="error" variant="caption">{errorImgs}</Typography>)}
                                 </Grid>
