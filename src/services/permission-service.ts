@@ -12,17 +12,14 @@ interface GroupPermissionResquest{
   permissions: IMenu[]
 }
 
-interface GetParams{
+export interface GetParams{
     page: number;
     limit: number;
     searchTerm?: string;
 }
 
-interface PaginatedResponse<T>{
-    actions: T[];
-    menus: T[];
-    permissions: T[];
-    roleGroups:T[];
+export interface PaginatedResponse<T>{
+    data: T[];
     totalPages: number;
     currentPage: number;
     total: number;

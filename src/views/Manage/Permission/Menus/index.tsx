@@ -14,6 +14,7 @@ import DialogAction from "./components/DialogAction";
 import { createMenu, getMenu, getMenus, updateMenu } from "@/services/permission-service";
 import { debounce } from "lodash";
 import TableData from "../../components/TableData";
+import { useDataList } from "@/hooks/useDataList";
 
 export interface FormDataActionMenu {
     code: string;
@@ -35,18 +36,11 @@ type FormErrors = {
 
 const Menus = () => {
     const notify = useNotification();
-    const [searchTerm, setSearchTerm] = useState("");
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [total, setTotal] = useState(0);
     const [openMenu, setOpenMenu] = useState<{type: string, open: boolean}>({
         type: '',
         open: false
     });
     const [openDialogAction, setOpenDialogAction] = useState(false);
-    const [menus, setMenus] = useState<IMenu[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const [data, setData] = useState<IMenu | null>(null);
     const [formData, setFormData] = useState<FormDataMenus>({
         code: '' , name: '', parentCode: '', path: '', icon: '', actions: []
@@ -54,45 +48,7 @@ const Menus = () => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [menu, setMenu] = useState<IMenu | null>(null);
 
-    const fetchMenusData = useCallback(async (page: number, limit: number, searchTerm?: string) => {
-        setLoading(true);
-        try {
-            const menusRes = await getMenus({ page: page, limit: limit, searchTerm: searchTerm });
-            const data = menusRes.data?.menus as any as IMenu[];
-            setMenus(data);
-            menusRes.data?.total && setTotal(menusRes.data.total)
-        } catch (error: any) {
-            setError(error.message);
-            setMenus([]);
-            setTotal(0)
-        }finally{
-            setLoading(false)
-        }
-    }, []);
-
-    const debounceGetMenus = useMemo(
-        () => debounce((page: number, limit: number, searchTerm?: string) => {
-            fetchMenusData(page, limit, searchTerm)
-        }, 500),
-        [fetchMenusData]
-    )
-
-    useEffect(() => {
-        if(searchTerm){
-            debounceGetMenus(page, rowsPerPage, searchTerm);
-        }else {
-            debounceGetMenus.cancel();
-            fetchMenusData(page, rowsPerPage);
-        }
-    }, [page, rowsPerPage, searchTerm])
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-    };
-
-    const handleSearch = (value: string) => {
-        setSearchTerm(value);
-    };
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IMenu>(getMenus);
 
     const handleOpenAddMenu = () => {
         setOpenMenu({
@@ -199,7 +155,7 @@ const Menus = () => {
             })
             setFormData({ code: data ? data?.code : '', name: '', path: '', icon: '', parentCode: '', actions: []
             });
-            fetchMenusData(page, rowsPerPage);
+            fetchData(page, rowsPerPage);
         } catch (error: any) {
             notify({
                 message: error.message,
@@ -251,7 +207,7 @@ const Menus = () => {
                                     label="menu"
                                     array={['STT', 'Mã', 'Tên chức năng', 'Chức năng cha', 'Thao tác']}
                                     colSpan={5}
-                                    data={menus}
+                                    data={listData}
                                     renderRow={(menu, index) => (
                                         <TableRow key={index}>
                                             <TableCell align="center">{index + 1}</TableCell>
@@ -461,7 +417,7 @@ const Menus = () => {
                                             label="menu"
                                             array={['STT', 'Mã', 'Tên chức năng', 'Chức năng cha', 'Thao tác']}
                                             colSpan={5}
-                                            data={menus}
+                                            data={listData}
                                             renderRow={(menu, index) => (
                                                 <TableRow key={index}>
                                                     <TableCell align="center">{index + 1}</TableCell>

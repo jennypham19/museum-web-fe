@@ -1,6 +1,6 @@
 import Page from "@/components/Page";
-import { Alert, Box, Button, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Alert, Box, Button, CircularProgress, TableCell, TableRow, Typography } from "@mui/material"
+import { useState } from "react";
 import SearchBox from "../../components/SearchBox";
 import { COLORS } from "@/constants/colors";
 import { Add, Delete, Edit } from "@mui/icons-material";
@@ -9,10 +9,10 @@ import InputText from "@/components/InputText";
 import { IAction } from "@/types/permisstion";
 import { createAction, getActions, updateAction } from "@/services/permission-service";
 import useNotification from "@/hooks/useNotification";
-import { debounce } from "lodash";
 import IconButton from "@/components/IconButton/IconButton";
 import CustomPagination from "@/components/Pagination/CustomPagination";
 import TableData from "../../components/TableData";
+import { useDataList } from "@/hooks/useDataList";
 
 export interface FormDataActions {
     code: string;
@@ -25,17 +25,11 @@ type FormErrors = {
 
 const Actions = () => {
     const notify = useNotification();
-    const [searchTerm, setSearchTerm] = useState("");
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [total, setTotal] = useState(0);
     const [openAction, setOpenAction] = useState<{type: string, open: boolean}>({
         type: '',
         open: false
     });
-    const [actions, setActions] = useState<IAction[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+
     const [formData, setFormData] = useState<FormDataActions>({
         code: '',
         name: '',
@@ -43,45 +37,9 @@ const Actions = () => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [action, setAction] = useState<IAction | null>(null)
 
-    const fetchActionsData = useCallback(async (page: number, limit: number, searchTerm?: string) => {
-        setLoading(true);
-        try {
-            const actionsRes = await getActions({ page: page, limit: limit, searchTerm: searchTerm});
-            const data = actionsRes.data?.actions as any as IAction[];
-            setActions(data);
-            actionsRes.data?.total && setTotal(actionsRes.data.total);
-        } catch (error: any) {
-            setError(error.message);
-            setActions([]);
-            setTotal(0);
-        }finally {
-            setLoading(false);
-        }
-    }, [])
 
-    const debounceGetActions = useMemo(
-        () => debounce((page: number, limit: number, searchTerm?: string) => {
-            fetchActionsData(page, limit, searchTerm);
-        }, 500),
-        [fetchActionsData]
-    )
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IAction>(getActions);
 
-    useEffect(() => {
-        if(searchTerm) {
-            debounceGetActions(page, rowsPerPage, searchTerm)
-        }else {
-            debounceGetActions.cancel();
-            fetchActionsData(page, rowsPerPage)
-        }
-    }, [page, rowsPerPage, searchTerm]);
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage)
-    }
-
-    const handleSearch = (value: string) => {
-        setSearchTerm(value);
-    }
     const handleOpenAddActions = () => {
         setOpenAction({
             type: 'add',
@@ -131,7 +89,7 @@ const Actions = () => {
                 code: '',
                 name: ''
             })
-            fetchActionsData(page, rowsPerPage)
+            fetchData(page, rowsPerPage)
         } catch (error: any) {
             notify({
                 message: error.message,
@@ -200,7 +158,7 @@ const Actions = () => {
                                 <TableData
                                     label="action"
                                     array={['STT', 'Mã', 'Tên', 'Thao tác']}
-                                    data={actions}
+                                    data={listData}
                                     colSpan={4}
                                     renderRow={(action, index) => (
                                         <TableRow key={index}>
@@ -309,7 +267,7 @@ const Actions = () => {
                                             <TableData
                                                 label="action"
                                                 array={['STT', 'Mã', 'Tên', 'Thao tác']}
-                                                data={actions}
+                                                data={listData}
                                                 colSpan={4}
                                                 renderRow={(action, index) => (
                                                     <TableRow key={index}>

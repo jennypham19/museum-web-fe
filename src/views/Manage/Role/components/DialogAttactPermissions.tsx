@@ -4,11 +4,11 @@ import { assignedGroupToUser, getRoleGroupsWithMenu, getRoleGroupToUser } from "
 import { IMenu, IPermission } from "@/types/permisstion";
 import { IUser } from "@/types/user";
 import { Alert, Box, Button, Checkbox, CircularProgress, Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Typography } from "@mui/material";
-import { debounce } from "lodash";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {useEffect, useState } from "react";
 import SearchBox from "../../components/SearchBox";
 import Grid from "@mui/material/Grid2";
 import { ArrowLeft, ArrowRight, Circle, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { useDataList } from "@/hooks/useDataList";
 
 
 interface DialogAttactPermissionProps{
@@ -19,56 +19,19 @@ interface DialogAttactPermissionProps{
 
 const DialogAttactPermission: React.FC<DialogAttactPermissionProps> = ({ open, onClose, user }) => {
     const notify = useNotification();
-    const [searchTerm, setSearchTerm] = useState('');
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [total, setTotal] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [roleGroups, setRoleGroups] = useState<IPermission[]>([]);
     const [assignedGroups, setAssignedGroups] = useState<IPermission | null>(null);
     const [checked, setChecked] = useState<number | null>(null);
     const [openCollapse, setOpenCollapse] = useState<Record<number, boolean>>({});
     const [errorPer, setErrorPer] = useState<string>('');
 
-    const fetchRoleGroupsData = useCallback(async (page: number, limit: number, searchTerm?: string) => {
-        setLoading(true)
-        try {
-            const res = await getRoleGroupsWithMenu({ page: page, limit: limit, searchTerm: searchTerm});
-            const data = res.data?.roleGroups as any as IPermission[];
-            setRoleGroups(data);
-            res.data?.total && setTotal(res.data.total);
-        } catch (error: any) {
-            setError(error.message);
-            setRoleGroups([]);
-            setTotal(0)
-        }finally {
-            setLoading(false)
-        }
-    }, []);
-    
-    const debounceGetRoleGroups = useMemo(
-        () => debounce((page: number, limit: number, searchTerm?: string) => {
-            fetchRoleGroupsData(page, limit, searchTerm);
-        }, 500),
-        [fetchRoleGroupsData]
-    )
-
-    useEffect(() => {
-        if(searchTerm) {
-            debounceGetRoleGroups(page, rowsPerPage, searchTerm)
-        }else {
-            debounceGetRoleGroups.cancel();
-            fetchRoleGroupsData(page, rowsPerPage)
-        }
-    }, [page, rowsPerPage, searchTerm]);
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPermission>(getRoleGroupsWithMenu);
 
     //Danh sách id nhóm chưa gán
-    const unassignedGroups = roleGroups.filter(
+    const unassignedGroups = listData.filter(
         (group) => assignedGroups?.id !== group.id
     )
 
-    const getRoleGroupAssignedUser = async(id: string | number) => {
+    const getRoleGroupAssignedUser = async(id: number) => {
         const res = await getRoleGroupToUser(id);
         const data = res.data as any as IPermission;
         setAssignedGroups(data)
@@ -79,7 +42,6 @@ const DialogAttactPermission: React.FC<DialogAttactPermissionProps> = ({ open, o
             getRoleGroupAssignedUser(user.id)
         }
     },[open,user])
-
 
     const handleToggle = (value: number) => {
         if(checked === value){
@@ -136,14 +98,6 @@ const DialogAttactPermission: React.FC<DialogAttactPermissionProps> = ({ open, o
                 severity: 'error'
             })
         }
-    }
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage)
-    }
-
-    const handleSearch = (value: string) => {
-        setSearchTerm(value);
     }
 
     const handleClose = () => {

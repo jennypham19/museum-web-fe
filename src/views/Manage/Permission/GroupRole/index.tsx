@@ -1,26 +1,19 @@
 import Page from "@/components/Page";
 import useNotification from "@/hooks/useNotification";
 import { Alert, Box, Button, Checkbox, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material"
-import React, { act, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchBox from "../../components/SearchBox";
 import { COLORS } from "@/constants/colors";
-import { Add, Delete, Edit, Mode } from "@mui/icons-material";
+import { Add, Delete, Edit } from "@mui/icons-material";
 import { IMenu, IPermission } from "@/types/permisstion";
 import { createRoleGroup, getAllModules, getPermissions, getPermissionWithMenuAction, updateRoleGroup } from "@/services/permission-service";
-import { debounce } from "lodash";
 import IconButton from "@/components/IconButton/IconButton";
 import TableData from "../../components/TableData";
 import CustomPagination from "@/components/Pagination/CustomPagination";
+import { useDataList } from "@/hooks/useDataList";
 
 const GroupRole = () => {
     const notify = useNotification();
-    const [searchTerm, setSearchTerm] = useState("");
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [total, setTotal] = useState(0);
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [permissions, setPermissions] = useState<IPermission[]>([]);
     const [permissionData, setPermissionData] = useState<IPermission | null>(null);
     const [openRoleGroup, setOpenRoleGroup] = useState<{type: string, open: boolean}>({
         type: '',
@@ -32,37 +25,7 @@ const GroupRole = () => {
     const [errorCheckedAction, setErrorCheckedAction] = useState<string>('');
     const [checked, setChecked] = useState<Record<string, boolean>>({});
 
-    const fetchPermissionsData = useCallback(async (page: number, limit: number, searchTerm?: string) => {
-        setLoading(true);
-        try {
-            const res = await getPermissions({ page: page, limit: limit, searchTerm: searchTerm});
-            const data = res.data?.permissions as any as IPermission[];
-            setPermissions(data);
-            res.data?.total && setTotal(res.data.total);
-        } catch (error: any) {
-            setPermissions([]);
-            setError(error.message);
-            setTotal(0)
-        } finally {
-            setLoading(false)
-        }
-    }, [])
-
-    const debounceGetPermissions = useMemo(
-        () => debounce((page: number, limit: number, searchTerm?: string) => {
-            fetchPermissionsData(page, limit, searchTerm);
-        }, 500),
-        [fetchPermissionsData]
-    )
-
-    useEffect(() => {
-        if(searchTerm){
-            debounceGetPermissions(page, rowsPerPage, searchTerm);
-        }else {
-            debounceGetPermissions.cancel();
-            fetchPermissionsData(page, rowsPerPage);
-        }
-    }, [page, rowsPerPage, searchTerm])
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPermission>(getPermissions);
 
     const getModules = async() => {
         const res = await getAllModules();
@@ -76,14 +39,6 @@ const GroupRole = () => {
         }
     },[openRoleGroup.open]);
 
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-    };
-
-    const handleSearch = (value: string) => {
-        setSearchTerm(value);
-    };
 
     const handleOpenAddRoleGroup = () => {
         setOpenRoleGroup({
@@ -146,7 +101,7 @@ const GroupRole = () => {
         } 
         setGroupName('')
         setChecked({})
-        fetchPermissionsData(page, rowsPerPage)                            
+        fetchData(page, rowsPerPage)                            
     }
     
     const validateForm = () : boolean => {
@@ -225,8 +180,6 @@ const GroupRole = () => {
             permissions
         }
 
-        console.log("data: ",data);
-        
         try {
             let res: any;
             switch (openRoleGroup.type) {
@@ -320,7 +273,7 @@ const GroupRole = () => {
                                 <TableData
                                     label="role-group"
                                     array={['STT', 'Tên', 'Thao tác']}
-                                    data={permissions}
+                                    data={listData}
                                     colSpan={3}
                                     renderRow={(permission, index) => (
                                         <TableRow key={index}>
