@@ -15,7 +15,8 @@ import InputText from "@/components/InputText";
 import ImageUpload from "../../Blog/components/ImageUpload";
 import ImagesUpload from "../../Blog/components/ImagesUpload";
 import { uploadImage, uploadImages } from "@/services/upload-service";
-import { createPainting } from "@/services/display-service";
+import { createPainting, getPaintings } from "@/services/display-service";
+import { useDataList } from "@/hooks/useDataList";
 
 export type FormErrors = {
     [K in keyof FormDataPainting]?: string;
@@ -23,13 +24,6 @@ export type FormErrors = {
 
 const PaintingManagedByEmployee = () => {
     const notify = useNotification();
-    const [searchTerm, setSearchTerm] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [paintings, setPaintings] = useState<IPainting[]>([]);
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [total, setTotal] = useState(0);
     const [errors, setErrors] = useState<FormErrors>({});
     const [formData, setFormData] = useState<FormDataPainting>({
         name: '',
@@ -49,17 +43,14 @@ const PaintingManagedByEmployee = () => {
         type: '',
         open: false
     });
-    const handleSearch = (value: string) => {
-        setSearchTerm(value)
-    };
+
+    const { listData, fetchData, page, rowsPerPage, total, loading, searchTerm, handlePageChange, handleSearch, error } = useDataList<IPainting>(getPaintings)
+
     const handleOpenAddPainting = () => {
         setOpenPainting({
             type: 'add',
             open: true
         })
-    }
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
     }
 
     const handleClose = () => {
@@ -194,23 +185,38 @@ const PaintingManagedByEmployee = () => {
                             <TableData
                                 label="painting"
                                 array={['STT', 'Tác phẩm', 'Tác giả/ Thời kỳ', 'Mô tả', 'Thao tác']}
-                                data={paintings}
+                                data={listData}
                                 colSpan={5}
                                 renderRow={(painting, index) => (
                                     <TableRow key={index}>
                                         <TableCell align="center">{index + 1}</TableCell>
                                         <TableCell align="center">
-                                            <Stack direction={{ xs: 'column', md: 'row'}}>
+                                            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
                                                 <CommonImage
                                                     src={painting.imageUrl}
                                                     sx={{ width: 60, height: 60}}
                                                 />
-                                                <Typography variant="subtitle2">{painting.name}</Typography>
-                                            </Stack>
+                                                <Stack sx={{ height: 60, ml: { xs: 0, md: 2 }, mt: { xs: 1, md: 0 }}}>
+                                                    <Typography margin="auto 0" variant="subtitle2">{painting.name}</Typography>
+                                                </Stack>
+                                            </Box>
                                         </TableCell>
-                                        <TableCell>{`${painting.author}/${painting.period}`}</TableCell>
-                                        <TableCell>{painting.description}</TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">{`${painting.author}/${painting.period}`}</TableCell>
+                                        <TableCell align="center" sx={{ display: 'flex', justifyContent: 'center'}}>
+                                            <Typography variant="body2" 
+                                                sx={{ 
+                                                    mt: 1, 
+                                                    overflow: 'hidden',
+                                                    whiteSpace: 'normal',
+                                                    wordBreak: 'break-word',
+                                                    color: '#000',
+                                                    width: { xs: 250, md: 300, lg: 700},
+                                                }}
+                                            >
+                                            {painting.description}
+                                            </Typography>  
+                                        </TableCell>
+                                        <TableCell align="center">
                                             <IconButton
                                                 handleFunt={() => {}}
                                                 icon={<Visibility color="primary"/>}
@@ -351,7 +357,7 @@ const PaintingManagedByEmployee = () => {
                                 <TableData
                                     label="painting"
                                     array={['STT', 'Tác phẩm', 'Tác giả/Thời kỳ', 'Mô tả', 'Thao tác']}
-                                    data={paintings}
+                                    data={listData}
                                     colSpan={5}
                                     renderRow={(painting, index) => (
                                         <TableRow key={index}>

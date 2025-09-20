@@ -150,12 +150,12 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose, on
         try {
             if(imageFile){
                 const uploadResponse = await uploadImage(imageFile!, 'employees');
-                if(!uploadResponse.success || !uploadResponse.data?.imageUrl){
+                if(!uploadResponse.success || !uploadResponse.data?.file){
                     throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
                 }
                 const newData = {
                     ...formData,
-                    avatar_url: uploadResponse.data.imageUrl,
+                    avatar_url: uploadResponse.data.file.imageUrl,
                 }
 
                 const { passwordConfirm, ...payload} = newData;
