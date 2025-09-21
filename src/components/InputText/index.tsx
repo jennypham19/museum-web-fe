@@ -66,7 +66,7 @@ const InputText: React.FC<CustomInputProps> = ({
   name,
   label,
   value,
-  placeholder,
+  placeholder = 'Nhập thông tin',
   onChange,
   error = false,
   helperText,

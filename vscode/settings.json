@@ -1,0 +1,53 @@
+{
+  // 🔹 Giảm index & search trong thư mục lớn
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/dist": true
+  },
+
+  // 🔹 IntelliSense & TS server
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+
+  // 🔹 Git tối ưu
+  "git.autofetch": false,
+  "git.enableSmartCommit": true,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.enabled": false,
+
+  // 🔹 Linting & Formatting
+  "editor.formatOnSave": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+
+  // 🔹 Editor performance
+  "editor.renderWhitespace": "none",
+  "editor.minimap.enabled": false,
+  "editor.largeFileOptimizations": true,
+  "editor.quickSuggestionsDelay": 100,
+
+  // 🔹 Files watcher
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/coverage/**": true
+  },
+
+  // 🔹 Terminal
+  "terminal.integrated.scrollback": 5000,
+
+  // 🔹 Misc
+  "explorer.autoReveal": false,
+  "workbench.tree.indent": 14,
+  "workbench.startupEditor": "none"
+}
