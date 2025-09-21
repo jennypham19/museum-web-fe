@@ -7,17 +7,20 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { FCC } from '@/types/react';
 import { getAccessToken, removeAccessToken } from '@/utils/AuthHelper';
 import Logger from '@/utils/Logger';
+import { getCurrentUser } from '@/services/auth-service';
 
 const InitLoadingProvider: FCC = ({ children }) => {
-  const { isInitialized, profile } = useAppSelector((state) => state.auth);
+  const { isInitialized } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const requestUser = async () => {
     try {
       const token = getAccessToken();
       if (token) {
-        if (profile) {
-          dispatch(setProfile(profile));
+        const resp = await getCurrentUser();
+        const userProfile = resp.data;
+        if (userProfile) {
+          dispatch(setProfile(userProfile));
           dispatch(setIsAuth(true));
         } else {
           throw new Error('User profile not found in response');
