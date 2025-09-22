@@ -1,17 +1,12 @@
 import React from 'react';
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
-  ListSubheader,
-  SelectChangeEvent,
-  SxProps,
-  Theme,
-  CircularProgress,
-  SelectProps,
-} from '@mui/material';
+
+
+
+import { CircularProgress, FormControl, FormHelperText, InputLabel, ListSubheader, MenuItem, Select, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material';
+
+
+
+
 
 export interface Option {
   label: string;
@@ -154,20 +149,17 @@ const InputSelect: React.FC<InputSelectProps> = ({
       disabled={disabled}
       error={error}
       sx={{
-        "& .MuiOutlinedInput-notchedOutline": {
-          border: "1px solid rgb(53, 50, 50)",
-          borderRadius: "8px",
+        '& .MuiOutlinedInput-notchedOutline': {
+          border: '1px solid rgb(53, 50, 50)',
+          borderRadius: '8px',
         },
-        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-          border: "1px solid rgb(53, 50, 50)",
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          border: '1px solid rgb(53, 50, 50)',
         },
         ...sx,
       }}
     >
-      <InputLabel
-        sx={{ fontSize: '14px', mt: 0.5}} 
-        id={`${name}-label`}
-      >
+      <InputLabel sx={{ fontSize: '14px', mt: 0.5 }} id={`${name}-label`}>
         {label}
       </InputLabel>
       <Select
@@ -178,6 +170,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
         onChange={handleChange}
         label={label}
         multiple={multiple}
+        displayEmpty
         MenuProps={MenuProps}
         renderValue={(selected) => {
           if ((multiple && Array.isArray(selected) && selected.length === 0) || !selected) {

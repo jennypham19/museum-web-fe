@@ -94,10 +94,10 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
     useEffect(() => {
         // Luôn debounce, kể cả khi có 1 hoặc cả 2 filter
         if(searchTerm || (searchTerm && status)){
-            debounceGetListUsers(page, rowPerPage, ['employee', 'admin'], status, searchTerm); 
+            debounceGetListUsers(page, rowPerPage, ['employee', 'admin', 'mod'], status, searchTerm); 
         }else{
             debounceGetListUsers.cancel();
-            fetchUsersData(page, rowPerPage, ['employee', 'admin'], status)
+            fetchUsersData(page, rowPerPage, ['employee', 'admin', 'mod'], status)
         }
     }, [page, rowPerPage, searchTerm, status])
 
@@ -196,13 +196,13 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                 >
                     Thêm mới
                 </Button>
-                <Button
+                {/* <Button
                     sx={{ border: COLORS.BUTTON, bgcolor: COLORS.BUTTON}}
                     endIcon={<AccountBox/>}
                     disabled={users.length === 0}
                 >
                     Chọn tài khoản
-                </Button>
+                </Button> */}
             </SearchBox>
             <Stack mt={1.5} direction='row'>
                 <IconButton
@@ -303,7 +303,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                         setOpenCreateEmployee(false)
                     }}
                     onReload={() => {
-                        fetchUsersData(page, rowPerPage, ['employee', 'admin'], status)
+                        fetchUsersData(page, rowPerPage, ['employee', 'admin', 'mod'], status)
                     }}
                 />
             )}
@@ -322,7 +322,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     open={openDialogConfirmUnactiveSuccess}
                     onClose={() => {
                         setOpenDialogConfirmUnactiveSuccess(false)
-                        fetchUsersData(page, rowPerPage, ['employee', 'admin'], status)
+                        fetchUsersData(page, rowPerPage, ['employee', 'admin', 'mod'], status)
                     }}
                     title={`Bạn đã vô hiệu hóa tài khoản thành công.`}
                 />
@@ -342,7 +342,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     open={openDialogConfirmActiveSuccess}
                     onClose={() => {
                         setOpenDialogConfirmActiveSuccess(false)
-                        fetchUsersData(page, rowPerPage, ['employee', 'admin'], status)
+                        fetchUsersData(page, rowPerPage, ['employee', 'admin', 'mod'], status)
                     }}
                     title={`Bạn đã kích hoạt tài khoản thành công.`}
                 />
@@ -362,7 +362,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     open={openDialogConfirmDeleteSuccess}
                     onClose={() => {
                         setOpenDialogConfirmDeleteSuccess(false)
-                        fetchUsersData(page, rowPerPage, ['employee', 'admin'], status)
+                        fetchUsersData(page, rowPerPage, ['employee', 'admin', 'mod'], status)
                     }}
                     title={`Bạn đã xóa tài khoản thành công.`}
                 />

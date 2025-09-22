@@ -1,20 +1,26 @@
-import IconButton from "@/components/IconButton/IconButton";
+import { useEffect, useState } from "react";
+
+
+
 import { AdminPanelSettings, ChevronRight, Delete, ToggleOff, Visibility } from "@mui/icons-material";
 import { Box, Stack, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import avatar from "@/assets/images/users/avatar.png";
+import DialogConfirm from "../../components/DialogConfirm";
+import DialogConfirmSuccess from "../../components/DialogConfirmSuccess";
 import CardInformation from "../../Information/components/CardInfomation";
-import { useEffect, useState } from "react";
+import DialogDetailUser from "../../Information/components/DialogDetailUser";
 import ShowAllInformationEmployee from "../../Information/components/ShowAllInformationEmployee";
+import ShowAllInformationMember from "../../Information/components/ShowAllInformationMember";
+import DialogAttactPermission from "../components/DialogAttactPermissions";
+import IconButton from "@/components/IconButton/IconButton";
+
+
+
+import avatar from "@/assets/images/users/avatar.png";
+import useNotification from "@/hooks/useNotification";
+import { deleteUser, getUsers, unactiveUser, UserPayload } from "@/services/user-service";
 import { IMember, IUser } from "@/types/user";
 import { getRoleLabel } from "@/utils/labelEntoVni";
-import ShowAllInformationMember from "../../Information/components/ShowAllInformationMember";
-import { deleteUser, getUsers, unactiveUser, UserPayload } from "@/services/user-service";
-import DialogConfirm from "../../components/DialogConfirm";
-import useNotification from "@/hooks/useNotification";
-import DialogConfirmSuccess from "../../components/DialogConfirmSuccess";
-import DialogDetailUser from "../../Information/components/DialogDetailUser";
-import DialogAttactPermission from "../components/DialogAttactPermissions";
 
 
 export const DATA_INFOR_MEMBER: IMember[] = [
@@ -98,7 +104,7 @@ const InformationManagedByAdmin = () => {
     }
 
     useEffect(() => {
-        fetchUsersData(page, rowPerPage, ["employee","admin"], 1)
+        fetchUsersData(page, rowPerPage, ["employee","admin","mod"], 1)
     }, [page, rowPerPage])
 
     const handleShowMember = () => {
@@ -247,6 +253,8 @@ const InformationManagedByAdmin = () => {
                 </Stack>
                 <Grid mt={2} container spacing={3} gap={3}>
                     {users.slice(0,6).map((data, index) => {
+                        console.log('data.permission: ', data.permission);
+                        
                         return (
                             <Grid key={index} size={{ xs: 12, md: 4}}>
                                 <CardInformation
@@ -304,7 +312,7 @@ const InformationManagedByAdmin = () => {
                 handleBack={() => {
                     setShowAll(false)
                     setShowInformationEmployee(false);
-                    fetchUsersData(page, rowPerPage, ['admin', 'employee'], 1)
+                    fetchUsersData(page, rowPerPage, ['admin', 'employee', 'mod'], 1)
                 }}
             />
         )}
@@ -332,7 +340,7 @@ const InformationManagedByAdmin = () => {
                 open={openDialogConfirmUnactiveSuccess}
                 onClose={() => {
                     setOpenDialogConfirmUnactiveSuccess(false)
-                    fetchUsersData(page, rowPerPage, ['admin', 'employee'], 1)
+                    fetchUsersData(page, rowPerPage, ['admin', 'employee', 'mod'], 1)
                 }}
                 title={`Bạn đã vô hiệu hóa tài khoản thành công.`}
             />
@@ -352,7 +360,7 @@ const InformationManagedByAdmin = () => {
                 open={openDialogConfirmDeleteSuccess}
                 onClose={() => {
                     setOpenDialogConfirmDeleteSuccess(false)
-                    fetchUsersData(page, rowPerPage, ['admin', 'employee'], 1)
+                    fetchUsersData(page, rowPerPage, ['admin', 'employee', 'mod'], 1)
                 }}
                 title={`Bạn đã xóa tài khoản thành công.`}
             />
