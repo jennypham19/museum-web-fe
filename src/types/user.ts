@@ -24,3 +24,9 @@ export interface IMember {
     member?: string,
     code?: string
 }
+
+export interface IRole {
+    id: number,
+    label: string,
+    value: string
+}

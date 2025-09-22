@@ -10,6 +10,21 @@ import { resizeImage } from "@/utils/common";
 import useNotification from "@/hooks/useNotification";
 import { createUser } from "@/services/user-service";
 import { uploadImage } from "@/services/upload-service";
+import { IRole } from "@/types/user";
+import InputSelect from "@/components/InputSelect";
+
+const ROLE_USER: IRole[] = [
+    {
+        id: 1,
+        label: 'Nhân viên quản lý',
+        value: 'employee'
+    },
+    {
+        id: 2,
+        label: 'Kiểm duyệt viên',
+        value: 'mod'
+    }
+]
 
 export interface FormDataEmployees{
     email: string,
@@ -17,6 +32,7 @@ export interface FormDataEmployees{
     password: string,
     passwordConfirm: string,
     phone_number: string,
+    role: string
 }
 
 type FormErrors = {
@@ -43,13 +59,12 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose, on
         password: '',
         passwordConfirm: '',
         phone_number: '',
+        role: ''
     });
     const [isSubmiting, setIsSubmitting] = useState(false);
 
     let finalDisplayAvatarSrc: string | undefined = undefined;
     if (avatarPreview) {
-        console.log("avatarPreview: ",avatarPreview);
-        
         finalDisplayAvatarSrc = avatarPreview;
     } else if (initialAvatarUrl) {
         finalDisplayAvatarSrc = initialAvatarUrl;
@@ -228,6 +243,25 @@ const DialogAddEmployee: React.FC<DialogAddEmployeeProps> = ({ open, onClose, on
                             margin="none"
                             error={!!errors.full_name}
                             helperText={errors.full_name}
+                        />
+                    </Grid>
+                    <Grid size={{ xs: 12}}>
+                        <Typography fontWeight={700} fontSize='15px'>Vai trò</Typography>
+                        <InputSelect
+                            label=""
+                            name="role"
+                            onChange={handleInputChange}
+                            value={formData.role}
+                            options={ROLE_USER}
+                            transformOptions={(data) => 
+                                data.map((item) => ({
+                                    value: item.value,
+                                    label: item.label
+                                })
+                            )}
+                            placeholder="Nhập thông tin"
+                            error={!!errors.role}
+                            helperText={errors.role}
                         />
                     </Grid>
                     <Grid size={{ xs: 12}}>
