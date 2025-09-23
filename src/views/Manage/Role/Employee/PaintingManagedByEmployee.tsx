@@ -2,21 +2,14 @@ import { useState } from "react";
 
 
 
-import { Add, Delete, Edit, Visibility } from "@mui/icons-material";
-import { Alert, Box, Button, Stack, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import ImagesUpload from "../../Blog/components/ImagesUpload";
-import ImageUpload from "../../Blog/components/ImageUpload";
+import { Add, NavigateNext } from "@mui/icons-material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import SearchBox from "../../components/SearchBox";
-import TableData from "../../components/TableData";
 import CreatePainting from "../../Display/Picture/components/CreatePainting";
 import EditPainting from "../../Display/Picture/components/EditPainting";
 import ViewPainting from "../../Display/Picture/components/ViewPainting";
 import Backdrop from "@/components/Backdrop";
 import IconButton from "@/components/IconButton/IconButton";
-import CommonImage from "@/components/Image/index";
-import InputText from "@/components/InputText";
-import CustomPagination from "@/components/Pagination/CustomPagination";
 
 
 
@@ -27,6 +20,10 @@ import { createPainting, getPaintings } from "@/services/display-service";
 import { uploadImage, uploadImages } from "@/services/upload-service";
 import { FormDataPainting, IPainting } from "@/types/display";
 
+
+interface PaintingManagedByEmployeeProps {
+  
+}
 
 export type FormErrors = {
     [K in keyof FormDataPainting]?: string;
@@ -49,9 +46,14 @@ const PaintingManagedByEmployee = () => {
     const [errorImg, setErrorImg] = useState<string>('');
     const [errorImgs, setErrorImgs] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [openPainting, setOpenPainting] = useState<{type: string, open: boolean}>({
-        type: '',
-        open: false
+    const [openPainting, setOpenPainting] = useState<{ type: string; open: boolean }>({
+      type: '',
+      open: false,
+    });
+    const [showAll, setShowAll] = useState(false);
+    const [showAllPaintings, setShowAllPaintings] = useState<{ open: boolean; type: string }>({
+      open: false,
+      type: '',
     });
     const [painting, setPainting] = useState<IPainting | null> (null);
 
@@ -62,30 +64,24 @@ const PaintingManagedByEmployee = () => {
             type: 'add',
             open: true
         })
+        setShowAll(true)
     }
 
-    const handleOpenViewPainting = (data: IPainting) => {
-        setOpenPainting({
-            type: 'view',
-            open: true
-        });
-        setPainting(data)
-    }
+    const handleShowAllPaintingsCreate = () => {
+      setShowAll(true);
+      setShowAllPaintings({
+        open: true,
+        type: 'pending',
+      });
+    };
 
-    const handleOpenEditPainting = (data: IPainting) => {
-        setOpenPainting({
-            type: 'edit',
-            open: true
-        });
-        setFormData({
-            name: data.name,
-            author: data.author,
-            period: data.period,
-            description: data.description,
-            images: data.images
-        })
-        setImage(data.imageUrl)
-    }
+    const handleShowAllPaintings = () => {
+      setShowAll(true);
+      setShowAllPaintings({
+        open: true,
+        type: 'all',
+      });
+    };
 
     const handleCloseViewPainting = () => {
         setOpenPainting({
@@ -201,7 +197,7 @@ const PaintingManagedByEmployee = () => {
 
     return (
       <Box>
-        {!openPainting.open && (
+        {!showAll && (
           <>
             <SearchBox
               initialValue={searchTerm}
@@ -216,89 +212,53 @@ const PaintingManagedByEmployee = () => {
                 Thêm mới tác phẩm
               </Button>
             </SearchBox>
-            {loading && <Backdrop open={loading} />}
-            {error && !loading && (
-              <Alert severity='error' sx={{ my: 2 }}>
-                {error}
-              </Alert>
-            )}
-            {!loading && !error && (
-              <Box my={2}>
-                <TableData
-                  label='painting'
-                  array={['STT', 'Tác phẩm', 'Tác giả/ Thời kỳ', 'Mô tả', 'Thao tác']}
-                  data={listData}
-                  colSpan={5}
-                  renderRow={(painting, index) => (
-                    <TableRow key={index}>
-                      <TableCell align='center'>{index + 1}</TableCell>
-                      <TableCell align='center'>
-                        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
-                          <CommonImage src={painting.imageUrl} sx={{ width: 60, height: 60 }} />
-                          <Stack sx={{ height: 60, ml: { xs: 0, md: 2 }, mt: { xs: 1, md: 0 } }}>
-                            <Typography margin='auto 0' variant='subtitle2'>
-                              {painting.name}
-                            </Typography>
-                          </Stack>
-                        </Box>
-                      </TableCell>
-                      <TableCell align='center'>{`${painting.author}/${painting.period}`}</TableCell>
-                      <TableCell align='center' sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Tooltip title={painting.description}>
-                          <Typography
-                            variant='body2'
-                            sx={{
-                              mt: 1,
-                              overflow: 'hidden',
-                              whiteSpace: 'normal',
-                              wordBreak: 'break-word',
-                              color: '#000',
-                              width: 400,
-                              textOverflow: 'ellipsis',
-                              display: '-webkit-box',
-                              WebkitLineClamp: 3,
-                              WebkitBoxOrient: 'vertical',
-                            }}
-                          >
-                            {painting.description}
-                          </Typography>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell align='center'>
-                        <IconButton
-                          handleFunt={() => painting && handleOpenViewPainting(painting)}
-                          icon={<Visibility color='primary' />}
-                          tooltip='Xem chi tiết'
-                        />
-                        <IconButton
-                          handleFunt={() => painting && handleOpenEditPainting(painting)}
-                          icon={<Edit color='info' />}
-                          tooltip='Chỉnh sửa'
-                        />
-                        <IconButton
-                          handleFunt={() => {}}
-                          icon={<Delete color='error' />}
-                          tooltip='Xóa'
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )}
+            {/* Tác phẩm vừa tạo */}
+            <Box
+              p={2}
+              onClick={handleShowAllPaintingsCreate}
+              sx={{ cursor: 'pointer' }}
+              display='flex'
+              justifyContent='space-between'
+            >
+              <Typography variant='h6' fontWeight={600}>
+                Tác phẩm vừa tạo
+              </Typography>
+              <Stack>
+                <Typography pt={1} fontWeight={600} variant='subtitle2'>
+                  Xem thêm
+                </Typography>
+                <IconButton
+                  handleFunt={handleShowAllPaintingsCreate}
+                  icon={<NavigateNext sx={{ width: '28px', height: '28px' }} />}
                 />
-                <Box display='flex' justifyContent='center' mt={2}>
-                  <CustomPagination
-                    count={total}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    onPageChange={handlePageChange}
-                  />
-                </Box>
-              </Box>
-            )}
+              </Stack>
+            </Box>
+            {/* Trạng thái tác phẩm */}
+            <Box
+              p={2}
+              onClick={handleShowAllPaintings}
+              sx={{ cursor: 'pointer' }}
+              display='flex'
+              justifyContent='space-between'
+            >
+              <Typography variant='h6' fontWeight={600}>
+                Trạng thái tác phẩm
+              </Typography>
+              <Stack>
+                <Typography pt={1} fontWeight={600} variant='subtitle2'>
+                  Xem thêm
+                </Typography>
+                <IconButton
+                  handleFunt={handleShowAllPaintings}
+                  icon={<NavigateNext sx={{ width: '28px', height: '28px' }} />}
+                />
+              </Stack>
+            </Box>
           </>
         )}
 
         {/* Thêm mới bản ghi */}
-        {openPainting.open && openPainting.type === 'add' && (
+        {showAll && openPainting.open && openPainting.type === 'add' && (
           <>
             <CreatePainting
               error={{ errorImg, errorImgs }}
@@ -326,7 +286,7 @@ const PaintingManagedByEmployee = () => {
               errors={errors}
               formData={formData}
               image={image}
-              images={formData.images.map(img => img.url)}
+              images={formData.images.map((img) => img.url)}
               onInputChange={handleInputChange}
               onSubmit={handleSubmit}
               onClose={handleClose}
