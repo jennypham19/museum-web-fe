@@ -12,6 +12,10 @@ import AllPaintingsCreated from "../../Display/Picture/components/AllPaintingsCr
 import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
 
 
+interface PaintingManagedByEmployeeProps {
+  
+}
+
 export type FormErrors = {
     [K in keyof FormDataPainting]?: string;
 };
@@ -48,7 +52,7 @@ const PaintingManagedByEmployee = () => {
       placeholderData: keepPreviousData
     });
     const paintingsStatus = paintings?.data?.data as any as IPainting[];
-
+  
     const handleOpenViewPainting = (data: IPainting) => {
         setOpenPainting({
             type: 'view',

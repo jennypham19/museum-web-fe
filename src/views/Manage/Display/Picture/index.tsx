@@ -6,6 +6,7 @@ import PaintingManagedByEmployee from "../../Role/Employee/PaintingManagedByEmpl
 
 const Painting = () => {
     const { profile } = useAuth();
+    
     return(
         <Page title="Quản lý trưng bày - Tác phẩm">
             {profile?.role === ROLE.ADMIN ? (
