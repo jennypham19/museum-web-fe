@@ -6,22 +6,22 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 interface FetchParams {
   page: number;
   limit: number;
+  status?: string | string[];
   searchTerm?: string;
 }
 
-export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse<PaginatedResponse<T>>>) => {
+export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse<PaginatedResponse<T>>>, rowsPerPage: number = 10, status?: string) => {
     const [listData, setListData] = useState<T[]>([]);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const fetchData = useCallback(async(page: number, limit: number, searchTerm?:string) => {
+    const fetchData = useCallback(async(page: number, limit: number, status?: string | string[] , searchTerm?: string) => {
         setLoading(true);
         try {
-            const res = await fn({ page: page, limit: limit, searchTerm: searchTerm});
+            const res = await fn({ page: page, limit: limit, status: status, searchTerm: searchTerm});
             const data = res.data?.data as any as T[];
             setListData(data);
             res.data?.total && setTotal(res.data.total)
@@ -35,20 +35,20 @@ export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse
     }, []);
 
     const debounceGet = useMemo(
-        () => debounce((page: number, limit: number, searchTerm?: string) => {
-            fetchData(page, limit, searchTerm);
+        () => debounce((page: number, limit: number, status?: string | string[], searchTerm?: string) => {
+            fetchData(page, limit, status, searchTerm);
         }, 500),
         [fetchData]
     )
 
     useEffect(() => {
         if(searchTerm) {
-            debounceGet(page, rowsPerPage, searchTerm)
+            debounceGet(page, rowsPerPage, status, searchTerm)
         }else {
             debounceGet.cancel();
-            fetchData(page, rowsPerPage)
+            fetchData(page, rowsPerPage, status)
         }
-    }, [page, rowsPerPage, searchTerm]);
+    }, [page, rowsPerPage, searchTerm, status]);
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage)

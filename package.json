@@ -20,6 +20,7 @@
     "@mui/material": "^6.5.0",
     "@mui/x-date-pickers": "^7.19.0",
     "@reduxjs/toolkit": "^2.2.8",
+    "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-table": "^8.20.5",
     "axios": "^1.7.7",
     "click-to-react-component": "^1.1.0",

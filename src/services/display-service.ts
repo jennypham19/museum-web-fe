@@ -3,6 +3,7 @@ import { Images} from '@/types/post';
 import HttpClient from '@/utils/HttpClient';
 import { GetParams, PaginatedResponse } from './permission-service';
 import { IPainting } from '@/types/display';
+import QueryString from 'qs';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'; 
 const prefix = `${API_BASE_URL}/api/display`;
@@ -18,12 +19,38 @@ interface PaintingRequest{
 
 export type PaintingsResponse = PaginatedResponse<IPainting>;
 
+export interface PaintingPayload {
+  status: string
+}
+
 // Thêm mới tác phẩm
 export const createPainting = (payload: PaintingRequest) => {
     return HttpClient.post(`${prefix}/create-painting`, payload)
 }
 
 // Lấy danh sách
-export const getPaintings = (params: GetParams) => {
-    return HttpClient.get<any, HttpResponse<PaintingsResponse>>(`${prefix}/get-list-paintings`, { params })
+export const getPaintings = async(params: GetParams) : Promise<HttpResponse<PaintingsResponse>> => {
+    const url = `${prefix}/get-list-paintings`;
+    const response = await HttpClient.get<{
+        success: boolean,
+        message: string,
+        data: PaintingsResponse;
+  }>(url, { 
+    params,
+    // cấu hình paramsSerializer để ép axios serialize array kiểu role=employee&role=admin (Sequelize xử lý ngon hơn)
+    paramsSerializer: (params) =>
+      QueryString.stringify(params, { arrayFormat: "repeat"}),
+    // => status=created or status=pending&status=reviewing...
+  });
+  if(response.data && response.success && response.data){
+    return response;
+  }else{
+    throw new Error(response.message || 'Failed to fetch list user');
+  }
+}
+
+// Gửi phê duyệt
+export const sendApproval = async(id: number, payload: PaintingPayload): Promise<HttpResponse<any>> => {
+    const url = `${prefix}/send-approval-painting/${id}`;
+    return HttpClient.patch<any>(url, payload as any);
 }

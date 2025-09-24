@@ -1,3 +1,4 @@
+import { StatusObject } from "@/constants/status";
 import { IImage, Images } from "./post";
 
 export interface IPainting{
@@ -9,7 +10,8 @@ export interface IPainting{
     description: string, 
     createdAt?: string,
     updatedAt?: string,
-    images: IImage[]
+    images: IImage[],
+    status: StatusObject | null
 }
 
 export interface FormDataPainting{

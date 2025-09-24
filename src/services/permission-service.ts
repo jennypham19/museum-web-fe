@@ -15,6 +15,7 @@ interface GroupPermissionResquest{
 export interface GetParams{
     page: number;
     limit: number;
+    status?: string | string[];
     searchTerm?: string;
 }
 

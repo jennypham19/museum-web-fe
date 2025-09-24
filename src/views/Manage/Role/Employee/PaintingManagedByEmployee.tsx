@@ -1,90 +1,64 @@
-import { useState } from "react";
-
-
-
-import { Add, Delete, Edit, Visibility } from "@mui/icons-material";
-import { Alert, Box, Button, Stack, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+import { useMemo, useState } from "react";
+import { Box, Chip, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import ImagesUpload from "../../Blog/components/ImagesUpload";
-import ImageUpload from "../../Blog/components/ImageUpload";
-import SearchBox from "../../components/SearchBox";
-import TableData from "../../components/TableData";
-import CreatePainting from "../../Display/Picture/components/CreatePainting";
-import EditPainting from "../../Display/Picture/components/EditPainting";
 import ViewPainting from "../../Display/Picture/components/ViewPainting";
-import Backdrop from "@/components/Backdrop";
-import IconButton from "@/components/IconButton/IconButton";
-import CommonImage from "@/components/Image/index";
-import InputText from "@/components/InputText";
-import CustomPagination from "@/components/Pagination/CustomPagination";
-
-
-
-import { COLORS } from "@/constants/colors";
-import { useDataList } from "@/hooks/useDataList";
-import useNotification from "@/hooks/useNotification";
-import { createPainting, getPaintings } from "@/services/display-service";
-import { uploadImage, uploadImages } from "@/services/upload-service";
 import { FormDataPainting, IPainting } from "@/types/display";
+import OverviewDataCreate from "../../components/OverviewDataCreate";
+import OverviewData from "../../components/OverviewData";
+import CardData from "../../components/CardData";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getPaintings } from "@/services/display-service";
+import AllPaintingsCreated from "../../Display/Picture/components/AllPaintingsCreated";
+import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
 
+
+interface PaintingManagedByEmployeeProps {
+  
+}
 
 export type FormErrors = {
     [K in keyof FormDataPainting]?: string;
 };
 
 const PaintingManagedByEmployee = () => {
-    const notify = useNotification();
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [formData, setFormData] = useState<FormDataPainting>({
-        name: '',
-        author: '',
-        period: '',
-        description: '',
-        images: []
-    });
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imageFiles, setImageFiles] = useState<File[]>([]);
-    const [image, setImage] = useState<string | null>(null);
-    const [images, setImages] = useState<string[]>([]);
-    const [errorImg, setErrorImg] = useState<string>('');
-    const [errorImgs, setErrorImgs] = useState<string>('');
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openPainting, setOpenPainting] = useState<{type: string, open: boolean}>({
         type: '',
         open: false
     });
+    const [showAll, setShowAll] = useState(false);
+    const [showAllPaintings, setShowAllPaintings] = useState<{open: boolean, type: string}>({
+        open: false,
+        type: ''
+    });
     const [painting, setPainting] = useState<IPainting | null> (null);
 
-    const { listData, fetchData, page, rowsPerPage, total, loading, searchTerm, handlePageChange, handleSearch, error } = useDataList<IPainting>(getPaintings)
+    const { data } = useQuery({
+      queryKey: ['data', 'created', page, rowsPerPage],
+      queryFn: () => {
+        return getPaintings({ page, limit: rowsPerPage, status: 'created'});
+      },
+      placeholderData: keepPreviousData
+    });
 
-    const handleOpenAddPainting = () => {
-        setOpenPainting({
-            type: 'add',
-            open: true
-        })
-    }
+    const paintingsCreated = data?.data?.data as any as IPainting[];
 
+    const { data: paintings } = useQuery({
+      queryKey: ['data', ['pending', 'reviewing', 'approved', 'rejected'], page, rowsPerPage],
+      queryFn: () => {
+        return getPaintings({ page, limit: rowsPerPage, status: ['pending', 'reviewing', 'approved', 'rejected'] });
+      },
+      placeholderData: keepPreviousData
+    });
+    const paintingsStatus = paintings?.data?.data as any as IPainting[];
+  
     const handleOpenViewPainting = (data: IPainting) => {
         setOpenPainting({
             type: 'view',
             open: true
         });
         setPainting(data)
-    }
-
-    const handleOpenEditPainting = (data: IPainting) => {
-        setOpenPainting({
-            type: 'edit',
-            open: true
-        });
-        setFormData({
-            name: data.name,
-            author: data.author,
-            period: data.period,
-            description: data.description,
-            images: data.images
-        })
-        setImage(data.imageUrl)
     }
 
     const handleCloseViewPainting = () => {
@@ -95,244 +69,119 @@ const PaintingManagedByEmployee = () => {
         setPainting(null)
     }
 
-    const handleClose = () => {
-        setOpenPainting({
-            type: 'add',
-            open: false
-        })
-        setFormData({ name: '', author: '', period: '', description: '', images: []})
-        setErrors({});
-        setErrorImg('');
-        setErrorImgs('');
-        setImage(null);     // reset ảnh chính
-        setImages([]);      // reset nhiều ảnh
-        setImageFile(null);
-        setImageFiles([]);
+    const handleShowAllPaintingsCreate = () => {
+      setShowAll(true)
+      setShowAllPaintings({
+        open: true,
+        type: 'created'
+      })
     }
 
-    const handleInputChange = (name: string, value: any) => {
-        setFormData(prev => ({ ...prev, [name]: value}));
-        if(errors[name as keyof typeof errors]) {
-            setErrors(prev => ({ ...prev, [name]: undefined}))
-        }
-    }
-    const handleFileSelect = (file: File | null) => {
-        setImageFile(file);
-        setErrorImg('');
-        if (file) {
-            const previewUrl = URL.createObjectURL(file);
-            setImage(previewUrl);   // 👈 cái này mới đẩy vào ImageUpload
-        } else {
-            setImage(null);
-        }
-    }
-    const handleFilesSelect = (files: File[]) => {
-        setImageFiles(prev => [...prev, ...files]);
-        setErrorImgs('')
+    const handleShowAllPaintings = () => {
+      setShowAll(true)
+      setShowAllPaintings({
+        open: true,
+        type: 'all'
+      })
     }
 
-    const validateForm = (): boolean => {
-        const newErrors: FormErrors = {};
-        if(!formData.name) newErrors.name = 'Vui lòng nhập tên.';
-        if(!formData.author) newErrors.author = 'Vui lòng nhập tác giả';
-        if(!formData.period) newErrors.period = 'Vui lòng nhập thời kỳ';
-        if(!formData.description) newErrors.description = 'Vui lòng nhập mô tả';
-        if(!imageFile) {
-            setErrorImg('Vui lòng tải lên hình ảnh.');
-        };
-        if(imageFiles.length === 0) {
-            setErrorImgs('Vui lòng tải lên các hình ảnh.')
-        }
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0 && !!imageFile && imageFiles.length > 0;
-    }
+    // Tính toán danh sách hiển thị
+    const displayedPaintingsCreated = useMemo(() => {
+        if (paintingsCreated?.length === 0) return [];
+        return showAllPaintings.type === 'created' ? paintingsCreated : paintingsCreated?.slice(0, 4);
+    }, [paintingsCreated, showAllPaintings]);
 
-    const handleSubmit = async () => {
-        if(!validateForm()) {
-            return;
-        }
-        setIsSubmitting(true)
-        try {
-            // 1 ảnh
-            const uploadResponse = await uploadImage(imageFile!, 'display/paintings/image');
-            if(!uploadResponse.success || !uploadResponse.data?.file){
-                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
-            }
-
-            // nhiều ảnh
-            const uploadImgsResponses = await uploadImages(imageFiles, 'display/paintings/image');
-            if(!uploadImgsResponses.success || !uploadImgsResponses.data?.files){
-                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
-            }
-
-            const payload = {
-                ...formData,
-                imageUrl: uploadResponse.data.file.imageUrl,
-                images: uploadImgsResponses.data.files
-            }
-
-            let res: any;
-            switch (openPainting.type) {
-                case 'add':
-                    res = await createPainting(payload);
-                    notify({
-                        message: res.message,
-                        severity: 'success'
-                    });
-                    setFormData({ name: '', author: '', period: '', description: '', images: []})
-                    setErrors({});
-                    setErrorImg('');
-                    setErrorImgs('');
-                    setImageFile(null);
-                    setImageFiles([]);
-                    setImage(null);
-                    setImages([])
-                    break;
-            
-                default:
-                    break;
-            }
-        } catch (error: any) {
-            notify({ message: error.message, severity: 'error'})
-        }finally {
-            setIsSubmitting(false )
-        }
-    }
+    const displayedPaintings = useMemo(() => {
+      if(paintingsStatus?.length === 0) return [];
+      return showAllPaintings.type === 'all' ? paintingsStatus : paintingsStatus?.slice(0,4);
+    }, [paintingsStatus, showAllPaintings])
 
     return (
       <Box>
-        {!openPainting.open && (
+        {!showAll && (
           <>
-            <SearchBox
-              initialValue={searchTerm}
-              onSearch={handleSearch}
-              placeholder='Tìm kiếm theo tên, tác giả, thời kỳ'
+            <OverviewDataCreate
+              title="Tác phẩm vừa tạo"
+              onShowAllCreate={handleShowAllPaintingsCreate}
             >
-              <Button
-                sx={{ border: COLORS.BUTTON, bgcolor: COLORS.BUTTON }}
-                startIcon={<Add />}
-                onClick={handleOpenAddPainting}
-              >
-                Thêm mới tác phẩm
-              </Button>
-            </SearchBox>
-            {loading && <Backdrop open={loading} />}
-            {error && !loading && (
-              <Alert severity='error' sx={{ my: 2 }}>
-                {error}
-              </Alert>
-            )}
-            {!loading && !error && (
-              <Box my={2}>
-                <TableData
-                  label='painting'
-                  array={['STT', 'Tác phẩm', 'Tác giả/ Thời kỳ', 'Mô tả', 'Thao tác']}
-                  data={listData}
-                  colSpan={5}
-                  renderRow={(painting, index) => (
-                    <TableRow key={index}>
-                      <TableCell align='center'>{index + 1}</TableCell>
-                      <TableCell align='center'>
-                        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
-                          <CommonImage src={painting.imageUrl} sx={{ width: 60, height: 60 }} />
-                          <Stack sx={{ height: 60, ml: { xs: 0, md: 2 }, mt: { xs: 1, md: 0 } }}>
-                            <Typography margin='auto 0' variant='subtitle2'>
-                              {painting.name}
-                            </Typography>
-                          </Stack>
-                        </Box>
-                      </TableCell>
-                      <TableCell align='center'>{`${painting.author}/${painting.period}`}</TableCell>
-                      <TableCell align='center' sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Tooltip title={painting.description}>
-                          <Typography
-                            variant='body2'
-                            sx={{
-                              mt: 1,
-                              overflow: 'hidden',
-                              whiteSpace: 'normal',
-                              wordBreak: 'break-word',
-                              color: '#000',
-                              width: 400,
-                              textOverflow: 'ellipsis',
-                              display: '-webkit-box',
-                              WebkitLineClamp: 3,
-                              WebkitBoxOrient: 'vertical',
-                            }}
-                          >
-                            {painting.description}
-                          </Typography>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell align='center'>
-                        <IconButton
-                          handleFunt={() => painting && handleOpenViewPainting(painting)}
-                          icon={<Visibility color='primary' />}
-                          tooltip='Xem chi tiết'
-                        />
-                        <IconButton
-                          handleFunt={() => painting && handleOpenEditPainting(painting)}
-                          icon={<Edit color='info' />}
-                          tooltip='Chỉnh sửa'
-                        />
-                        <IconButton
-                          handleFunt={() => {}}
-                          icon={<Delete color='error' />}
-                          tooltip='Xóa'
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )}
-                />
-                <Box display='flex' justifyContent='center' mt={2}>
-                  <CustomPagination
-                    count={total}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    onPageChange={handlePageChange}
-                  />
-                </Box>
+              <Box px={2}>
+                  <Grid container spacing={3}>
+                    {displayedPaintingsCreated?.length === 0 && (
+                      <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào cả</Typography>
+                    )}
+                    {displayedPaintingsCreated?.map((painting, index) => {
+                      return(
+                        <Grid key={index} size={{ xs: 12, sm: 6, md: 3}}>
+                          <CardData
+                            data={painting}
+                            imageUrl={painting.imageUrl}
+                            title={painting.name}
+                            onOpenDetail={handleOpenViewPainting}
+                            renderData={(painting) => (
+                              <Stack px={2} pb={2} direction='column'>
+                                <Typography fontWeight={700} fontSize={{ xs: '16px', md: '20px'}}>{painting.name}</Typography>
+                                <Typography fontSize={{ xs: '14px', md: '15px'}}>{`Nghệ sĩ: ${painting.author}`}</Typography>
+                                <Typography fontSize={{ xs: '14px', md: '15px'}}>{`Thời gian: ${painting.period}`}</Typography>
+                              </Stack>
+                            )}
+                          />
+                        </Grid>
+                      )
+                    })}
+                  </Grid>
               </Box>
-            )}
+            </OverviewDataCreate>
+            <OverviewData
+              title="Trạng thái tác phẩm"
+              onShowAll={handleShowAllPaintings}
+            >
+              <Box px={2}>
+                  <Grid container spacing={3}>
+                    {displayedPaintings?.length === 0 && (
+                      <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào cả</Typography>
+                    )}
+                    {displayedPaintings?.map((painting, index) => {
+                      return (
+                        <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
+                          <CardData
+                            data={painting}
+                            imageUrl={painting.imageUrl}
+                            title={painting.name}
+                            onOpenDetail={handleOpenViewPainting}
+                            renderData={(painting) => (
+                              <Stack px={2} pb={2} direction='column'>
+                                <Stack display='flex' justifyContent='flex-end'>
+                                    {painting.status && (
+                                      <Chip
+                                        label={getStatusLabel(painting.status)}
+                                        // color={getStatusLabelColor(painting.status).color}
+                                      />                                      
+                                    )}
+                                </Stack>
+                                <Typography fontWeight={700} fontSize={{ xs: '16px', md: '20px'}}>{painting.name}</Typography>
+                                <Typography fontSize={{ xs: '14px', md: '15px'}}>{`Nghệ sĩ: ${painting.author}`}</Typography>
+                                <Typography fontSize={{ xs: '14px', md: '15px'}}>{`Thời gian: ${painting.period}`}</Typography>
+                              </Stack>
+                            )}
+                          />
+                        </Grid>
+                      )
+                    })}
+                  </Grid>
+              </Box>
+            </OverviewData>
           </>
         )}
-
-        {/* Thêm mới bản ghi */}
-        {openPainting.open && openPainting.type === 'add' && (
-          <>
-            <CreatePainting
-              error={{ errorImg, errorImgs }}
-              onFileSelect={handleFileSelect}
-              onFilesSelect={handleFilesSelect}
-              errors={errors}
-              formData={formData}
-              image={image}
-              images={images}
-              onInputChange={handleInputChange}
-              onSubmit={handleSubmit}
-              onClose={handleClose}
-            />
-            <Backdrop open={isSubmitting} />
-          </>
-        )}
-
-        {/* Chỉnh sửa bản ghi */}
-        {openPainting.open && openPainting.type === 'edit' && (
-          <>
-            <EditPainting
-              error={{ errorImg, errorImgs }}
-              onFileSelect={handleFileSelect}
-              onFilesSelect={handleFilesSelect}
-              errors={errors}
-              formData={formData}
-              image={image}
-              images={formData.images.map(img => img.url)}
-              onInputChange={handleInputChange}
-              onSubmit={handleSubmit}
-              onClose={handleClose}
-            />
-            <Backdrop open={isSubmitting} />
-          </>
+        {showAll && showAllPaintings.open && showAllPaintings.type === 'created' && (
+          <AllPaintingsCreated
+            onBack={() => {
+              setShowAll(false)
+              setShowAllPaintings({
+                open: false,
+                type: 'created'
+              })
+            }}
+          />
         )}
 
         {/* Chi tiết bản ghi */}

@@ -26,6 +26,7 @@ const ViewPainting: React.FC<ViewPaintingProps> = ({ open, data, onClose }) => {
     <DialogComponent
       dialogKey={open}
       handleClose={handleClose}
+      dialogTitle="Chi tiết tác phẩm"
       isActiveFooter={false}
       maxWidth='lg'
     >
