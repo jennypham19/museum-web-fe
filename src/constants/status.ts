@@ -27,3 +27,22 @@ export const ROLE_LABELS: { [key in RoleUser]: string } = {
     [RoleUser.MEMBER]: 'Thành viên',
     [RoleUser.MOD]: 'Kiểm duyệt viên'
 }
+
+// Trạng thái tác phẩm, BST, triển lãm, sự kiện
+export const StatusObject = {
+    CREATED: 'created',
+    PENDING: 'pending',
+    REVIEWING: 'reviewing',
+    APPROVED: 'approved',
+    REJECTED: 'rejected'
+};
+
+export type StatusObject = typeof StatusObject[keyof typeof StatusObject];
+
+export const STATUS_LABELS: { [key in StatusObject]: string } = {
+    [StatusObject.CREATED]: 'Đã tạo',
+    [StatusObject.PENDING]: 'Chờ phê duyệt',
+    [StatusObject.REVIEWING]: 'Đang phê duyệt',
+    [StatusObject.APPROVED]: 'Đã phê duyệt',
+    [StatusObject.REJECTED]: 'Phê duyệt thất bại'
+}
