@@ -10,6 +10,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getPaintings } from "@/services/display-service";
 import AllPaintingsCreated from "../../Display/Picture/components/AllPaintingsCreated";
 import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
+import AllPaintings from "../../Display/Picture/components/AllPaintings";
 
 
 interface PaintingManagedByEmployeeProps {
@@ -52,6 +53,10 @@ const PaintingManagedByEmployee = () => {
       placeholderData: keepPreviousData
     });
     const paintingsStatus = paintings?.data?.data as any as IPainting[];
+
+    const fetchData = async (page: number, limit: number, status?: string | string[]) => {
+      await getPaintings({ page: page, limit: limit, status: status})
+    }
   
     const handleOpenViewPainting = (data: IPainting) => {
         setOpenPainting({
@@ -154,7 +159,7 @@ const PaintingManagedByEmployee = () => {
                                     {painting.status && (
                                       <Chip
                                         label={getStatusLabel(painting.status)}
-                                        // color={getStatusLabelColor(painting.status).color}
+                                        color={getStatusLabelColor(painting.status).color}
                                       />                                      
                                     )}
                                 </Stack>
@@ -172,6 +177,7 @@ const PaintingManagedByEmployee = () => {
             </OverviewData>
           </>
         )}
+        {/* Tác phẩm vừa tạo */}
         {showAll && showAllPaintings.open && showAllPaintings.type === 'created' && (
           <AllPaintingsCreated
             onBack={() => {
@@ -180,10 +186,24 @@ const PaintingManagedByEmployee = () => {
                 open: false,
                 type: 'created'
               })
+              fetchData(page, rowsPerPage, "created")
             }}
           />
         )}
 
+        {/* Trạng thái tác phẩm */}
+        {showAll && showAllPaintings.open && showAllPaintings.type === 'all' && (
+          <AllPaintings
+            onBack={() => {
+              setShowAll(false)
+              setShowAllPaintings({
+                open: false,
+                type: 'all'
+              })
+              fetchData(page, rowsPerPage, ['pending', 'reviewing', 'approved', 'rejected'])
+            }}
+          />
+        )}
         {/* Chi tiết bản ghi */}
         {openPainting.open && openPainting.type === 'view' && painting && (
           <ViewPainting

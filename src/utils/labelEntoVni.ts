@@ -10,7 +10,7 @@ export const getStatusLabel = (status: StatusObject | null | undefined) : string
     return STATUS_LABELS[status] || status;
 }
 
-export const getStatusLabelColor = (status: 'pending' | 'reviewing' | 'approved' | 'rejected') => {
+export const getStatusLabelColor = (status: StatusObject | null) => {
     switch(status) {
         case 'reviewing':
             return { color: 'info' as const };

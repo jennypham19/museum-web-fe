@@ -30,11 +30,11 @@ export const createPainting = (payload: PaintingRequest) => {
 
 // Lấy danh sách
 export const getPaintings = async(params: GetParams) : Promise<HttpResponse<PaintingsResponse>> => {
-    const url = `${prefix}/get-list-paintings`;
-    const response = await HttpClient.get<{
-        success: boolean,
-        message: string,
-        data: PaintingsResponse;
+  const url = `${prefix}/get-list-paintings`;
+  const response = await HttpClient.get<{
+    success: boolean,
+    message: string,
+    data: PaintingsResponse;
   }>(url, { 
     params,
     // cấu hình paramsSerializer để ép axios serialize array kiểu role=employee&role=admin (Sequelize xử lý ngon hơn)
