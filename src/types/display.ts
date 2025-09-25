@@ -21,3 +21,9 @@ export interface FormDataPainting{
   description: string,
   images: Images[],
 }
+
+export interface DataStatusProps {
+  id: number;
+  value: string;
+  label: string
+}

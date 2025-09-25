@@ -10,7 +10,7 @@ interface FetchParams {
   searchTerm?: string;
 }
 
-export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse<PaginatedResponse<T>>>, rowsPerPage: number = 10, status?: string) => {
+export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse<PaginatedResponse<T>>>, rowsPerPage: number = 10, status?: string | string[]) => {
     const [listData, setListData] = useState<T[]>([]);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
@@ -32,7 +32,7 @@ export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse
         }finally {
             setLoading(false);
         }
-    }, []);
+    }, [fn]);
 
     const debounceGet = useMemo(
         () => debounce((page: number, limit: number, status?: string | string[], searchTerm?: string) => {
@@ -48,7 +48,7 @@ export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse
             debounceGet.cancel();
             fetchData(page, rowsPerPage, status)
         }
-    }, [page, rowsPerPage, searchTerm, status]);
+    }, [page, rowsPerPage, searchTerm, status, fetchData, debounceGet]);
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage)
