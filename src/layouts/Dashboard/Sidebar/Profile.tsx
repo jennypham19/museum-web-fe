@@ -34,6 +34,7 @@ const Profile = () => {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.auth.profile);
+  
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -74,7 +75,7 @@ const Profile = () => {
             src={avatar1}
             sx={{ width: 32, height: 32, borderRadius: '100%' }}
           />
-          <Typography variant='subtitle1'>{profile?.full_name}</Typography>
+          <Typography variant='subtitle1'>{profile?.fullName}</Typography>
         </Stack>
       </ButtonBase>
       <Popper

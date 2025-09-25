@@ -9,7 +9,7 @@ const Painting = () => {
     
     return(
         <Page title="Quản lý trưng bày - Tác phẩm">
-            {profile?.role === ROLE.ADMIN ? (
+            {(profile?.role === ROLE.ADMIN || profile?.role === ROLE.MOD) ? (
                 <PaintingManagedByAdmin/>
             ) : (
                 <PaintingManagedByEmployee/>

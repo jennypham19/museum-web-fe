@@ -2,6 +2,8 @@ export const ROLE = {
   ADMIN: 'admin',
   EMPLOYEE: 'employee',
   MEMBER: 'member',
+  MOD: 'mod',
+  GUEST: 'guest'
 };
 
 export const permissions = {

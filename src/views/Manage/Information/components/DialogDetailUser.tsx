@@ -25,7 +25,7 @@ const DialogDetailUser: React.FC<DialogDetailUserProps> = ({ open, onClose, user
                     <Grid size={{ xs: 12}}>
                         <Stack direction='column' flexGrow={1} display='flex' justifyContent='center' alignItems='center' sx={{ my: 2}}>
                             <Avatar
-                                src={userDetail.avatar_url ? userDetail.avatar_url : avatar}
+                                src={userDetail.avatarUrl ? userDetail.avatarUrl : avatar}
                                 sx={{ width: '150px', height: '150px', mb: 2, bgcolor: 'grey.600', borderRadius:'50%', boxShadow: 4 }}
                             />
                         </Stack>
@@ -39,7 +39,7 @@ const DialogDetailUser: React.FC<DialogDetailUserProps> = ({ open, onClose, user
                                 <Typography variant="body2" fontWeight={500}>Tên đầy đủ:</Typography>
                             </Grid>
                             <Grid size={{ xs: 8}} sx={{ display: 'flex', justifyContent: 'start'}}>
-                                <Typography variant="body2">{userDetail.full_name || '-'}</Typography>
+                                <Typography variant="body2">{userDetail.fullName || '-'}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -69,7 +69,7 @@ const DialogDetailUser: React.FC<DialogDetailUserProps> = ({ open, onClose, user
                                 <Typography variant="body2" fontWeight={500}>Số điện thoại:</Typography>
                             </Grid>
                             <Grid size={{ xs: 8}}>
-                                <Typography variant="body2">{userDetail.phone_number || '-'}</Typography>
+                                <Typography variant="body2">{userDetail.phoneNumber || '-'}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
