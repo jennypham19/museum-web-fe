@@ -203,7 +203,7 @@ const InformationManagedByAdmin = () => {
                 <Grid mt={2} container spacing={3} gap={3}>
                     {DATA_INFOR_MEMBER.slice(0,6).map((data, index) => {
                         return (
-                            <Grid key={index} size={{ xs: 12, md: 4}}>
+                            <Grid key={index} size={{ xs: 12, sm: 6, lg: 4}}>
                                 <CardInformation
                                     avatar={avatar}
                                 >
@@ -256,9 +256,9 @@ const InformationManagedByAdmin = () => {
                         console.log('data.permission: ', data.permission);
                         
                         return (
-                            <Grid key={index} size={{ xs: 12, md: 4}}>
+                            <Grid key={index} size={{ xs: 12, sm: 6, lg: 4}}>
                                 <CardInformation
-                                    avatar={data.avatar_url ? data.avatar_url : avatar}
+                                    avatar={data.avatarUrl ? data.avatarUrl : avatar}
                                 >
                                     <Stack direction='row' justifyContent='space-between'>
                                         <Typography fontSize={{ xs: '14px', md: '16px'}} pt={1} fontWeight={700}>{`NV ${data.code}`}</Typography>
@@ -297,9 +297,9 @@ const InformationManagedByAdmin = () => {
                                             />
                                         </Stack>
                                     </Stack>
-                                    <Typography fontSize={{ xs: '14px', md: '16px'}} my={1}>{`Họ tên: ${data.full_name}`}</Typography>
+                                    <Typography fontSize={{ xs: '14px', md: '16px'}} my={1}>{`Họ tên: ${data.fullName}`}</Typography>
                                     <Typography fontSize={{ xs: '14px', md: '16px'}} mb={1}>{`Chức vụ: ${getRoleLabel(data.role)}`}</Typography>
-                                    {data.permission && <Typography fontSize={{ xs: '14px', md: '16px'}}>{`Phân quyền: ${data.permission}`}</Typography>}
+                                    {data.permission && <Typography fontSize={{ xs: '14px', md: '16px'}}>{`Quyền: ${data.permission}`}</Typography>}
                                 </CardInformation>
                             </Grid>    
                         )
@@ -331,7 +331,7 @@ const InformationManagedByAdmin = () => {
                 onClose={() => {
                     setOpenDialogConfirmUnactive(false)
                 }}
-                title={`Bạn có muốn vô hiệu hóa tài khoản của ${user.full_name} này không?`}
+                title={`Bạn có muốn vô hiệu hóa tài khoản của ${user.fullName} này không?`}
                 handleAgree={handleUnactive}
             />
         )}
@@ -351,7 +351,7 @@ const InformationManagedByAdmin = () => {
                 onClose={() => {
                     setOpenDialogConfirmDelete(false)
                 }}
-                title={`Bạn có muốn xóa tài khoản của ${user.full_name} này không?`}
+                title={`Bạn có muốn xóa tài khoản của ${user.fullName} này không?`}
                 handleAgree={handleDelete}
             />
         )}

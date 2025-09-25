@@ -225,13 +225,13 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     )}
                     {users.map((item, idx) => {
                         return (
-                            <Grid key={idx} size={{ xs: 12, md: 4}}>
+                            <Grid key={idx} size={{ xs: 12, sm: 6, lg: 4}}>
                                 <CardInformation
-                                    avatar={item.avatar_url ? item.avatar_url : avatar}
+                                    avatar={item.avatarUrl ? item.avatarUrl : avatar}
                                 >
                                     <Stack direction='row' justifyContent='space-between'>
                                         <Typography fontSize={{ xs: '14px', md: '16px'}} pt={1} fontWeight={700}>{`NV ${item.code}`}</Typography>
-                                        {item.is_active === 1 && (
+                                        {item.isActive === 1 && (
                                             <Stack direction='row'>
                                                 <IconButton
                                                     title="Xem chi tiết"
@@ -267,7 +267,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                                                 />
                                             </Stack>
                                         )}
-                                        {item.is_active === 0 && (
+                                        {item.isActive === 0 && (
                                                 <IconButton
                                                     title="Kích hoạt"
                                                     handleFunt={() => item && handleOpenDialogConfirmActive(item)}
@@ -278,7 +278,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                                                 />
                                         )}
                                     </Stack>
-                                    <Typography fontSize={{ xs: '14px', md: '16px'}} my={1}>{`Họ tên: ${item.full_name}`}</Typography>
+                                    <Typography fontSize={{ xs: '14px', md: '16px'}} my={1}>{`Họ tên: ${item.fullName}`}</Typography>
                                     <Typography fontSize={{ xs: '14px', md: '16px'}} mb={1}>{`Chức vụ: ${getRoleLabel(item.role)}`}</Typography>
                                     {item.permission && <Typography fontSize={{ xs: '14px', md: '16px'}}>{`Phân quyền: ${item.permission}`}</Typography>}
                                 </CardInformation>
@@ -313,7 +313,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     onClose={() => {
                         setOpenDialogConfirmUnactive(false)
                     }}
-                    title={`Bạn có muốn vô hiệu hóa tài khoản của ${user.full_name} này không?`}
+                    title={`Bạn có muốn vô hiệu hóa tài khoản của ${user.fullName} này không?`}
                     handleAgree={handleUnactive}
                 />
             )}
@@ -333,7 +333,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     onClose={() => {
                         setOpenDialogConfirmActive(false)
                     }}
-                    title={`Bạn có muốn kích hoạt tài khoản của ${user.full_name} này không?`}
+                    title={`Bạn có muốn kích hoạt tài khoản của ${user.fullName} này không?`}
                     handleAgree={handleActive}
                 />
             )}
@@ -353,7 +353,7 @@ const ShowAllInformationEmployee: React.FC<ShowAllInformationEmployeeProps> = ({
                     onClose={() => {
                         setOpenDialogConfirmDelete(false)
                     }}
-                    title={`Bạn có muốn xóa tài khoản của ${user.full_name} này không?`}
+                    title={`Bạn có muốn xóa tài khoản của ${user.fullName} này không?`}
                     handleAgree={handleDelete}
                 />
             )}

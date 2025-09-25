@@ -226,7 +226,7 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                                 ) : (
                                     listData.map((painting, index) => {
                                         return(
-                                            <Grid key={index} size={{ xs: 12, sm: 6, md: 3}}>
+                                            <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3}}>
                                                 <CardData
                                                     data={painting}
                                                     imageUrl={painting.imageUrl}
@@ -239,10 +239,36 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                                                                 <Typography fontSize={{ xs: '14px', md: '15px'}}>{`Nghệ sĩ: ${painting.author}`}</Typography>
                                                                 <Typography fontSize={{ xs: '14px', md: '15px'}}>{`Thời gian: ${painting.period}`}</Typography>
                                                             </Stack>
-                                                            <Box px={2} pb={2} display='flex' flexDirection={{ xs: 'column', md: 'row'}} justifyContent='space-between'>
-                                                                <Button onClick={(e) => { e.stopPropagation(); painting && handleOpenSendApproval(painting)}} variant="outlined" sx={{ border: '1px solid #000', color: '#000'}}>Gửi phê duyệt</Button>
-                                                                <Button onClick={(e) => { e.stopPropagation(); painting && handleOpenEditPainting(painting)}} variant="outlined" sx={{ border: '1px solid #000', color: '#000', my: { xs: 1, md: 0}}}>Chỉnh sửa</Button>
-                                                                <Button variant="outlined" sx={{ border: '1px solid #000', color: '#000'}}>Xóa</Button>
+                                                            <Box px={2} pb={2} display='flex' flexDirection={{ xs: 'column', lg: 'row'}} justifyContent='space-between'>
+                                                                <Button 
+                                                                    fullWidth 
+                                                                    onClick={(e) => { 
+                                                                        e.stopPropagation(); 
+                                                                        painting && handleOpenSendApproval(painting)
+                                                                    }} 
+                                                                    variant="outlined" 
+                                                                    sx={{ border: '1px solid #000', color: '#000'}}
+                                                                >
+                                                                    Gửi phê duyệt
+                                                                </Button>
+                                                                <Button 
+                                                                    fullWidth 
+                                                                    onClick={(e) => { 
+                                                                        e.stopPropagation(); 
+                                                                        painting && handleOpenEditPainting(painting)
+                                                                    }} 
+                                                                    variant="outlined" 
+                                                                    sx={{ border: '1px solid #000', color: '#000', my: { xs: 1, lg: 0}, mx: { xs: 0, lg: 1.5} }}
+                                                                >
+                                                                    Chỉnh sửa
+                                                                </Button>
+                                                                <Button 
+                                                                    fullWidth 
+                                                                    variant="outlined" 
+                                                                    sx={{ border: '1px solid #000', color: '#000'}}
+                                                                >
+                                                                    Xóa
+                                                                </Button>
                                                             </Box>
                                                         </>
                                                     )}

@@ -23,7 +23,7 @@ export type FormErrors = {
 
 const PaintingManagedByEmployee = () => {
     const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(4);
     const [openPainting, setOpenPainting] = useState<{type: string, open: boolean}>({
         type: '',
         open: false
@@ -44,11 +44,12 @@ const PaintingManagedByEmployee = () => {
     });
 
     const paintingsCreated = data?.data?.data as any as IPainting[];
-
+    
+    const paintingStatus = useMemo(() => ['pending', 'reviewing', 'approved', 'rejected'], [])
     const { data: paintings } = useQuery({
-      queryKey: ['data', ['pending', 'reviewing', 'approved', 'rejected'], page, rowsPerPage],
+      queryKey: ['data', paintingStatus, page, rowsPerPage],
       queryFn: () => {
-        return getPaintings({ page, limit: rowsPerPage, status: ['pending', 'reviewing', 'approved', 'rejected'] });
+        return getPaintings({ page, limit: rowsPerPage, status: paintingStatus });
       },
       placeholderData: keepPreviousData
     });
@@ -90,17 +91,6 @@ const PaintingManagedByEmployee = () => {
       })
     }
 
-    // Tính toán danh sách hiển thị
-    const displayedPaintingsCreated = useMemo(() => {
-        if (paintingsCreated?.length === 0) return [];
-        return showAllPaintings.type === 'created' ? paintingsCreated : paintingsCreated?.slice(0, 4);
-    }, [paintingsCreated, showAllPaintings]);
-
-    const displayedPaintings = useMemo(() => {
-      if(paintingsStatus?.length === 0) return [];
-      return showAllPaintings.type === 'all' ? paintingsStatus : paintingsStatus?.slice(0,4);
-    }, [paintingsStatus, showAllPaintings])
-
     return (
       <Box>
         {!showAll && (
@@ -111,10 +101,10 @@ const PaintingManagedByEmployee = () => {
             >
               <Box px={2}>
                   <Grid container spacing={3}>
-                    {displayedPaintingsCreated?.length === 0 && (
+                    {paintingsCreated?.length === 0 && (
                       <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào cả</Typography>
                     )}
-                    {displayedPaintingsCreated?.map((painting, index) => {
+                    {paintingsCreated?.map((painting, index) => {
                       return(
                         <Grid key={index} size={{ xs: 12, sm: 6, md: 3}}>
                           <CardData
@@ -142,10 +132,10 @@ const PaintingManagedByEmployee = () => {
             >
               <Box px={2}>
                   <Grid container spacing={3}>
-                    {displayedPaintings?.length === 0 && (
+                    {paintingsStatus?.length === 0 && (
                       <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào cả</Typography>
                     )}
-                    {displayedPaintings?.map((painting, index) => {
+                    {paintingsStatus?.map((painting, index) => {
                       return (
                         <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
                           <CardData

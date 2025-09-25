@@ -23,6 +23,10 @@ export interface PaintingPayload {
   status: string
 }
 
+export interface PaintingPublished {
+  is_published: boolean
+}
+
 // Thêm mới tác phẩm
 export const createPainting = (payload: PaintingRequest) => {
     return HttpClient.post(`${prefix}/create-painting`, payload)
@@ -53,4 +57,10 @@ export const getPaintings = async(params: GetParams) : Promise<HttpResponse<Pain
 export const sendApproval = async(id: number, payload: PaintingPayload): Promise<HttpResponse<any>> => {
     const url = `${prefix}/send-approval-painting/${id}`;
     return HttpClient.patch<any>(url, payload as any);
+}
+
+// Đăng tải
+export const publishPainting = async(id: number, payload: PaintingPublished) : Promise<HttpResponse<any>> => {
+  const url = `${prefix}/publish-painting/${id}`;
+  return HttpClient.patch<any>(url, payload as any);
 }

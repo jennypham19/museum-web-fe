@@ -12,7 +12,8 @@ const CardInformation = ({ avatar, children } : CardInformationProps) => {
             sx={{
                 bgcolor: 'white',
                 boxShadow: '0px 1px 3px 1px rgba(0, 0, 0, 0.03), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)',
-                borderRadius: 2
+                borderRadius: 2,
+                height: { xs: '100%', md: 150},
             }}
         >
             <Box p={1}>

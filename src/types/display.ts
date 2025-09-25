@@ -11,7 +11,9 @@ export interface IPainting{
     createdAt?: string,
     updatedAt?: string,
     images: IImage[],
-    status: StatusObject | null
+    status: StatusObject | null,
+    rejectionReason: string,
+    isPublished: boolean
 }
 
 export interface FormDataPainting{

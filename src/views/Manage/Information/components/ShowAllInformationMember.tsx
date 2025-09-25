@@ -42,7 +42,7 @@ const ShowAllInformationMember: React.FC<ShowAllInformationMemberProps> = ({ han
                 <Grid m={2} container spacing={3} gap={3}>
                     {data.slice(0,6).map((item, index) => {
                         return (
-                            <Grid key={index} size={{ xs: 12, md: 4}}>
+                            <Grid key={index} size={{ xs: 12, sm: 6, lg: 4}}>
                                 <CardInformation
                                     avatar={avatar}
                                 >

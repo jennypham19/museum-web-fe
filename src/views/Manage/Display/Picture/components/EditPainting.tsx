@@ -3,12 +3,13 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import InputText from "@/components/InputText";
 import { COLORS } from "@/constants/colors";
-import { FormDataPainting } from "@/types/display";
+import { FormDataPainting, IPainting } from "@/types/display";
 import ImagesUpload from "@/views/Manage/Blog/components/ImagesUpload";
 import ImageUpload from "@/views/Manage/Blog/components/ImageUpload";
 import { FormErrors } from "@/views/Manage/Role/Employee/PaintingManagedByEmployee";
 import IconButton from "@/components/IconButton/IconButton";
 import { NavigateBefore } from "@mui/icons-material";
+import { StatusObject } from "@/constants/status";
 
 
 interface EditPaintingProps {
@@ -22,6 +23,7 @@ interface EditPaintingProps {
   onInputChange: (name: string, value: any) => void; 
   onSubmit: () => void; 
   onClose: () => void;
+  data?: IPainting;
 }
 
 const EditPainting: React.FC<EditPaintingProps> = ({
@@ -35,6 +37,7 @@ const EditPainting: React.FC<EditPaintingProps> = ({
   onInputChange,
   onSubmit,
   onClose,
+  data
 }) => {
   return (
     <>
@@ -46,6 +49,11 @@ const EditPainting: React.FC<EditPaintingProps> = ({
         <Typography pt={0.2} fontWeight={600} variant="h6">Chỉnh sửa tác phẩm</Typography>
       </Stack>
       <Box m={3} bgcolor='#fff' p={4}>
+        {data?.rejectionReason && data.status === StatusObject.REJECTED && (
+          <Typography py={0.5} mb={1} fontSize='15px' borderBottom='1px solid #000'>
+            <b>Lý do phê duyệt thất bại: </b>{data.rejectionReason}
+          </Typography>
+        )}
         <Grid container spacing={3}>
           <Grid size={{ xs: 12 }}>
             <Typography fontWeight={700} fontSize='15px'>
