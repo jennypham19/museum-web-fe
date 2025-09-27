@@ -3,7 +3,7 @@ import { useState } from "react";
 
 
 import { NavigateBefore } from "@mui/icons-material";
-import { Box, Button, Divider, Menu, MenuItem, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import IconButton from "@/components/IconButton/IconButton";
 import CommonImage from "@/components/Image/index";
@@ -15,6 +15,10 @@ import { COLORS } from "@/constants/colors";
 import { IPainting } from "@/types/display";
 import useAuth from "@/hooks/useAuth";
 import { ROLE } from "@/constants/roles";
+import DialogConfirm from "@/views/Manage/components/DialogConfirm";
+import useNotification from "@/hooks/useNotification";
+import { approvePainting, PaintingPayload } from "@/services/display-service";
+import SendPainting from "./SendPainting";
 
 
 interface ApproveAndRejectPaintingProps {
@@ -25,19 +29,53 @@ interface ApproveAndRejectPaintingProps {
 
 const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
     const { type, data, onClose } = props;
+    const notify = useNotification();
     const { profile } = useAuth();
     const [openReject, setOpenReject] = useState(false);
     const [reason, setReason] = useState<string>('');
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popper' : undefined;
-
-    const handleClick = (event: any) => {
-        setAnchorEl(anchorEl ? null : event.currentTarget);
-    };
+    const [painting, setPainting] = useState<IPainting | null>(null);
+    const [sendOrApprove, setSendOrApprove] = useState<{ open: boolean, type: string }>({
+        open: false,
+        type: ''
+    })
     
     const handleReject = () => {
         setOpenReject(true);
+    }
+
+    const handleOpenApprove = () => {
+        setSendOrApprove({
+            open: true,
+            type: 'approve'
+        })
+    }
+
+    const handleApprove = async() => {
+        try {
+            const payload: PaintingPayload = {
+                status: 'approved',
+                userIdAprrove: profile?.id
+            }
+            const res = await approvePainting(data.id, payload);
+            notify({
+                message: res.message,
+                severity: 'success'
+            })
+            onClose();
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        }
+    }
+
+    const handleOpenSend = (data: IPainting) => {
+        setSendOrApprove({
+            open: true,
+            type: 'send'
+        })
+        setPainting(data)
     }
     
     return(
@@ -76,7 +114,7 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
                               src={img.url}
                               alt={img.name}
                               sx={{
-                                width: { xs: '100%', md: 200 },
+                                width: { xs: '100%', md: 400 },
                                 height: { xs: 200, sm: 450,  md: 200 },
                                 py: { xs: 1, md: 0 },
                                 margin: '0 auto',
@@ -96,23 +134,22 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
                                         bgcolor: COLORS.BUTTON,
                                         mr: 2, width: 120,
                                     }}
-                                    onClick={handleClick}
-                                    aria-describedby={id}
+                                    onClick={handleOpenApprove}
                                 >
                                     Duyệt
                                 </Button>
-                                <Menu anchorEl={anchorEl} open={open} onClose={handleClick}>
-                                    <MenuItem>
-                                        Duyệt
-                                    </MenuItem>
-                                    <Divider/>
-                                    <MenuItem>
-                                        Quản trị viên duyệt
-                                    </MenuItem>
-                                </Menu>
+                                <Button
+                                    sx={{
+                                        bgcolor: COLORS.BUTTON,
+                                        mr: 2, width: 120,
+                                    }}
+                                    onClick={() => handleOpenSend(data)}
+                                >
+                                    Gửi lên Admin
+                                </Button>
                             </>
                             ) : (
-                                <Button sx={{ bgcolor: COLORS.BUTTON, mr: 2, width: 120 }}>Duyệt</Button>
+                                <Button onClick={handleOpenApprove} sx={{ bgcolor: COLORS.BUTTON, mr: 2, width: 120 }}>Duyệt</Button>
                             )
                         )}
                         {type === 'reject' && (
@@ -145,6 +182,31 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
                             <Button onClick={() => setOpenReject(false)} variant="outlined" sx={{ border: '1px solid #000', color: '#000', width: 100}}>Hủy</Button>
                         </Box>
                     </>
+                )}
+                {sendOrApprove.open && sendOrApprove.type === 'approve' && (
+                    <DialogConfirm
+                        open={sendOrApprove.open}
+                        title={`Bạn có chắc muốn duyệt tác phẩm "${data.name}" không? Hành động này sẽ chuyển tác phẩm sang trạng thái Đã duyệt`}
+                        handleAgree={handleApprove}
+                        onClose={() => {
+                            setSendOrApprove({
+                                open: false,
+                                type: 'approve'
+                            })
+                        }}
+                    />
+                )}
+                {sendOrApprove.open && sendOrApprove.type === 'send' && painting && (
+                    <SendPainting
+                        data={painting}
+                        open={sendOrApprove.open}
+                        onClose={() => {
+                            setSendOrApprove({
+                                open: false,
+                                type: 'send'
+                            })
+                        }}
+                    />
                 )}
             </Paper>
        </Box> 

@@ -20,11 +20,19 @@ interface PaintingRequest{
 export type PaintingsResponse = PaginatedResponse<IPainting>;
 
 export interface PaintingPayload {
-  status: string
+  status: string,
+  userIdAprrove?: number
 }
 
 export interface PaintingPublished {
   is_published: boolean
+}
+
+export interface PaintingSent {
+  status: string,
+  userIdSend: number,
+  reasonSend: string,
+  note?: string
 }
 
 // Thêm mới tác phẩm
@@ -63,4 +71,16 @@ export const sendApproval = async(id: number, payload: PaintingPayload): Promise
 export const publishPainting = async(id: number, payload: PaintingPublished) : Promise<HttpResponse<any>> => {
   const url = `${prefix}/publish-painting/${id}`;
   return HttpClient.patch<any>(url, payload as any);
+}
+
+// Mod và admin duyệt
+export const approvePainting = async(id: number, payload: PaintingPayload) : Promise<HttpResponse<any>> => {
+  const url = `${prefix}/approve-painting/${id}`;
+  return HttpClient.put<any>(url, payload as any)
+}
+
+// Gửi lên cho admin
+export const sendPainting = async(id: number, payload: PaintingSent) : Promise<HttpResponse<any>> => {
+  const url = `${prefix}/send-painting/${id}`;
+  return HttpClient.put<any>(url, payload as any)
 }

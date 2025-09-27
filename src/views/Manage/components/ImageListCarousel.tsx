@@ -1,15 +1,8 @@
 import { useState } from "react";
-
-
-
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import IconButton from "@/components/IconButton/IconButton";
-
-
-
 import { IImage } from "@/types/post";
-
 
 interface ImageListCarouselPrps {
   images: IImage[];
@@ -32,13 +25,13 @@ const ImageListCarousel = (props: ImageListCarouselPrps) => {
         <Box
           display='flex'
           sx={{
-            transform: `translateX(-${index * (100 / visibleCount)}%)`,
+            transform: `translateX(-${(index * 100) / visibleCount}%)`,
             transition: 'transform 0.5s ease-in-out',
-            width: `${(images.length / visibleCount) * 100}%`,
+            width: `${(images.length * 100) / visibleCount}%`,
           }}
         >
           {images.map((img, idx) => (
-            <Box key={idx} flex={`0 0 ${100 / visibleCount}%`} p={1}>
+            <Box key={idx} flex={`0 0 ${100 / images.length}%`} p={1}>
               <img
                 src={img.url}
                 alt={img.name}
@@ -72,7 +65,7 @@ const ImageListCarousel = (props: ImageListCarouselPrps) => {
           sx={{
             position: 'absolute',
             top: '50%',
-            right: 0,
+            right: 8,
             transform: 'translateY(-50%)',
             bgcolor: 'rgba(0,0,0,0.4)',
             color: 'white',
