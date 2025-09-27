@@ -1,16 +1,22 @@
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+
+
+
 import { Box, Chip, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import ViewPainting from "../../Display/Picture/components/ViewPainting";
-import { FormDataPainting, IPainting } from "@/types/display";
-import OverviewDataCreate from "../../components/OverviewDataCreate";
-import OverviewData from "../../components/OverviewData";
 import CardData from "../../components/CardData";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getPaintings } from "@/services/display-service";
-import AllPaintingsCreated from "../../Display/Picture/components/AllPaintingsCreated";
-import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
+import OverviewData from "../../components/OverviewData";
+import OverviewDataCreate from "../../components/OverviewDataCreate";
 import AllPaintings from "../../Display/Picture/components/AllPaintings";
+import AllPaintingsCreated from "../../Display/Picture/components/AllPaintingsCreated";
+import ViewPainting from "../../Display/Picture/components/ViewPainting";
+
+
+
+import { getPaintings } from "@/services/display-service";
+import { FormDataPainting, IPainting } from "@/types/display";
+import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
 
 
 interface PaintingManagedByEmployeeProps {
@@ -90,6 +96,9 @@ const PaintingManagedByEmployee = () => {
         type: 'all'
       })
     }
+
+    console.log('paintingsCreated: ', paintingsCreated);
+    
 
     return (
       <Box>

@@ -379,7 +379,8 @@ const InformationManagedByAdmin = () => {
                 user={user}
                 open={openDialogAttactPermission}
                 onClose={() => {
-                    setOpenDialogAttactPermission(false)
+                    (setOpenDialogAttactPermission(false),
+                      fetchUsersData(page, rowPerPage, ['admin', 'employee', 'mod'], 1));
                 }}
             />
         )}

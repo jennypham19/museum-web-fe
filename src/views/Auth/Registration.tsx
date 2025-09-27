@@ -80,7 +80,7 @@ export default function Registration() {
       <Grid container sx={{ height: '100vh'}}>
         <Grid size={{ xs: 12, md: 6}} sx={{ height: '100%'}}>
           {/* Logo */}
-          <Box p={{ xs: 3, lg: 5}} mb={2} sx={{ display: 'flex', flexDirection: 'row'}}>
+          <Box p={{ xs: 3}} sx={{ display: 'flex', flexDirection: 'row'}}>
             <CommonImage src={logo_museum} alt="Museum Tiffany" style={{ height: 60, width: 60 }} />
             <Stack sx={{ height: 60, ml: 2}}>
               <Typography margin="auto 0" fontWeight={700}>MUSEUM TIFFANY</Typography>
@@ -92,11 +92,11 @@ export default function Registration() {
                 component='h1'
                 variant='h4'
                 fontWeight={500}
-                sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', mb: 3 }}
+                sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', mb: 1 }}
               >
                 Đăng ký tài khoản
               </Typography>
-              <Typography sx={{ mb: 5 }}>
+              <Typography sx={{ mb: 3 }}>
                 Bạn chưa có tài khoản vui lòng lập một tài khoản mới theo thông tin dưới đây
               </Typography>
             </Box>

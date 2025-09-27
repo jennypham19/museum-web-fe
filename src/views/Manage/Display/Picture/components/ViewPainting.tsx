@@ -10,6 +10,7 @@ import CommonImage from "@/components/Image/index";
 
 
 import { IPainting } from "@/types/display";
+import ImageListCarousel from "@/views/Manage/components/ImageListCarousel";
 
 
 interface ViewPaintingProps{
@@ -26,9 +27,9 @@ const ViewPainting: React.FC<ViewPaintingProps> = ({ open, data, onClose }) => {
     <DialogComponent
       dialogKey={open}
       handleClose={handleClose}
-      dialogTitle="Chi tiết tác phẩm"
+      dialogTitle='Chi tiết tác phẩm'
       isActiveFooter={false}
-      maxWidth='lg'
+      maxWidth={'lg'}
     >
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -63,31 +64,7 @@ const ViewPainting: React.FC<ViewPaintingProps> = ({ open, data, onClose }) => {
           />
         </Grid>
       </Grid>
-      <Box
-        height='100%'
-        borderTop={{ xs: '1px solid', md: 'none' }}
-        mt={2}
-        display='flex'
-        justifyContent='flex-start'
-        flexDirection={{ xs: 'column', md: 'row' }}
-      >
-        {data.images?.map((img, index) => {
-          return (
-            <CommonImage
-              key={index}
-              src={img.url}
-              alt={img.name}
-              sx={{
-                width: { xs: '100%', md: 160 },
-                height: { xs: 200, md: 160 },
-                px: 1,
-                py: { xs: 1, md: 0 },
-                margin: '0 auto',
-              }}
-            />
-          );
-        })}
-      </Box>
+      <ImageListCarousel images={data.images}/>
     </DialogComponent>
   );
 };

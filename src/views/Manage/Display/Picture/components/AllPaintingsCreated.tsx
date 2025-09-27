@@ -226,7 +226,7 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                                 ) : (
                                     listData.map((painting, index) => {
                                         return(
-                                            <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3}}>
+                                            <Grid key={index} size={{ xs: 12, sm: 6, md: 4, xxl: 3}}>
                                                 <CardData
                                                     data={painting}
                                                     imageUrl={painting.imageUrl}
