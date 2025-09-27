@@ -1,11 +1,21 @@
+import { useState } from "react";
+
+
+
+import { NavigateBefore } from "@mui/icons-material";
+import { Box, Button, Divider, Menu, MenuItem, Paper, Stack, Typography } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import IconButton from "@/components/IconButton/IconButton";
 import CommonImage from "@/components/Image/index";
 import InputText from "@/components/InputText";
+
+
+
 import { COLORS } from "@/constants/colors";
 import { IPainting } from "@/types/display";
-import { EditOutlined, LogoutOutlined, NavigateBefore } from "@mui/icons-material";
-import { Box, Button, ButtonBase, Card, ClickAwayListener, Divider, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Paper, Popover, Popper, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import useAuth from "@/hooks/useAuth";
+import { ROLE } from "@/constants/roles";
+
 
 interface ApproveAndRejectPaintingProps {
     type: string,
@@ -15,6 +25,7 @@ interface ApproveAndRejectPaintingProps {
 
 const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
     const { type, data, onClose } = props;
+    const { profile } = useAuth();
     const [openReject, setOpenReject] = useState(false);
     const [reason, setReason] = useState<string>('');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -56,32 +67,29 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
                     <Typography fontSize={{ xs: '14px', md: '15px' }}>Thời kỳ: <b>{data.period}</b></Typography>
                 </Stack>
                 <Typography mt={4} fontWeight={700}>Hình ảnh minh họa</Typography>
-                <Box
-                    height='100%'
-                    mt={2}
-                    display='flex'
-                    justifyContent='flex-start'
-                    flexDirection={{ xs: 'column', md: 'row' }}
-                >
-                    {data.images?.map((img, index) => {
+                <Grid container spacing={2}>
+                    {data.images.map((img, index) => {
                         return (
+                          <Grid key={index} size={{ xs: 12, sm: 4, md: 3 }}>
                             <CommonImage
-                                key={index}
-                                src={img.url}
-                                alt={img.name}
-                                sx={{
-                                    width: { xs: '100%', md: 200 },
-                                    height: { xs: 200, md: 200 },
-                                    py: { xs: 1, md: 0 },
-                                    margin: '0 auto',
-                                }}
+                              key={index}
+                              src={img.url}
+                              alt={img.name}
+                              sx={{
+                                width: { xs: '100%', md: 200 },
+                                height: { xs: 200, sm: 450,  md: 200 },
+                                py: { xs: 1, md: 0 },
+                                margin: '0 auto',
+                              }}
                             />
+                          </Grid>
                         );
                     })}
-                </Box>
+                </Grid>
                 {!openReject && (
                     <Box mt={3} display='flex' justifyContent='flex-end'>
                         {type === 'approve' && (
+                            profile?.role === ROLE.MOD ? (
                             <>
                                 <Button
                                     sx={{
@@ -103,6 +111,9 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
                                     </MenuItem>
                                 </Menu>
                             </>
+                            ) : (
+                                <Button sx={{ bgcolor: COLORS.BUTTON, mr: 2, width: 120 }}>Duyệt</Button>
+                            )
                         )}
                         {type === 'reject' && (
                             <Button
