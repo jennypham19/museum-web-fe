@@ -104,6 +104,10 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
         if(!validateForm()) {
             return;
         }
+        if(imageFiles.length < 3) {
+            setErrorImgs("");
+            return
+        }
         setIsSubmitting(true)
         try {
             // 1 ảnh
@@ -137,6 +141,8 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                 break;
             
                 default:
+                    case 'edit':
+                        
                     break;
             }
         } catch (error: any) {

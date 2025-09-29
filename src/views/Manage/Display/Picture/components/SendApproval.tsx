@@ -1,13 +1,21 @@
+import React, { useState } from "react";
+
+
+
+import { NavigateBefore } from "@mui/icons-material";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import IconButton from "@/components/IconButton/IconButton";
 import CommonImage from "@/components/Image/index";
+
+
+
 import { COLORS } from "@/constants/colors";
 import useNotification from "@/hooks/useNotification";
 import { PaintingPayload, sendApproval } from "@/services/display-service";
 import { IPainting } from "@/types/display";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
-import { NavigateBefore } from "@mui/icons-material";
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+
 
 interface SendApprovalProps {
     data: IPainting;
@@ -67,29 +75,24 @@ const SendApproval: React.FC<SendApprovalProps> = ({ data, onClose }) => {
                     <Typography fontSize={{ xs: '14px', md: '15px' }}>Thời kỳ: <b>{data.period}</b></Typography>
                 </Stack>
                 <Typography mt={4} fontWeight={700}>Hình ảnh minh họa</Typography>
-                <Box
-                    height='100%'
-                    mt={2}
-                    display='flex'
-                    justifyContent='flex-start'
-                    flexDirection={{ xs: 'column', md: 'row' }}
-                >
-                    {data.images?.map((img, index) => {
+                <Grid container spacing={3}>
+                    {data.images.map((img, index) => {
                         return (
+                          <Grid key={index} size={{ xs: 12, sm: 4, md: 3 }}>
                             <CommonImage
-                                key={index}
-                                src={img.url}
-                                alt={img.name}
-                                sx={{
-                                    width: { xs: '100%', md: 200 },
-                                    height: { xs: 200, md: 200 },
-                                    py: { xs: 1, md: 0 },
-                                    margin: '0 auto',
-                                }}
+                              src={img.url}
+                              alt={img.name}
+                              sx={{
+                                width: { xs: '100%', md: 400 },
+                                height: { xs: 200, sm: 450, md: 200 },
+                                py: { xs: 1, md: 0 },
+                                margin: '0 auto',
+                              }}
                             />
+                          </Grid>
                         );
                     })}
-                </Box>
+                </Grid>
                 <Box mt={3} display='flex' justifyContent='flex-end'>
                     <Button onClick={handleOpenSendApproval} sx={{ bgcolor: COLORS.BUTTON, mr: 2 }}>Gửi phê duyệt</Button>
                     <Button onClick={onClose} variant="outlined" sx={{ border: '1px solid #000', color: '#000'}}>Quay lại</Button>

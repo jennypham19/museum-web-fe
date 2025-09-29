@@ -97,8 +97,6 @@ const PaintingManagedByEmployee = () => {
       })
     }
 
-    console.log('paintingsCreated: ', paintingsCreated);
-    
 
     return (
       <Box>
@@ -185,7 +183,8 @@ const PaintingManagedByEmployee = () => {
                 open: false,
                 type: 'created'
               })
-              fetchData(page, rowsPerPage, "created")
+              fetchData(page, rowsPerPage, "created"),
+              fetchData(page, rowsPerPage, ['pending', 'reviewing', 'approved', 'rejected'])
             }}
           />
         )}

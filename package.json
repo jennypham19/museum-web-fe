@@ -55,6 +55,7 @@
     "react-virtualized-auto-sizer": "^1.0.24",
     "react-window": "^1.8.10",
     "simplebar-react": "^3.2.6",
+    "yet-another-react-lightbox": "^3.25.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {

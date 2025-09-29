@@ -1,25 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
+
 import { LogoutOutlined } from '@mui/icons-material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import {
-  ButtonBase,
-  Card,
-  ClickAwayListener,
-  Divider,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Popper,
-  Stack,
-} from '@mui/material';
+import { ButtonBase, Card, ClickAwayListener, Divider, List, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+
+
 
 import avatar1 from '@/assets/images/users/avatar-1.png';
 import { ROUTE_PATH } from '@/constants/routes';
@@ -27,6 +19,7 @@ import { signOut } from '@/services/auth-service';
 import { setIsAuth, setProfile } from '@/slices/auth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { removeAccessToken } from '@/utils/AuthHelper';
+
 
 // ==============================|| PROFILE COMPONENT ||============================== //
 

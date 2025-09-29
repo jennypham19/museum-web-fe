@@ -176,7 +176,10 @@ const AllPaintings: React.FC<AllPaintingsProps> = ({ onBack }) => {
     }
 
     const handleSubmit = async () => {
-
+      if(!validateForm()) {
+        return;
+      }
+      
     }
     
     return (

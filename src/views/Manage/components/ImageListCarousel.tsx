@@ -3,6 +3,7 @@ import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import IconButton from "@/components/IconButton/IconButton";
 import { IImage } from "@/types/post";
+import LightBox from "@/components/LightBox";
 
 interface ImageListCarouselPrps {
   images: IImage[];
@@ -22,29 +23,11 @@ const ImageListCarousel = (props: ImageListCarouselPrps) => {
     return (
       <Box position='relative' overflow='hidden' p={2} borderRadius={2} boxShadow={3}>
         {/* Container trượt ngang */}
-        <Box
-          display='flex'
-          sx={{
-            transform: `translateX(-${(index * 100) / visibleCount}%)`,
-            transition: 'transform 0.5s ease-in-out',
-            width: `${(images.length * 100) / visibleCount}%`,
-          }}
-        >
-          {images.map((img, idx) => (
-            <Box key={idx} flex={`0 0 ${100 / images.length}%`} p={1}>
-              <img
-                src={img.url}
-                alt={img.name}
-                style={{
-                  width: '100%',
-                  height: 200,
-                  borderRadius: '8px',
-                  objectFit: 'cover',
-                }}
-              />
-            </Box>
-          ))}
-        </Box>
+        <LightBox
+          index={index}
+          visibleCount={visibleCount}
+          images={images}
+        />
         {/* Nút điều khiển */}
         <IconButton
           handleFunt={handlePrev}
