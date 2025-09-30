@@ -18,7 +18,8 @@ interface Props extends Omit<DialogProps, 'open' | 'fullScreen'> {
   isActiveFooter?:boolean,
   isCenter?:boolean,
   isActiveHeader?:boolean,
-  maxWidth?: any
+  maxWidth?: any,
+  toolTip?: string,
 }
 
 const DialogComponent = ({
@@ -34,11 +35,12 @@ const DialogComponent = ({
   isCenter=true,
   isActiveHeader=true,
   maxWidth,
+  toolTip = dialogTitle,
   ...rest
 }: Props) => {
   return (
     <DialogContainer {...rest} open={!!dialogKey} onClose={handleClose} maxWidth={maxWidth}>
-      {isActiveHeader && <DialogHeader onClose={handleClose} title={dialogTitle || ''} marginTop={2} />}
+      {isActiveHeader && <DialogHeader toolTip={toolTip} onClose={handleClose} title={dialogTitle || ''} marginTop={2} />}
       <DialogContent sx={{ textAlign: isCenter ? "" : "center", maxHeight: 'fit-content'}}>
         <Box sx={{ padding: 2 }}>{children}</Box>
       </DialogContent>

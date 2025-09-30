@@ -1,7 +1,7 @@
 import IconButton from "@/components/IconButton/IconButton";
 import { COLORS } from "@/constants/colors";
 import useNotification from "@/hooks/useNotification";
-import { createPainting, getPaintings } from "@/services/display-service";
+import { createPainting, deletePainting, getPaintings } from "@/services/display-service";
 import { uploadImage, uploadImages } from "@/services/upload-service";
 import { FormDataPainting, IPainting } from "@/types/display";
 import { Add, NavigateBefore } from "@mui/icons-material";
@@ -17,6 +17,8 @@ import CustomPagination from "@/components/Pagination/CustomPagination";
 import Backdrop from "@/components/Backdrop";
 import ViewPainting from "./ViewPainting";
 import SendApproval from "./SendApproval";
+import DialogDeletePainting from "./DialogDeletePainting";
+import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 
 interface AllPaintingsCreatedProps {
     onBack: () => void;
@@ -47,6 +49,8 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
         type: '',
         open: false
     });
+    const [openViewPaining, setOpenViewPainting] = useState(false);
+    const [openDeletePaining, setOpenDeletePainting] = useState(false);
     const [painting, setPainting] = useState<IPainting | null> (null);
     
     const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPainting>(getPaintings, 8, 'created');
@@ -104,10 +108,6 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
         if(!validateForm()) {
             return;
         }
-        if(imageFiles.length < 3) {
-            setErrorImgs("");
-            return
-        }
         setIsSubmitting(true)
         try {
             // 1 ảnh
@@ -125,6 +125,7 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
             const payload = {
                 ...formData,
                 imageUrl: uploadResponse.data.file.imageUrl,
+                nameImage: uploadResponse.data.file.fileName,
                 images: uploadImgsResponses.data.files
             }
 
@@ -153,18 +154,12 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
     }
 
     const handleOpenViewPainting = (data: IPainting) => {
-        setOpenPainting({
-            type: 'view',
-            open: true
-        });
+        setOpenViewPainting(true)
         setPainting(data)
     }
 
     const handleCloseViewPainting = () => {
-        setOpenPainting({
-            type: 'view',
-            open: false
-        });
+        setOpenViewPainting(false)
         setPainting(null)
     }
 
@@ -178,6 +173,36 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
             images: data.images
         })
         setImage(data.imageUrl)
+    }
+
+    const handleOpenDeletePainting = (data: IPainting) => {
+        setOpenDeletePainting(true)
+        setPainting(data)
+    }
+
+    const handleCloseDeletePainting = () => {
+        setOpenDeletePainting(false);
+        setPainting(null);
+        fetchData(page, rowsPerPage, 'created')
+    }
+
+    const handleDeletePainting = async () => {
+        setIsSubmitting(true)
+        try {
+            const res = painting && await deletePainting(painting.id);
+            notify({
+                message: res.message,
+                severity: 'success'
+            })
+            handleCloseDeletePainting();
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        }finally{
+            setIsSubmitting(false)
+        }
     }
 
     const handleOpenSendApproval = (data: IPainting) => {
@@ -272,6 +297,10 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                                                                     fullWidth 
                                                                     variant="outlined" 
                                                                     sx={{ border: '1px solid #000', color: '#000'}}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        painting && handleOpenDeletePainting(painting)
+                                                                    }}
                                                                 >
                                                                     Xóa
                                                                 </Button>
@@ -334,9 +363,9 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                 </>
             )}
             {/* Chi tiết bản ghi */}
-            {openPainting.open && openPainting.type === 'view' && painting && (
+            {openViewPaining && painting && (
                 <ViewPainting
-                    open={openPainting.open}
+                    open={openViewPaining}
                     data={painting}
                     onClose={handleCloseViewPainting}
                 />
@@ -347,6 +376,18 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                     data={painting}
                     onClose={handleCloseSendApprovalPainting}
                 />
+            )}
+            {/* Xóa tác phẩm */}
+            {openDeletePaining && painting && (
+                <>
+                    <DialogConfirm
+                        open={openDeletePaining}
+                        title={`Bạn chắc chắn muốn xóa tác phẩm ${painting.name} hay không? `}
+                        onClose={handleCloseDeletePainting}
+                        handleAgree={handleDeletePainting}
+                    />
+                    <Backdrop open={isSubmitting} />
+                </>
             )}
         </Box>
     )
