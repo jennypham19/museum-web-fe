@@ -16,6 +16,18 @@ const DialogConfirm = ({ open, onClose, title, handleAgree} : DialogConfirmProps
             isActiveHeader={false}
             isActiveFooter={false}
             isCenter={false}
+            PaperProps={{
+                sx: {
+                position: "relative",
+                zIndex: (theme) => theme.zIndex.modal + 1, // luôn cao hơn backdrop
+                },
+            }}
+            BackdropProps={{
+                sx: {
+                zIndex: (theme) => theme.zIndex.modal, // backdrop dưới dialog
+                backgroundColor: "rgba(0, 0, 0, 0.5)", // màu tối mờ
+                },
+            }}
         >
             <Typography fontWeight={700}>{title}</Typography>
             <Button

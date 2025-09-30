@@ -96,3 +96,9 @@ export const rejectPainting = async(id: number, payload: PaintingReject) : Promi
   const url = `${prefix}/reject-painting/${id}`;
   return HttpClient.put<any>(url, payload as any)
 }
+
+// Xóa tác phẩm
+export const deletePainting = async(id: number) => {
+  const url = `${prefix}/delete-painting/${id}`;
+  return HttpClient.delete(url)
+}

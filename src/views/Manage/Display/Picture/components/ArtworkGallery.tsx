@@ -1,322 +1,96 @@
-;
-
-// import React, { useState } from 'react';
-
-// import CloseIcon from '@mui/icons-material/Close';
-// import {
-//   Box,
-//   Button,
-//   Card,
-//   CardMedia,
-//   Chip,
-//   Dialog,
-//   DialogContent,
-//   Grid,
-//   IconButton,
-//   Typography,
-// } from '@mui/material';
-
-// interface ArtworkImage {
-//   id: number;
-//   imageUrl: string;
-//   isMain: boolean;
-// }
-// interface ArtworkGalleryProps {
-//   title: string;
-//   images: ArtworkImage[];
-// }
-// const ArtworkGallery: React.FC<ArtworkGalleryProps> = ({ title, images }) => {
-//   const mainImage = images.find((img) => img.isMain);
-//   const additionalImages = images.filter((img) => !img.isMain);
-//   const [open, setOpen] = useState(false);
-//   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-//   const [showAll, setShowAll] = useState(false);
-//   const handleOpen = (url: string) => {
-//     setSelectedImage(url);
-//     setOpen(true);
-//   };
-//   const handleClose = () => {
-//     setOpen(false);
-//     setSelectedImage(null);
-//   };
-//   const visibleImages = showAll ? additionalImages : additionalImages.slice(0, 10);
-//   return (
-//     <Box>
-//       {' '}
-//       <Typography variant='h5' gutterBottom>
-//         {' '}
-//         {title}{' '}
-//       </Typography>{' '}
-//       {/* Ảnh chính */}{' '}
-//       {mainImage && (
-//         <Card sx={{ maxWidth: 600, marginBottom: 2 }}>
-//           {' '}
-//           <CardMedia
-//             component='img'
-//             image={mainImage.imageUrl}
-//             alt='Ảnh chính'
-//             sx={{ cursor: 'pointer' }}
-//             onClick={() => handleOpen(mainImage.imageUrl)}
-//           />{' '}
-//         </Card>
-//       )}{' '}
-//       {/* Ảnh bổ sung */}{' '}
-//       {additionalImages.length > 0 && (
-//         <>
-//           {' '}
-//           <Box display='flex' alignItems='center' justifyContent='space-between' mb={1}>
-//             {' '}
-//             <Typography variant='subtitle1'>Ảnh bổ sung</Typography> {/* Counter bằng Chip */}{' '}
-//             <Chip
-//               label={`Hiển thị ${visibleImages.length}/${additionalImages.length} ảnh`}
-//               size='small'
-//               color='default'
-//               variant='outlined'
-//             />{' '}
-//           </Box>{' '}
-//           <Grid container spacing={2}>
-//             {' '}
-//             {visibleImages.map((img) => (
-//               <Grid item xs={4} sm={3} md={2} key={img.id}>
-//                 {' '}
-//                 <Card sx={{ cursor: 'pointer' }}>
-//                   {' '}
-//                   <CardMedia
-//                     component='img'
-//                     image={img.imageUrl}
-//                     alt='Ảnh bổ sung'
-//                     sx={{ height: 120, objectFit: 'cover' }}
-//                     onClick={() => handleOpen(img.imageUrl)}
-//                   />{' '}
-//                 </Card>{' '}
-//               </Grid>
-//             ))}{' '}
-//           </Grid>{' '}
-//           {/* Nút xem thêm / ẩn bớt */}{' '}
-//           {additionalImages.length > 10 && (
-//             <Box mt={2}>
-//               {' '}
-//               <Button variant='outlined' onClick={() => setShowAll((prev) => !prev)}>
-//                 {' '}
-//                 {showAll ? 'Ẩn bớt' : 'Xem thêm'}{' '}
-//               </Button>{' '}
-//             </Box>
-//           )}{' '}
-//         </>
-//       )}{' '}
-//       {/* Dialog xem ảnh lớn */}{' '}
-//       <Dialog open={open} onClose={handleClose} maxWidth='lg'>
-//         {' '}
-//         <DialogContent sx={{ position: 'relative', p: 0 }}>
-//           {' '}
-//           <IconButton
-//             onClick={handleClose}
-//             sx={{ position: 'absolute', right: 8, top: 8, color: 'white', zIndex: 10 }}
-//           >
-//             {' '}
-//             <CloseIcon />{' '}
-//           </IconButton>{' '}
-//           {selectedImage && (
-//             <img
-//               src={selectedImage}
-//               alt='Xem chi tiết'
-//               style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
-//             />
-//           )}{' '}
-//         </DialogContent>{' '}
-//       </Dialog>{' '}
-//     </Box>
-//   );
-// };
-// export default ArtworkGallery;
-
-import React, { useState } from "react";
-
-
-
-import { Box, Button, Card, CardMedia, Grid } from "@mui/material";
-
-
-
-
-
-;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-interface ArtworkImagesProps {
-  images: string[];
+import React, { useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+  Box,
+  Button,
+  Card,
+  CardMedia,
+  Chip,
+  Dialog,
+  DialogContent,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
+import { IImage } from '@/types/post';
+import { COLORS } from '@/constants/colors';
+import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
+import DialogSlideImages from './DialogSlideImages';
+
+interface ArtworkGalleryProps {
+  images: IImage[];
+  numberShowImg: number;
 }
-
-const ArtworkGallery: React.FC<ArtworkImagesProps> = ({ images }) => {
+const ArtworkGallery: React.FC<ArtworkGalleryProps> = ({ images, numberShowImg = 10 }) => {
+  const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0); // index ảnh đang mở
   const [showAll, setShowAll] = useState(false);
+  const handleOpen = (idx: number) => {
+    setIndex(idx);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  // Hiển thị 10 ảnh đầu nếu chưa mở rộng
-  const displayedImages = showAll ? images : images.slice(0, 10);
+  const handlePrev = () => {
+    setIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+  const handleNext = () => {
+    setIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+  const visibleImages = showAll ? images : images.slice(0, numberShowImg);
 
   return (
     <Box>
-      <Grid container spacing={2}>
-        {displayedImages.map((img, index) => (
-          <Grid item xs={6} sm={4} md={3} key={index}>
-            <Card>
-              <CardMedia
-                component='img'
-                height='140'
-                image={img}
-                alt={`Artwork image ${index + 1}`}
-              />
-            </Card>
+      {/* Ảnh bổ sung */}
+      {images.length > 0 && (
+        <>
+          <Box display='flex' alignItems='center' justifyContent='space-between' mb={1}>
+            <Typography fontWeight={600} variant='subtitle1'>Ảnh bổ sung</Typography> {/* Counter bằng Chip */}
+            <Chip
+              label={`Hiển thị ${visibleImages.length}/${images.length} ảnh`}
+              size='small'
+              color='default'
+              variant='outlined'
+              sx={{ fontWeight: 700}}
+            />
+          </Box>
+          <Grid container spacing={2}>
+            {visibleImages.map((img, idx) => (
+              <Grid item xs={6} sm={4} md={3} key={img.id}>
+                <Card sx={{ cursor: 'pointer' }}>
+                  <CardMedia
+                    component='img'
+                    image={img.url}
+                    alt='Ảnh bổ sung'
+                    sx={{ height: 140, objectFit: 'fill' }}
+                    onClick={() => handleOpen(idx)}
+                  />
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-
-      {images.length > 10 && (
-        <Box mt={2} textAlign='center'>
-          <Button variant='outlined' onClick={() => setShowAll((prev) => !prev)}>
-            {showAll ? 'Thu gọn' : 'Xem thêm'}
-          </Button>
-        </Box>
+          {/* Nút xem thêm / ẩn bớt */}
+          {images.length > numberShowImg && (
+            <Box mt={2}>
+              <Button variant='contained' sx={{ bgcolor: COLORS.BUTTON}} onClick={() => setShowAll((prev) => !prev)}>
+                {showAll ? 'Ẩn bớt' : 'Xem thêm'}
+              </Button>
+            </Box>
+          )}
+        </>
       )}
+      {/* Dialog slide ảnh */} 
+        <DialogSlideImages
+          open={open}
+          index={index}
+          images={images}
+          onClose={handleClose}
+          onPrev={handlePrev}
+          onNext={handleNext}
+        />
     </Box>
   );
 };
-
 export default ArtworkGallery;
