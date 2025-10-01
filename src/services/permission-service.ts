@@ -3,6 +3,7 @@ import { IAction, IMenu, IPermission } from "@/types/permisstion";
 import HttpClient from "@/utils/HttpClient";
 import { FormDataActions } from "@/views/Manage/Permission/Actions";
 import { FormDataMenus } from "@/views/Manage/Permission/Menus";
+import { PaginatedResponse } from "./base-service";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'; 
 const prefix = `${API_BASE_URL}/api/permissions`;
@@ -15,15 +16,7 @@ interface GroupPermissionResquest{
 export interface GetParams{
     page: number;
     limit: number;
-    status?: string | string[];
     searchTerm?: string;
-}
-
-export interface PaginatedResponse<T>{
-    data: T[];
-    totalPages: number;
-    currentPage: number;
-    total: number;
 }
 
 interface GroupPermissionRes{

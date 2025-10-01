@@ -35,3 +35,16 @@ export interface FormDataCollection{
   tags: string,
   description: string,
 }
+
+export interface ICollection{
+    id: number,
+    name: string,
+    imageUrl: string,
+    description: string, 
+    createdAt?: string,
+    updatedAt?: string,
+    images: IImage[],
+    status: StatusObject | null,
+    rejectionReason: string,
+    isPublished: boolean
+}

@@ -37,6 +37,11 @@ const TAGS: TagsProps[] = [
     },
     {
         id: 5,
+        label: 'Theo khu vực/ văn hóa',
+        value: 'regional_culture'
+    },
+    {
+        id: 6,
         label: 'Theo xuất xứ & xưởng chế tác',
         value: 'origin_factory'
     }

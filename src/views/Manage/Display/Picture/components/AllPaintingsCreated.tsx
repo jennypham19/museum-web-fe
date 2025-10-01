@@ -17,7 +17,6 @@ import CustomPagination from "@/components/Pagination/CustomPagination";
 import Backdrop from "@/components/Backdrop";
 import ViewPainting from "./ViewPainting";
 import SendApproval from "./SendApproval";
-import DialogDeletePainting from "./DialogDeletePainting";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 
 interface AllPaintingsCreatedProps {
