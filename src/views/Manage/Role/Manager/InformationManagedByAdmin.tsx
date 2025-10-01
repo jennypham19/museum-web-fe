@@ -253,8 +253,6 @@ const InformationManagedByAdmin = () => {
                 </Stack>
                 <Grid mt={2} container spacing={3} gap={3}>
                     {users.slice(0,6).map((data, index) => {
-                        console.log('data.permission: ', data.permission);
-                        
                         return (
                             <Grid key={index} size={{ xs: 12, sm: 6, lg: 4}}>
                                 <CardInformation
