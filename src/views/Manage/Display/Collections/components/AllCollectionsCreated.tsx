@@ -1,14 +1,23 @@
-import IconButton from "@/components/IconButton/IconButton";
-import { COLORS } from "@/constants/colors";
-import SearchBox from "@/views/Manage/components/SearchBox";
+import { useState } from "react";
+
+
+
 import { Add, NavigateBefore } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { useState } from "react";
 import CreateCollection from "./CreateCollection";
-import { FormDataCollection } from "@/types/display";
-import useNotification from "@/hooks/useNotification";
 import Backdrop from "@/components/Backdrop";
+import IconButton from "@/components/IconButton/IconButton";
+
+
+
+import { COLORS } from "@/constants/colors";
+import { useDataList } from "@/hooks/useDataList";
+import useNotification from "@/hooks/useNotification";
+import { createCollection, getCollections } from "@/services/display-service";
 import { uploadImage } from "@/services/upload-service";
+import { FormDataCollection, ICollection } from "@/types/display";
+import SearchBox from "@/views/Manage/components/SearchBox";
+
 
 interface AllCollectionsCreatedProps{
     onBack: () => void;
@@ -35,8 +44,12 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
         open: false,
         type: ''
     });
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<ICollection>(getCollections, 8, 'created');
+    console.log('listData: ', listData);
+    
+    
     const handleFileSelect = (file: File | null) => {
         setImageFile(file);
         setErrorImg('');
@@ -97,11 +110,21 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                 throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
             }
             console.log("uploadResponse.data: ",uploadResponse.data);
-            
+            const payload = {
+                ...formData,
+                imageUrl: uploadResponse.data.file.imageUrl,
+                nameImage: uploadResponse.data.file.fileName,
+            };
+            console.log('payload: ', payload);
             let res: any;
             switch (openCollection.type) {
                 case 'add':
-                    
+                    res = await createCollection(payload);
+                    notify({
+                        message: res.message,
+                        severity: 'success'
+                    });
+                    handleCloseCreateCollection()
                     break;
             
                 default:
