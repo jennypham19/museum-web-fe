@@ -29,3 +29,9 @@ export interface DataStatusProps {
   value: string;
   label: string
 }
+
+export interface FormDataCollection{
+  name: string,
+  tags: string,
+  description: string,
+}

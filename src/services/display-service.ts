@@ -17,6 +17,14 @@ interface PaintingRequest{
     images: Images[];
 }
 
+interface CollectionRequest{
+  name: string;
+  tags: string;
+  description: string;
+  imageUrl: string;
+  nameImage: string
+}
+
 export type PaintingsResponse = PaginatedResponse<IPainting>;
 
 export interface PaintingPayload {
@@ -101,4 +109,9 @@ export const rejectPainting = async(id: number, payload: PaintingReject) : Promi
 export const deletePainting = async(id: number) => {
   const url = `${prefix}/delete-painting/${id}`;
   return HttpClient.delete(url)
+}
+
+// Thêm mới bộ sưu tập
+export const createCollection = async(payload: CollectionRequest) => {
+  return HttpClient.post(`${prefix}/create-collection`, payload)
 }

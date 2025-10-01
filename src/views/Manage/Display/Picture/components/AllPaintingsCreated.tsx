@@ -200,8 +200,6 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                 message: error.message,
                 severity: 'error'
             })
-        }finally{
-            setIsSubmitting(false)
         }
     }
 
@@ -386,7 +384,6 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                         onClose={handleCloseDeletePainting}
                         handleAgree={handleDeletePainting}
                     />
-                    <Backdrop open={isSubmitting} />
                 </>
             )}
         </Box>
