@@ -23,7 +23,8 @@ interface CollectionRequest{
   tags: string;
   description: string;
   imageUrl: string;
-  nameImage: string
+  nameImage: string;
+  curatorId: number | null
 }
 
 export type PaintingsResponse = PaginatedResponse<IPainting>;
@@ -55,8 +56,8 @@ export interface GetParams{
     page: number;
     limit: number;
     status?: string | string[];
-    tags?: string;
     searchTerm?: string;
+    curatorId?: number
 }
 
 // Thêm mới tác phẩm
@@ -95,10 +96,8 @@ export const getCollections = async(getParams: GetParams) : Promise<HttpResponse
   const url = `${prefix}/get-list-collections`;
   const params: Record<string, any> = {
     page: getParams.page,
-    limit: getParams.limit
-  }
-  if(getParams.tags !== undefined && getParams.tags !== 'all') {
-    params.tags = getParams.tags
+    limit: getParams.limit,
+    curatorId: getParams.curatorId
   }
   if(getParams.status !== undefined && getParams.status !== 'all') {
     params.status = getParams.status
