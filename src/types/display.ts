@@ -32,7 +32,7 @@ export interface DataStatusProps {
 
 export interface FormDataCollection{
   name: string,
-  tags: string,
+  tags: string[],
   description: string,
 }
 
@@ -43,8 +43,10 @@ export interface ICollection{
     description: string, 
     createdAt?: string,
     updatedAt?: string,
-    images: IImage[],
     status: StatusObject | null,
     rejectionReason: string,
-    isPublished: boolean
+    isPublished: boolean,
+    tags: string | string[];
+    curatorId: number;
+    arts: IPainting[]
 }

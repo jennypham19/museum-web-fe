@@ -7,45 +7,9 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { FormErrors } from "./AllCollectionsCreated";
 import { FormDataCollection } from "@/types/display";
+import { TAGS, TOPICS } from "@/constants/display";
+import { useState } from "react";
 
-interface TagsProps{
-    id: number;
-    label: string;
-    value: string
-}
-
-const TAGS: TagsProps[] = [
-    {
-        id: 1,
-        label: 'Theo loại hiện vật',
-        value: 'type_exhibit'
-    },
-    {
-        id: 2,
-        label: 'Theo phong cách nghệ thuật',
-        value: 'art_style'
-    },
-    {
-        id: 3,
-        label: 'Theo họa tiết chủ đạo',
-        value: 'pattern'
-    },
-    {
-        id: 4,
-        label: 'Theo giai đoạn lịch sử',
-        value: 'historical_period'
-    },
-    {
-        id: 5,
-        label: 'Theo khu vực/ văn hóa',
-        value: 'regional_culture'
-    },
-    {
-        id: 6,
-        label: 'Theo xuất xứ & xưởng chế tác',
-        value: 'origin_factory'
-    }
-]
 
 interface CreateCollectionProps {
     onClose: () => void;
@@ -56,9 +20,18 @@ interface CreateCollectionProps {
     formData: FormDataCollection;
     onSubmit: () => void;
     onInputChange: (name: string, value: any) => void;
+    onSubTopicsChange: (name: string, value: any) => void;
 }
 const CreateCollection = (props: CreateCollectionProps) => {
-    const { onClose, onFileSelect, image, error, errors, formData, onInputChange, onSubmit } = props;
+    const { onClose, onFileSelect, image, error, errors, formData, onInputChange, onSubmit, onSubTopicsChange } = props;
+    const [mainTopic, setMainTopic] = useState("");
+    const handleMainTopicChange = (name: string, value: any) => {
+        setMainTopic(value)
+    }
+
+    const handleSubTopicsChange = (name: string, value: any) => {
+        onSubTopicsChange(name, value)
+    }
 
     return(
         <>
@@ -83,10 +56,10 @@ const CreateCollection = (props: CreateCollectionProps) => {
                         <Typography fontWeight={700} fontSize='15px'>Chủ đề</Typography>
                         <InputSelect
                             label=""
-                            name="tags"
-                            onChange={onInputChange}
-                            value={formData.tags}
-                            options={TAGS}
+                            name="topic"
+                            onChange={handleMainTopicChange}
+                            value={mainTopic}
+                            options={TOPICS}
                             transformOptions={(data) => 
                                 data.map((item) => ({
                                     value: item.value,
@@ -96,6 +69,28 @@ const CreateCollection = (props: CreateCollectionProps) => {
                             error={!!errors.tags}
                             helperText={errors.tags}
                             placeholder="Chọn chủ đề"
+                        />
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Typography fontWeight={700} fontSize='15px'>Chi tiết</Typography>
+                        <InputSelect
+                            multiple
+                            renderChips
+                            title="Chưa có dữ liệu"
+                            label=""
+                            name="tags"
+                            onChange={handleSubTopicsChange}
+                            value={formData.tags}
+                            options={TAGS.filter((tags) => tags.topic === mainTopic)}
+                            transformOptions={(data) => 
+                                data.map((item) => ({
+                                    value: item.value,
+                                    label: item.label
+                                }))
+                            }
+                            error={!!errors.tags}
+                            helperText={errors.tags}
+                            placeholder="Chọn chi tiết"
                         />
                     </Grid>
                     <Grid size={{ xs: 12 }}>

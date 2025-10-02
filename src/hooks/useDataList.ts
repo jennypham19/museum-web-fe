@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "@/services/permission-service";
+import { PaginatedResponse } from "@/services/base-service";
 import { HttpResponse } from "@/types/common";
 import { debounce } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -7,10 +7,11 @@ interface FetchParams {
   page: number;
   limit: number;
   status?: string | string[];
+  curatorId?: number,
   searchTerm?: string;
 }
 
-export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse<PaginatedResponse<T>>>, rowsPerPage: number = 10, status?: string | string[]) => {
+export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse<PaginatedResponse<T>>>, rowsPerPage: number = 10, status?: string | string[], curatorId?: number) => {
     const [listData, setListData] = useState<T[]>([]);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
@@ -18,10 +19,10 @@ export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const fetchData = useCallback(async(page: number, limit: number, status?: string | string[] , searchTerm?: string) => {
+    const fetchData = useCallback(async(page: number, limit: number, status?: string | string[], curatorId?: number, searchTerm?: string) => {
         setLoading(true);
         try {
-            const res = await fn({ page: page, limit: limit, status: status, searchTerm: searchTerm});
+            const res = await fn({ page: page, limit: limit, status: status, curatorId: curatorId, searchTerm: searchTerm});
             const data = res.data?.data as any as T[];
             setListData(data);
             res.data?.total && setTotal(res.data.total)
@@ -35,20 +36,20 @@ export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse
     }, [fn]);
 
     const debounceGet = useMemo(
-        () => debounce((page: number, limit: number, status?: string | string[], searchTerm?: string) => {
-            fetchData(page, limit, status, searchTerm);
+        () => debounce((page: number, limit: number, status?: string | string[], curatorId?: number, searchTerm?: string) => {
+            fetchData(page, limit, status, curatorId, searchTerm);
         }, 500),
         [fetchData]
     )
 
     useEffect(() => {
         if(searchTerm) {
-            debounceGet(page, rowsPerPage, status, searchTerm)
+            debounceGet(page, rowsPerPage, status, curatorId, searchTerm)
         }else {
             debounceGet.cancel();
-            fetchData(page, rowsPerPage, status)
+            fetchData(page, rowsPerPage, status, curatorId)
         }
-    }, [page, rowsPerPage, searchTerm, status, fetchData, debounceGet]);
+    }, [page, rowsPerPage, searchTerm, status, fetchData, debounceGet, curatorId]);
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage)

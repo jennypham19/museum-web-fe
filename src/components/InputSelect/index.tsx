@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-import { CircularProgress, FormControl, FormHelperText, InputLabel, ListSubheader, MenuItem, Select, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material';
+import { Chip, CircularProgress, FormControl, FormHelperText, InputLabel, ListSubheader, MenuItem, Select, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material';
 
 
 
@@ -38,7 +38,8 @@ interface InputSelectProps {
   sx?: SxProps<Theme>;
   MenuProps?: SelectProps["MenuProps"];
   title?: string,
-  loadingTitle?: string
+  loadingTitle?: string,
+  renderChips?: boolean // hiển thị selected dưới dạng Chip
 }
 
 const InputSelect: React.FC<InputSelectProps> = ({
@@ -60,7 +61,8 @@ const InputSelect: React.FC<InputSelectProps> = ({
   sx = {},
   MenuProps = undefined,
   title,
-  loadingTitle
+  loadingTitle,
+  renderChips = false // default = text
 }) => {
   const handleChange = (event: SelectChangeEvent<typeof value>) => {
     const selectedValue = multiple ? event.target.value : event.target.value;
@@ -129,15 +131,35 @@ const InputSelect: React.FC<InputSelectProps> = ({
   };
 
   const getSelectedLabel = () => {
-    const allOptions =
-    Array.isArray(finalOptions) && finalOptions[0] && 'options' in finalOptions[0]
+    const allOptions = Array.isArray(finalOptions) && finalOptions[0] && 'options' in finalOptions[0]
       ? (finalOptions as OptionGroup[]).flatMap((g) => g.options)
       : (finalOptions as Option[]);
 
     if (multiple && Array.isArray(value)) {
-      return value
+      if(renderChips){
+        return (
+          value.map((val) => {
+            const opt = allOptions.find((o) => o.value === val);
+            return (
+              <Chip
+                key={val}
+                label={opt?.label || val}
+                size="small"
+                onDelete={() =>
+                  onChange(
+                    name,
+                    (value as (string | number)[]).filter((s) => s !== val)
+                  )
+                }
+              />
+            );
+          })
+        )
+      }else{
+        return value
         .map((v) => allOptions.find((o) => o.value === v)?.label || v)
         .join(', ');
+      }
     }
     return allOptions.find((o) => o.value === value)?.label || '';
   };
@@ -166,7 +188,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
         labelId={`${name}-label`}
         id={`${name}-select`}
         name={name}
-        value={value}
+        value={multiple ? (Array.isArray(value) ? value : value ? [value] : []) : value}
         onChange={handleChange}
         label={label}
         multiple={multiple}
@@ -176,6 +198,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
           if ((multiple && Array.isArray(selected) && selected.length === 0) || !selected) {
             return <span style={{ color: '#aaa' }}>{placeholder}</span>;
           }
+
           return getSelectedLabel();
         }}
       >
