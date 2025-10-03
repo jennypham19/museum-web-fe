@@ -15,9 +15,8 @@ import Grid from "@mui/material/Grid2";
 import CardData from "@/views/Manage/components/CardData";
 import CustomPagination from "@/components/Pagination/CustomPagination";
 import ViewCollection from "./ViewCollection";
-import { DemoCollectionPage } from "./Collection Detail";
-import CollectionForm from "./CollectionForm";
 import useAuth from "@/hooks/useAuth";
+import EditCollection from "./EditCollection";
 
 
 interface AllCollectionsCreatedProps{
@@ -93,6 +92,23 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
     const handleCloseViewCollection = () => {
         setCollection(null);
         setOpenCollection({ open: false, type: 'view'})
+    }
+
+    // Chỉnh sửa bộ sưu tập
+    const handleOpenEditCollection = (data: ICollection) => {
+        setImage(data.imageUrl)
+        setFormData({
+            name: data.name,
+            tags: data.tags.split(','),
+            description: data.description
+        })
+        setOpenCollection({ open: true, type: 'edit' })
+    }
+    
+    const handleCloseEditCollection = () => {
+        setCollection(null);
+        setOpenCollection({ open: false, type: 'edit' });
+        fetchData(page, rowsPerPage, 'created', profile?.id)
     }
     
     const handleInputChange = (name: string, value: any) => {
@@ -231,7 +247,10 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                                                             <Box px={2} pb={2} display='flex' flexDirection={{ xs: 'column', lg: 'row'}} justifyContent='space-between'>
                                                                 <Button
                                                                     fullWidth
-                                                                    onClick={() => {}}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        collection && handleOpenEditCollection(collection)
+                                                                    }}
                                                                     variant="outlined"
                                                                     sx={{ border: '1px solid #000', color: '#000'}}
                                                                 >
@@ -297,15 +316,29 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                         onSubTopicsChange={handleSubTopicsChange}
                     />
                     <Backdrop open={isSubmitting}/>
-                    {/* <CollectionForm/> */}
+                </>
+            )}
+            {openCollection.open && openCollection.type === 'edit' && (
+                <>
+                    <EditCollection
+                        onClose={handleCloseEditCollection}
+                        onFileSelect={handleFileSelect}
+                        image={image}
+                        error={{ errorImg, errorImgs }}
+                        errors={errors}
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                        onSubmit={handleSubmit}
+                        onSubTopicsChange={handleSubTopicsChange}
+                    />
+                    <Backdrop open={isSubmitting}/>
                 </>
             )}
             {openCollection.open && openCollection.type === 'view' && collection && (
-                // <ViewCollection
-                //     data={collection}
-                //     onBack={handleCloseViewCollection}
-                // />
-                <DemoCollectionPage/>
+                <ViewCollection
+                    data={collection}
+                    onBack={handleCloseViewCollection}
+                />
             )}
         </Box>
     )
