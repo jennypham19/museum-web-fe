@@ -1,5 +1,6 @@
 import { StatusObject } from "@/constants/status";
 import { IImage, Images } from "./post";
+import { IUser } from "./user";
 
 export interface IPainting{
     id: number,
@@ -46,7 +47,8 @@ export interface ICollection{
     status: StatusObject | null,
     rejectionReason: string,
     isPublished: boolean,
-    tags: string | string[];
+    tags: string;
     curatorId: number;
-    arts: IPainting[]
+    arts: IPainting[],
+    curator: IUser
 }
