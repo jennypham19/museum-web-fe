@@ -17,6 +17,7 @@ import CustomPagination from "@/components/Pagination/CustomPagination";
 import ViewCollection from "./ViewCollection";
 import useAuth from "@/hooks/useAuth";
 import EditCollection from "./EditCollection";
+import AttactArtCollection from "./AttactArtCollection";
 
 
 interface AllCollectionsCreatedProps{
@@ -106,8 +107,19 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
     }
     
     const handleCloseEditCollection = () => {
-        setCollection(null);
+        setFormData({ name: '', tags: [], description: '' });
         setOpenCollection({ open: false, type: 'edit' });
+        fetchData(page, rowsPerPage, 'created', profile?.id)
+    }
+
+    // Gán tác phẩm vào bộ sưu tập
+    const handleOpenAttactArtCollection = (data: ICollection) => {
+        setCollection(data)
+        setOpenCollection({ open: true, type: 'attach' })
+    }
+    const handleCloseAttactArtCollection = () => {
+        setCollection(null)
+        setOpenCollection({ open: false, type: 'attach' });
         fetchData(page, rowsPerPage, 'created', profile?.id)
     }
     
@@ -258,7 +270,10 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                                                                 </Button>
                                                                 <Button
                                                                     fullWidth
-                                                                    onClick={() => {}}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        collection && handleOpenAttactArtCollection(collection)
+                                                                    }}
                                                                     variant="outlined"
                                                                     sx={{ border: '1px solid #000', color: '#000', my: { xs: 1, lg: 0}, mx: { xs: 0, lg: 1.5}}}
                                                                 >
@@ -339,6 +354,14 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                     data={collection}
                     onBack={handleCloseViewCollection}
                 />
+            )}
+            {openCollection.open && openCollection.type === 'attach' && collection && (
+                <>
+                    <AttactArtCollection
+                        onClose={handleCloseAttactArtCollection}
+                        data={collection}
+                    />
+                </>
             )}
         </Box>
     )
