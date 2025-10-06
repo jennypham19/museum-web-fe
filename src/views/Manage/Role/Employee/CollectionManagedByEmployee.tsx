@@ -10,6 +10,7 @@ import useAuth from "@/hooks/useAuth";
 import Grid from "@mui/material/Grid2";
 import CardData from "../../components/CardData";
 import ViewCollection from "../../Display/Collections/components/ViewCollection";
+import { useLoadPage } from "@/hooks/useLoadPage";
 
 const CollectionManagedByEmployee = () => {
     const { profile } = useAuth();
@@ -45,9 +46,7 @@ const CollectionManagedByEmployee = () => {
     });
     const collectionsStatus = collections?.data?.data as any as ICollection[];
 
-    const fetchData = async (page: number, limit: number, status?: string | string[], curatorId?: number) => {
-        await getCollections({ page: page, limit: limit, status: status, curatorId: curatorId })
-    }
+    const { dataCreated, dataAll } = useLoadPage(query.page, query.rowsPerPage, collectionStatus, profile?.id)
 
     // Xem chi tiết
     const handleOpenViewCollection = (data: ICollection) => {
@@ -182,8 +181,8 @@ const CollectionManagedByEmployee = () => {
                             open: false,
                             type: 'created'
                         })
-                        fetchData(query.page, query.rowsPerPage, 'created', profile?.id);
-                        fetchData(query.page, query.rowsPerPage, collectionStatus, profile?.id);
+                        dataCreated
+                        dataAll
                     }}
                 />
             )}

@@ -1,23 +1,29 @@
 import { useState } from "react";
+
+
+
 import { Add, NavigateBefore, ViewCarousel } from "@mui/icons-material";
 import { Alert, Box, Button, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import AttactArtCollection from "./AttactArtCollection";
 import CreateCollection from "./CreateCollection";
+import EditCollection from "./EditCollection";
+import ViewCollection from "./ViewCollection";
 import Backdrop from "@/components/Backdrop";
 import IconButton from "@/components/IconButton/IconButton";
+import CustomPagination from "@/components/Pagination/CustomPagination";
+
+
+
 import { COLORS } from "@/constants/colors";
+import useAuth from "@/hooks/useAuth";
 import { useDataList } from "@/hooks/useDataList";
 import useNotification from "@/hooks/useNotification";
 import { createCollection, getCollections } from "@/services/display-service";
 import { uploadImage } from "@/services/upload-service";
 import { FormDataCollection, ICollection } from "@/types/display";
-import SearchBox from "@/views/Manage/components/SearchBox";
-import Grid from "@mui/material/Grid2";
 import CardData from "@/views/Manage/components/CardData";
-import CustomPagination from "@/components/Pagination/CustomPagination";
-import ViewCollection from "./ViewCollection";
-import useAuth from "@/hooks/useAuth";
-import EditCollection from "./EditCollection";
-import AttactArtCollection from "./AttactArtCollection";
+import SearchBox from "@/views/Manage/components/SearchBox";
 
 
 interface AllCollectionsCreatedProps{
@@ -104,11 +110,13 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
             description: data.description
         })
         setOpenCollection({ open: true, type: 'edit' })
+        setCollection(data)
     }
     
     const handleCloseEditCollection = () => {
-        setFormData({ name: '', tags: [], description: '' });
+        reset();
         setOpenCollection({ open: false, type: 'edit' });
+        setCollection(null);
         fetchData(page, rowsPerPage, 'created', profile?.id)
     }
 
@@ -142,7 +150,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
         if(!formData.tags) newErrors.tags = 'Vui lòng chọn chủ đề';
         if(!formData.name) newErrors.name = 'Vui lòng nhập tên';
         if(!formData.description) newErrors.description = 'Vui lòng nhập mô tả';
-        if(!imageFile){
+        if(!imageFile && openCollection.type === 'add'){
             setErrorImg("Vui lòng tải lên hình ảnh")
         };
         setErrors(newErrors);
@@ -156,18 +164,23 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
         setIsSubmitting(true)
         try {
             // 1 ảnh
-            const uploadResponse = await uploadImage(imageFile!, 'display/paintings/image');
-            if(!uploadResponse.success || !uploadResponse.data?.file){
-                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+            let uploadResponse: any
+            if(imageFile !== null){
+                uploadResponse = await uploadImage(imageFile!, 'display/paintings/image');
+                if(!uploadResponse.success || !uploadResponse.data?.file){
+                    throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+                }
             }
             const payload = {
                 name: formData.name,
                 tags: formData.tags.join(", "),
                 description: formData.description,
-                imageUrl: uploadResponse.data.file.imageUrl,
-                nameImage: uploadResponse.data.file.fileName,
+                imageUrl: uploadResponse.data ? uploadResponse.data.file.imageUrl : image,
+                nameImage: uploadResponse.data ? uploadResponse.data.file.fileName : collection?.nameImage,
                 curatorId: profile && profile.id  
             };
+            console.log('payload: ', payload);
+            
             let res: any;
             switch (openCollection.type) {
                 case 'add':
@@ -178,7 +191,9 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                     });
                     handleCloseCreateCollection()
                     break;
-            
+                case 'edit':
+                    
+                    break;  
                 default:
                     break;
             }
