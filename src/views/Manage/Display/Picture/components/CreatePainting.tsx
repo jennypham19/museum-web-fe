@@ -103,7 +103,7 @@ const CreatePainting: React.FC<CreatePaintingProps> = ({
               onChange={onInputChange}
               error={!!errors.description}
               helperText={errors.description}
-              rows={5}
+              rows={8}
               multiline
             />
           </Grid>

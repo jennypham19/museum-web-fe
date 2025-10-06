@@ -1,5 +1,5 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
 
 
 
@@ -14,6 +14,7 @@ import ViewPainting from "../../Display/Picture/components/ViewPainting";
 
 
 
+import { useLoadPage } from "@/hooks/useLoadPage";
 import { getPaintings } from "@/services/display-service";
 import { FormDataPainting, IPainting } from "@/types/display";
 import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
@@ -28,8 +29,11 @@ export type FormErrors = {
 };
 
 const PaintingManagedByEmployee = () => {
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(4);
+    const queryClient = useQueryClient();
+    const query = {
+      page: 1,
+      rowsPerPage: 4
+    }
     const [openPainting, setOpenPainting] = useState<{type: string, open: boolean}>({
         type: '',
         open: false
@@ -42,10 +46,13 @@ const PaintingManagedByEmployee = () => {
     const [painting, setPainting] = useState<IPainting | null> (null);
 
     const { data } = useQuery({
-      queryKey: ['data', 'created', page, rowsPerPage],
+      queryKey: ['data', 'created', query.page, query.rowsPerPage],
       queryFn: () => {
-        return getPaintings({ page, limit: rowsPerPage, status: 'created'});
+        return getPaintings({ page: query.page, limit: query.rowsPerPage, status: 'created' });
       },
+      // refetchOnWindowFocus: true,  // khi quay lại tab sẽ tự load lại
+      // refetchOnMount: true,   // khi component mount lại
+      // refetchOnReconnect: true,  // khi mạng reconnect
       placeholderData: keepPreviousData
     });
 
@@ -53,18 +60,19 @@ const PaintingManagedByEmployee = () => {
     
     const paintingStatus = useMemo(() => ['pending', 'reviewing', 'approved', 'rejected'], [])
     const { data: paintings } = useQuery({
-      queryKey: ['data', paintingStatus, page, rowsPerPage],
+      queryKey: ['data', paintingStatus, query.page, query.rowsPerPage],
       queryFn: () => {
-        return getPaintings({ page, limit: rowsPerPage, status: paintingStatus });
+        return getPaintings({ page: query.page, limit: query.rowsPerPage, status: paintingStatus });
       },
-      placeholderData: keepPreviousData
+      // refetchOnWindowFocus: true, // khi quay lại tab sẽ tự load lại
+      // refetchOnMount: true, // khi component mount lại
+      // refetchOnReconnect: true, // khi mạng reconnect
+      placeholderData: keepPreviousData,
     });
     const paintingsStatus = paintings?.data?.data as any as IPainting[];
 
-    const fetchData = async (page: number, limit: number, status?: string | string[]) => {
-      await getPaintings({ page: page, limit: limit, status: status})
-    }
-  
+    const { dataCreated, dataAll } = useLoadPage(query.page, query.rowsPerPage, paintingStatus)
+
     const handleOpenViewPainting = (data: IPainting) => {
         setOpenPainting({
             type: 'view',
@@ -183,8 +191,8 @@ const PaintingManagedByEmployee = () => {
                 open: false,
                 type: 'created'
               })
-              fetchData(page, rowsPerPage, "created"),
-              fetchData(page, rowsPerPage, ['pending', 'reviewing', 'approved', 'rejected'])
+              dataCreated
+              dataAll
             }}
           />
         )}
@@ -198,7 +206,8 @@ const PaintingManagedByEmployee = () => {
                 open: false,
                 type: 'all'
               })
-              fetchData(page, rowsPerPage, ['pending', 'reviewing', 'approved', 'rejected'])
+              dataCreated;
+              dataAll;
             }}
           />
         )}

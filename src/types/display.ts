@@ -41,6 +41,7 @@ export interface ICollection{
     id: number,
     name: string,
     imageUrl: string,
+    nameImage: string,
     description: string, 
     createdAt?: string,
     updatedAt?: string,
