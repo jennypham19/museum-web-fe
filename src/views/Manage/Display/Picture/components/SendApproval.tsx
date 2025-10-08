@@ -12,7 +12,7 @@ import CommonImage from "@/components/Image/index";
 
 import { COLORS } from "@/constants/colors";
 import useNotification from "@/hooks/useNotification";
-import { PaintingPayload, sendApproval } from "@/services/display-service";
+import { Payload, sendApproval } from "@/services/display-service";
 import { IPainting } from "@/types/display";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 
@@ -32,10 +32,10 @@ const SendApproval: React.FC<SendApprovalProps> = ({ data, onClose }) => {
 
     const handleSendApproval = async() => {
         try {
-            const payload: PaintingPayload = {
+            const payload: Payload = {
                 status: 'pending'
             }
-            const res = await sendApproval(data.id, payload);
+            const res = await sendApproval(data.id, 'painting', payload);
             notify({
                 message: res.message,
                 severity: 'success'

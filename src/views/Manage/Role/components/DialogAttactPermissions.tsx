@@ -203,7 +203,7 @@ const DialogAttactPermission: React.FC<DialogAttactPermissionProps> = ({ open, o
             )}
             {!error && !loading && (
                 <>
-                   <Typography textAlign='center' sx={{ p: 1 }} variant="h6" fontWeight={600} gutterBottom>{`Gán nhóm quyền cho ${user.full_name}`}</Typography>
+                   <Typography textAlign='center' sx={{ p: 1 }} variant="h6" fontWeight={600} gutterBottom>{`Gán nhóm quyền cho ${user.fullName}`}</Typography>
                     {errorPer && (
                         <Typography mb={2} variant="body2" fontWeight={600} color="error">{errorPer}</Typography>
                     )}

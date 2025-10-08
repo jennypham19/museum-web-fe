@@ -1,20 +1,17 @@
 import { ICollection, IPainting } from "@/types/display";
-import DrawerObject from "@/views/Manage/components/DrawerObject";
-import NavigateBack from "@/views/Manage/components/NavigateBack";
 import { Avatar, Box, Button, Card, CardContent, CardMedia, Chip, Divider, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useState } from "react";
 import Grid from "@mui/material/Grid2";
-import React, { useState } from "react";
+import DrawerObject from "@/views/Manage/components/DrawerObject";
 
-interface ViewCollectionProps{
-    data: ICollection;
-    onClose: () => void;
+interface CollectionDetailProps {
+    collection: ICollection;
+    onBack: () => void;
+    type?: string;
+    children?: React.ReactNode;
 }
 
-interface CollectionDetailProps{
-    collection: ICollection
-}
-
-const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
+const CollectionDetail: React.FC<CollectionDetailProps> = ({ children, collection, onBack, type }) => {
     const theme = useTheme();
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const [selectedArt, setSelectedArt] = useState<IPainting | null>(null);
@@ -33,23 +30,23 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
         setDrawerOpen(false);
         setSelectedArt(null);
     };
-
     return(
         <Box>
             <Grid container spacing={3} alignItems='flex-start'>
                 <Grid size={{ xs: 12, md: 5 }}>
-                    <Card elevation={2}>
+                    <Card>
                         <CardMedia
                             component='img'
-                            src={collection.imageUrl}
+                            image={collection.imageUrl}
                             alt={collection.name}
-                            height={360}
+                            height={300}
+                            sx={{ objectFit: 'fill'}}
                         />
                         <CardContent>
-                            <Stack gap={2} direction="row" spacing={1} alignItems="center" justifyContent="space-between">
+                            <Stack gap={2} direction='row' spacing={1} alignItems="center" justifyContent="space-between">
                                 <Typography variant="h5">{collection.name}</Typography>
                                 <Stack direction='row' spacing={1} alignItems='center'>
-                                    <Avatar src={collection.curator.avatarUrl} sx={{ width: 32, height: 32}}/>
+                                    <Avatar src={collection.curator.avatarUrl} sx={{ width: 32, height: 32 }}/>
                                     <Typography variant="body2">{collection.curator.fullName}</Typography>
                                 </Stack>
                             </Stack>
@@ -57,41 +54,43 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
                                 {lg ? (
                                     <Stack direction='row'>
                                         {collection.tags.split(",").map((tag) => (
-                                            <Chip key={tag} label={tag} size="small"  />
+                                            <Chip key={tag} label={tag} size="small"/>
                                         ))}
-                                    </Stack>  
+                                    </Stack>
                                 ) : (
-                                <Grid container spacing={2} sx={{ mb: 1 }}>
-                                    {collection.tags.split(",").map((tag) => (
-                                        <Grid size={{ xs: 6}}>
-                                            <Chip key={tag} label={tag} size="small"  />
-                                        </Grid>
-                                    ))}
-                                </Grid>
+                                    <Grid container spacing={2} sx={{ mb: 1 }}>
+                                        {collection.tags.split(",").map((tag, idx) => (
+                                            <Grid key={idx} size={{ xs: 6 }}>
+                                                <Chip label={tag} size="small"/>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
                                 )}
                                 <Stack sx={{ mb: 1 }}>
                                     {collection.status && (
-                                        <Chip label={collection.status.toUpperCase()} size="small" color="primary" variant="outlined"  />
+                                        <Chip label={collection.status.toUpperCase()} size="small" color="primary" variant="outlined"/>
                                     )}
                                 </Stack>
                             </Stack>
                             <Divider sx={{ my: 2 }}/>
-                            <Typography variant="body2" color="text.secondary">{collection.description}</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                {collection.description}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid size={{ xs: 12, md: 7 }}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
+                    <Stack direction='row' justifyContent="space-between" alignItems="center" mb={1}>
                         <Typography variant="h6">Tác phẩm ({collection.arts.length})</Typography>
                         <Stack direction="row" spacing={1} alignItems="center">
-                        <Typography variant="body2">
-                            Hiển thị {visibleArtworks.length}/{collection.arts.length}
-                        </Typography>
-                        {additionalCount > 0 && (
-                            <Button size="small" onClick={() => setShowAll((s) => !s)}>
-                            {showAll ? "Thu gọn" : `Xem thêm (${additionalCount})`}
-                            </Button>
-                        )}
+                            <Typography variant="body2">
+                                Hiển thị {visibleArtworks.length}/{collection.arts.length}
+                            </Typography>
+                            {additionalCount > 0 && (
+                                <Button size="small" onClick={() => setShowAll((s) => !s)}>
+                                    {showAll ? "Thu gọn" : `Xem thêm (${additionalCount})`}
+                                </Button>
+                            )}
                         </Stack>
                     </Stack>
                     <Grid container spacing={2}>
@@ -104,7 +103,7 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
                                         onClick={() => openArt(art)}
                                         sx={{ cursor: 'pointer', height: '100%', display: "flex", flexDirection: "column" }}
                                     >
-                                        <CardMedia component="img" image={art.imageUrl} alt={art.name} height={160} />
+                                        <CardMedia component="img" image={art.imageUrl} alt={art.name} height={160} sx={{ objectFit: 'fill'}} />
                                         <CardContent sx={{ pt: 1, pb: 2, flexGrow: 1 }}>
                                             <Typography variant="subtitle2" noWrap>
                                                 {art.name}
@@ -120,6 +119,7 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
                     </Grid>
                 </Grid>
             </Grid>
+            {children}
             {/* Drawer for artwork detail */}
             {selectedArt && (
                 <DrawerObject
@@ -132,17 +132,4 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
     )
 }
 
-
-const ViewCollection = (props: ViewCollectionProps) => {
-    const { onClose, data } = props;
-    return(
-        <>
-            <NavigateBack onBack={onClose} title="Chi tiết bộ sưu tập"/>
-            <Box p={3}>
-                <CollectionDetail collection={data}/>
-            </Box>
-        </>
-    )
-}
-
-export default ViewCollection;
+export default CollectionDetail;

@@ -22,15 +22,16 @@ interface CollectionRequest{
   name: string;
   tags: string;
   description: string;
-  imageUrl: string;
-  nameImage: string;
-  curatorId: number | null
+  imageUrl: string | null;
+  nameImage: string | null;
+  curatorId: number | null;
+  status?: string
 }
 
 export type PaintingsResponse = PaginatedResponse<IPainting>;
 export type CollectionsResponse = PaginatedResponse<ICollection>;
 
-export interface PaintingPayload {
+export interface Payload {
   status: string,
   userIdApprove?: number
 }
@@ -46,7 +47,7 @@ export interface PaintingSent {
   note?: string
 }
 
-export interface PaintingReject {
+export interface ApprovalReject {
   status: string,
   userIdApprove?: number,
   rejectionReason?: string
@@ -68,6 +69,12 @@ export const createPainting = (payload: PaintingRequest) => {
 // Thêm mới bộ sưu tập
 export const createCollection = async(payload: CollectionRequest) => {
   return HttpClient.post(`${prefix}/create-collection`, payload)
+}
+
+// Chỉnh sửa bộ sưu tập
+export const updateCollection = async(id: number, payload: CollectionRequest) => {
+  const url = `${prefix}/update-collection/${id}`;
+  return HttpClient.put<any>(url, payload as any)
 }
 
 // Lấy danh sách tác phẩm
@@ -97,10 +104,8 @@ export const getCollections = async(getParams: GetParams) : Promise<HttpResponse
   const params: Record<string, any> = {
     page: getParams.page,
     limit: getParams.limit,
-    curatorId: getParams.curatorId
-  }
-  if(getParams.status !== undefined && getParams.status !== 'all') {
-    params.status = getParams.status
+    curatorId: getParams.curatorId,
+    status: getParams.status
   }
   if(getParams.searchTerm && getParams.searchTerm.trim()) {
     params.searchTerm = getParams.searchTerm
@@ -124,8 +129,8 @@ export const getCollections = async(getParams: GetParams) : Promise<HttpResponse
 }
 
 // Gửi phê duyệt
-export const sendApproval = async(id: number, payload: PaintingPayload): Promise<HttpResponse<any>> => {
-    const url = `${prefix}/send-approval-painting/${id}`;
+export const sendApproval = async(id: number, type: string, payload: Payload): Promise<HttpResponse<any>> => {
+    const url = `${prefix}/send-approval-${type}/${id}`;
     return HttpClient.patch<any>(url, payload as any);
 }
 
@@ -136,7 +141,7 @@ export const publishPainting = async(id: number, payload: PaintingPublished) : P
 }
 
 // Mod và admin duyệt
-export const approvePainting = async(id: number, payload: PaintingPayload) : Promise<HttpResponse<any>> => {
+export const approvePainting = async(id: number, payload: Payload) : Promise<HttpResponse<any>> => {
   const url = `${prefix}/approve-painting/${id}`;
   return HttpClient.put<any>(url, payload as any)
 }
@@ -148,8 +153,8 @@ export const sendPainting = async(id: number, payload: PaintingSent) : Promise<H
 }
 
 // Từ chối
-export const rejectPainting = async(id: number, payload: PaintingReject) : Promise<HttpResponse<any>> => {
-  const url = `${prefix}/reject-painting/${id}`;
+export const rejectApproval = async(id: number, type: string, payload: ApprovalReject) : Promise<HttpResponse<any>> => {
+  const url = `${prefix}/reject-${type}/${id}`;
   return HttpClient.put<any>(url, payload as any)
 }
 
@@ -157,4 +162,22 @@ export const rejectPainting = async(id: number, payload: PaintingReject) : Promi
 export const deletePainting = async(id: number) => {
   const url = `${prefix}/delete-painting/${id}`;
   return HttpClient.delete(url)
+}
+
+// Gỡ tác phẩm khỏi bộ sưu tập
+export const detachArtFromCollection = async(collectionId: number, payload: { artIds: number[] }) => {
+  const url = `${prefix}/detach-art-from-collection/${collectionId}`;
+  return HttpClient.delete(url, { data: payload } as any)
+}
+
+// Gán tác phẩm vào bộ sưu tập
+export const attachArtFromCollection = async(collectionId: number, payload: { artIds: number[] }) => {
+  const url = `${prefix}/attach-art-to-collection/${collectionId}`;
+  return HttpClient.put(url, payload as any)
+}
+
+// Lấy chi tiết bộ sưu tập có tác phẩm bên trong
+export const getCollectionHasArtById = async (id: number) => {
+  const url = `${prefix}/get-collection-has-art-by-id/${id}`;
+  return HttpClient.get<HttpResponse<ICollection | null>>(url)
 }

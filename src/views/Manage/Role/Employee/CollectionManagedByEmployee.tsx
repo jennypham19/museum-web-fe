@@ -1,16 +1,17 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Chip, Stack, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 import OverviewDataCreate from "../../components/OverviewDataCreate";
 import OverviewData from "../../components/OverviewData";
 import AllCollectionsCreated from "../../Display/Collections/components/AllCollectionsCreated";
 import { ICollection } from "@/types/display";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getCollections } from "@/services/display-service";
 import useAuth from "@/hooks/useAuth";
 import Grid from "@mui/material/Grid2";
 import CardData from "../../components/CardData";
 import ViewCollection from "../../Display/Collections/components/ViewCollection";
-import { useLoadPage } from "@/hooks/useLoadPage";
+import { useLoadData } from "@/hooks/useLoadData";
+import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
+import AllCollections from "../../Display/Collections/components/AllCollections";
 
 const CollectionManagedByEmployee = () => {
     const { profile } = useAuth();
@@ -27,27 +28,9 @@ const CollectionManagedByEmployee = () => {
     const [isView, setIsView] = useState(false)
     const [collection, setCollection] = useState<ICollection | null>(null);
 
-    const { data } = useQuery({
-        queryKey: ['data', 'created', query.page, query.rowsPerPage],
-        queryFn: () => {
-            return (getCollections({ page: query.page, limit: query.rowsPerPage, status: 'created', curatorId: profile?.id }));
-        },
-        placeholderData: keepPreviousData
-    });
-    const collectionsCreated = data?.data?.data as any as ICollection[];
-
     const collectionStatus = useMemo(() => ['pending', 'reviewing', 'approved', 'rejected'], [])
-    const { data: collections } = useQuery({
-        queryKey: ['data', collectionStatus, query.page, query.rowsPerPage ],
-        queryFn: () => {
-            return getCollections({ page: query.page, limit: query.rowsPerPage, status: collectionStatus, curatorId: profile?.id })
-        },
-        placeholderData: keepPreviousData
-    });
-    const collectionsStatus = collections?.data?.data as any as ICollection[];
-
-    const { dataCreated, dataAll } = useLoadPage(query.page, query.rowsPerPage, collectionStatus, profile?.id)
-
+    const { data, fetchDatas } = useLoadData<ICollection>(getCollections, 4, collectionStatus, profile?.id);
+    
     // Xem chi tiết
     const handleOpenViewCollection = (data: ICollection) => {
         setOpenViewCollection(true);
@@ -86,10 +69,10 @@ const CollectionManagedByEmployee = () => {
                     >
                         <Box px={2}>
                             <Grid container spacing={3}>
-                                {collectionsCreated?.length === 0 && (
+                                {data.objectCreated?.length === 0 && (
                                     <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào</Typography>
                                 )}
-                                {collectionsCreated?.map((collection, index) => {
+                                {data.objectCreated?.map((collection, index) => {
                                     return (
                                         <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
                                             <CardData
@@ -132,10 +115,10 @@ const CollectionManagedByEmployee = () => {
                     >
                         <Box p={2}>
                             <Grid container spacing={3}>
-                                {collectionsStatus?.length === 0 && (
+                                {data.objectAll?.length === 0 && (
                                     <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào</Typography>
                                 )}
-                                {collectionsStatus?.map((collection, index) => {
+                                {data.objectAll?.map((collection, index) => {
                                     return (
                                         <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
                                             <CardData
@@ -145,6 +128,14 @@ const CollectionManagedByEmployee = () => {
                                                 onOpenDetail={handleOpenViewCollection}
                                                 renderData={(collection) => (
                                                     <Stack px={2} pb={2} direction='column'>
+                                                        <Stack display='flex' justifyContent='flex-end'>
+                                                            {collection.status && (
+                                                                <Chip
+                                                                    label={getStatusLabel(collection.status)}
+                                                                    color={getStatusLabelColor(collection.status).color}
+                                                                />
+                                                            )}
+                                                        </Stack>
                                                         <Typography fontWeight={700} fontSize={{ xs: '16px', md: '20px'}}>{collection.name}</Typography>
                                                         <Typography 
                                                             fontSize={{ xs: '14px', md: '15px'}}
@@ -181,15 +172,27 @@ const CollectionManagedByEmployee = () => {
                             open: false,
                             type: 'created'
                         })
-                        dataCreated
-                        dataAll
+                        fetchDatas(query.page, query.rowsPerPage, collectionStatus, profile?.id)
+                    }}
+                />
+            )}
+            {/* Trạng thái bộ sưu tập */}
+            {showAll && showAllCollections.open && showAllCollections.type === 'all' && (
+                <AllCollections
+                    onBack={() => {
+                        setShowAll(false)
+                        setShowAllCollections({
+                            open: false,
+                            type: 'all'
+                        })
+                        fetchDatas(query.page, query.rowsPerPage, collectionStatus, profile?.id)
                     }}
                 />
             )}
             {openViewCollection && collection && isView && (
                 <ViewCollection
                     data={collection}
-                    onBack={handleCloseViewCollection}
+                    onClose={handleCloseViewCollection}
                 />
             )}
         </Box>

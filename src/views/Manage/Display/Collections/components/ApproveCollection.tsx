@@ -1,20 +1,29 @@
+import { COLORS } from "@/constants/colors";
+import { ROLE } from "@/constants/roles";
+import useAuth from "@/hooks/useAuth";
+import useNotification from "@/hooks/useNotification";
+import { Payload, sendApproval } from "@/services/display-service";
 import { ICollection, IPainting } from "@/types/display";
+import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 import DrawerObject from "@/views/Manage/components/DrawerObject";
 import NavigateBack from "@/views/Manage/components/NavigateBack";
 import { Avatar, Box, Button, Card, CardContent, CardMedia, Chip, Divider, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import React, { useState } from "react";
+import { useState } from "react";
 
-interface ViewCollectionProps{
+interface ApproveCollectionProps {
     data: ICollection;
     onClose: () => void;
 }
 
-interface CollectionDetailProps{
-    collection: ICollection
+interface CollectionDetailProps {
+    collection: ICollection;
+    onBack: () => void;
+    onSendApproval: () => void
 }
 
-const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
+const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection, onBack, onSendApproval }) => {
+    const { profile } = useAuth();
     const theme = useTheme();
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const [selectedArt, setSelectedArt] = useState<IPainting | null>(null);
@@ -41,9 +50,10 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
                     <Card elevation={2}>
                         <CardMedia
                             component='img'
-                            src={collection.imageUrl}
+                            image={collection.imageUrl}
                             alt={collection.name}
                             height={360}
+                            sx={{ objectFit: 'fill'}}
                         />
                         <CardContent>
                             <Stack gap={2} direction="row" spacing={1} alignItems="center" justifyContent="space-between">
@@ -89,7 +99,7 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
                         </Typography>
                         {additionalCount > 0 && (
                             <Button size="small" onClick={() => setShowAll((s) => !s)}>
-                            {showAll ? "Thu gọn" : `Xem thêm (${additionalCount})`}
+                                {showAll ? "Thu gọn" : `Xem thêm (${additionalCount})`}
                             </Button>
                         )}
                         </Stack>
@@ -120,6 +130,29 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
                     </Grid>
                 </Grid>
             </Grid>
+            <Box mt={2} display='flex' justifyContent='flex-end'>
+                <Button
+                    sx={{
+                        bgcolor: COLORS.BUTTON,
+                        width: 120,
+                        mr: 2
+                    }}
+                    onClick={onSendApproval}
+                >
+                    Gửi duyệt
+                </Button>
+                <Button
+                    variant="outlined"
+                    sx={{
+                        border: '1px solid #000',
+                        color: '#000',
+                        width: 100
+                    }}
+                    onClick={onBack}
+                >
+                    Quay lại
+                </Button>
+            </Box>
             {/* Drawer for artwork detail */}
             {selectedArt && (
                 <DrawerObject
@@ -132,17 +165,53 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
     )
 }
 
-
-const ViewCollection = (props: ViewCollectionProps) => {
-    const { onClose, data } = props;
+const ApproveCollection: React.FC<ApproveCollectionProps> = ({ data, onClose }) => {
+    const notity = useNotification();
+    const [openSendApproval, setOpenSendApproval] = useState(false);
+    const handleOpenSendApproval = () => {
+        setOpenSendApproval(true);
+    }
+    const handleCloseSendApproval = () => {
+        setOpenSendApproval(false);
+    }
+    const handleSendApproval = async() => {
+        const payload: Payload = {
+            status: 'pending'
+        }
+        try {
+            const res = await sendApproval(data.id, 'collection', payload);
+            notity({
+                message: res.message,
+                severity: 'success'
+            })
+            onClose();
+        } catch (error: any) {
+            notity({
+                message: error.message,
+                severity: 'error'
+            })
+        }
+    }
     return(
         <>
-            <NavigateBack onBack={onClose} title="Chi tiết bộ sưu tập"/>
+            <NavigateBack
+                onBack={onClose}
+                title="Gửi duyệt bộ sưu tập"
+            />
             <Box p={3}>
-                <CollectionDetail collection={data}/>
+                <CollectionDetail collection={data} onBack={onClose} onSendApproval={handleOpenSendApproval}/>
             </Box>
+            {/* Xác nhận gửi duyệt */}
+            {openSendApproval && (
+                <DialogConfirm
+                    open={openSendApproval}
+                    title="Bạn có chắc chắn muốn gửi duyệt bộ sưu tập này?"
+                    onClose={handleCloseSendApproval}
+                    handleAgree={handleSendApproval}
+                />
+            )}
         </>
     )
 }
 
-export default ViewCollection;
+export default ApproveCollection;

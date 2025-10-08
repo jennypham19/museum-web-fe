@@ -16,7 +16,7 @@ import { COLORS } from "@/constants/colors";
 import { ROLE } from "@/constants/roles";
 import useAuth from "@/hooks/useAuth";
 import useNotification from "@/hooks/useNotification";
-import { approvePainting, PaintingPayload, PaintingReject, rejectPainting } from "@/services/display-service";
+import { approvePainting, Payload, ApprovalReject, rejectApproval } from "@/services/display-service";
 import { IPainting } from "@/types/display";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 
@@ -53,7 +53,7 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
 
     const handleApprove = async() => {
         try {
-            const payload: PaintingPayload = {
+            const payload: Payload = {
                 status: 'approved',
                 userIdApprove: profile?.id
             }
@@ -85,12 +85,12 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
             return
         }
         try {
-            const payload: PaintingReject = {
+            const payload: ApprovalReject = {
               status: 'rejected',
               userIdApprove: profile?.id,
               rejectionReason: reason,
             };
-            const res = await rejectPainting(data.id, payload);
+            const res = await rejectApproval(data.id, 'painting', payload);
             notify({
                 message: res.message,
                 severity: 'success'

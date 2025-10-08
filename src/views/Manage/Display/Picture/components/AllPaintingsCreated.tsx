@@ -18,6 +18,7 @@ import Backdrop from "@/components/Backdrop";
 import ViewPainting from "./ViewPainting";
 import SendApproval from "./SendApproval";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
+import NavigateBack from "@/views/Manage/components/NavigateBack";
 
 interface AllPaintingsCreatedProps {
     onBack: () => void;
@@ -233,13 +234,7 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
                             Thêm mới tác phẩm
                         </Button>
                     </SearchBox>
-                    <Stack my={1}>
-                        <IconButton
-                            handleFunt={onBack}
-                            icon={<NavigateBefore sx={{ width: '28px', height: '28px'}}/>}
-                        />
-                        <Typography pt={0.2} fontWeight={600} variant="h6">Tác phẩm vừa tạo</Typography>
-                    </Stack>
+                    <NavigateBack onBack={onBack} title="Tác phẩm vừa tạo"/>
                     {loading && (
                         <Backdrop open={loading}/>
                     )}

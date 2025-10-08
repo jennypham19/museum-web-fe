@@ -9,20 +9,22 @@ import { useState } from "react";
 import { TAGS, TOPICS } from "@/constants/display";
 import InputText from "@/components/InputText";
 import { COLORS } from "@/constants/colors";
+import { StatusObject } from "@/constants/status";
 
 interface EditCollectionProps{
     onClose: () => void;
     onFileSelect: (file: File | null) => void;
     image: string | null;
-    error: { errorImg: string; errorImgs: string};
+    error: { errorImg: string};
     errors: FormErrors;
     formData: FormDataCollection;
     onSubmit: () => void;
     onInputChange: (name: string, value: any) => void;
     onSubTopicsChange: (name: string, value: any) => void;
+    data?: ICollection
 }
 const EditCollection = (props: EditCollectionProps) => {
-    const { onClose, onFileSelect, image, error, errors, formData, onSubmit, onInputChange, onSubTopicsChange } = props;
+    const { onClose, onFileSelect, image, error, errors, formData, onSubmit, onInputChange, onSubTopicsChange, data } = props;
     const [mainTopic, setMainTopic] = useState("");
     const handleMainTopicChange = (name: string, value: any) => {
         setMainTopic(value)
@@ -38,6 +40,11 @@ const EditCollection = (props: EditCollectionProps) => {
                 onBack={onClose}
             />
             <Box m={3} bgcolor='#fff' p={4}>
+                {data?.rejectionReason && data.status === StatusObject.REJECTED && (
+                <Typography py={0.5} mb={1} fontSize='15px' borderBottom='1px solid #000'>
+                    <b>Lý do phê duyệt thất bại: </b>{data.rejectionReason}
+                </Typography>
+                )}
                 <Grid container spacing={3}>
                     <Grid size={{ xs: 12}}>
                         <Typography fontWeight={700} fontSize='15px'>
@@ -74,7 +81,7 @@ const EditCollection = (props: EditCollectionProps) => {
                         <InputSelect
                             multiple
                             renderChips
-                            title="Chưa có dữ liệu"
+                            title="Chưa có dữ liệu. Hãy chọn chủ đề"
                             label=""
                             name="tags"
                             onChange={handleSubTopicsChange}

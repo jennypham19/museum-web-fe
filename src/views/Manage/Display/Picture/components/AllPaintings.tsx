@@ -16,6 +16,7 @@ import useNotification from "@/hooks/useNotification";
 import ViewPainting from "./ViewPainting";
 import EditPainting from "./EditPainting";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
+import NavigateBack from "@/views/Manage/components/NavigateBack";
 
 
 interface AllPaintingsProps {
@@ -191,15 +192,7 @@ const AllPaintings: React.FC<AllPaintingsProps> = ({ onBack }) => {
               onSearch={handleSearch}
               placeholder='Tìm kiếm theo tên, tác giả, thời kỳ....'
             />
-            <Stack my={1}>
-              <IconButton
-                handleFunt={onBack}
-                icon={<NavigateBefore sx={{ width: '28px', height: '28px' }} />}
-              />
-              <Typography pt={0.2} fontWeight={600} variant='h6'>
-                Trạng thái tác phẩm
-              </Typography>
-            </Stack>
+            <NavigateBack onBack={onBack} title="Trạng thái tác phẩm"/>
             <Box m={2}>
               <FilterTabs data={DataStatus} viewMode={viewMode} onChange={setViewMode} />
             </Box>
@@ -285,13 +278,15 @@ const AllPaintings: React.FC<AllPaintingsProps> = ({ onBack }) => {
                         })
                     )}
                 </Grid>
-                <CustomPagination
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  onPageChange={handlePageChange}
-                  count={total}
-                  sx={{ my: 1.5 }}
-                />
+                <Box display='flex' justifyContent='center' alignItems='center'>
+                  <CustomPagination
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    onPageChange={handlePageChange}
+                    count={total}
+                    sx={{ my: 1.5 }}
+                  />
+                </Box>
               </>
             )}
           </>
