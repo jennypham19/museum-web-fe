@@ -69,6 +69,6 @@ export const useDataList = <T>(fn: (params: FetchParams) => Promise<HttpResponse
         total,
         page,
         rowsPerPage,
-        fetchData
+        fetchData,
     }
 }

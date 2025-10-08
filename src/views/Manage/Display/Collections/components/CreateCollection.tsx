@@ -76,7 +76,7 @@ const CreateCollection = (props: CreateCollectionProps) => {
                         <InputSelect
                             multiple
                             renderChips
-                            title="Chưa có dữ liệu"
+                            title="Chưa có dữ liệu. Hãy chọn chủ đề"
                             label=""
                             name="tags"
                             onChange={handleSubTopicsChange}

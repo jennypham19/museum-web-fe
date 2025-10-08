@@ -18,6 +18,7 @@ import { useLoadPage } from "@/hooks/useLoadPage";
 import { getPaintings } from "@/services/display-service";
 import { FormDataPainting, IPainting } from "@/types/display";
 import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
+import { useLoadData } from "@/hooks/useLoadData";
 
 
 interface PaintingManagedByEmployeeProps {
@@ -29,7 +30,6 @@ export type FormErrors = {
 };
 
 const PaintingManagedByEmployee = () => {
-    const queryClient = useQueryClient();
     const query = {
       page: 1,
       rowsPerPage: 4
@@ -44,34 +44,9 @@ const PaintingManagedByEmployee = () => {
         type: ''
     });
     const [painting, setPainting] = useState<IPainting | null> (null);
-
-    const { data } = useQuery({
-      queryKey: ['data', 'created', query.page, query.rowsPerPage],
-      queryFn: () => {
-        return getPaintings({ page: query.page, limit: query.rowsPerPage, status: 'created' });
-      },
-      // refetchOnWindowFocus: true,  // khi quay lại tab sẽ tự load lại
-      // refetchOnMount: true,   // khi component mount lại
-      // refetchOnReconnect: true,  // khi mạng reconnect
-      placeholderData: keepPreviousData
-    });
-
-    const paintingsCreated = data?.data?.data as any as IPainting[];
     
     const paintingStatus = useMemo(() => ['pending', 'reviewing', 'approved', 'rejected'], [])
-    const { data: paintings } = useQuery({
-      queryKey: ['data', paintingStatus, query.page, query.rowsPerPage],
-      queryFn: () => {
-        return getPaintings({ page: query.page, limit: query.rowsPerPage, status: paintingStatus });
-      },
-      // refetchOnWindowFocus: true, // khi quay lại tab sẽ tự load lại
-      // refetchOnMount: true, // khi component mount lại
-      // refetchOnReconnect: true, // khi mạng reconnect
-      placeholderData: keepPreviousData,
-    });
-    const paintingsStatus = paintings?.data?.data as any as IPainting[];
-
-    const { dataCreated, dataAll } = useLoadPage(query.page, query.rowsPerPage, paintingStatus)
+    const { data, fetchDatas} = useLoadData<IPainting>(getPaintings, 4, paintingStatus);
 
     const handleOpenViewPainting = (data: IPainting) => {
         setOpenPainting({
@@ -116,10 +91,10 @@ const PaintingManagedByEmployee = () => {
             >
               <Box px={2}>
                   <Grid container spacing={3}>
-                    {paintingsCreated?.length === 0 && (
+                    {data.objectCreated?.length === 0 && (
                       <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào cả</Typography>
                     )}
-                    {paintingsCreated?.map((painting, index) => {
+                    {data.objectCreated?.map((painting, index) => {
                       return(
                         <Grid key={index} size={{ xs: 12, sm: 6, md: 3}}>
                           <CardData
@@ -147,10 +122,10 @@ const PaintingManagedByEmployee = () => {
             >
               <Box px={2}>
                   <Grid container spacing={3}>
-                    {paintingsStatus?.length === 0 && (
+                    {data.objectAll?.length === 0 && (
                       <Typography fontWeight={700} p={4}>Không tồn tại bản ghi nào cả</Typography>
                     )}
-                    {paintingsStatus?.map((painting, index) => {
+                    {data.objectAll?.map((painting, index) => {
                       return (
                         <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
                           <CardData
@@ -191,8 +166,7 @@ const PaintingManagedByEmployee = () => {
                 open: false,
                 type: 'created'
               })
-              dataCreated
-              dataAll
+              fetchDatas(query.page, query.rowsPerPage, paintingStatus)
             }}
           />
         )}
@@ -206,8 +180,7 @@ const PaintingManagedByEmployee = () => {
                 open: false,
                 type: 'all'
               })
-              dataCreated;
-              dataAll;
+              fetchDatas(query.page, query.rowsPerPage, paintingStatus)
             }}
           />
         )}

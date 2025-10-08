@@ -1,8 +1,5 @@
 import { useState } from "react";
-
-
-
-import { Add, NavigateBefore, ViewCarousel } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import { Alert, Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AttactArtCollection from "./AttactArtCollection";
@@ -10,20 +7,18 @@ import CreateCollection from "./CreateCollection";
 import EditCollection from "./EditCollection";
 import ViewCollection from "./ViewCollection";
 import Backdrop from "@/components/Backdrop";
-import IconButton from "@/components/IconButton/IconButton";
 import CustomPagination from "@/components/Pagination/CustomPagination";
-
-
-
 import { COLORS } from "@/constants/colors";
 import useAuth from "@/hooks/useAuth";
 import { useDataList } from "@/hooks/useDataList";
 import useNotification from "@/hooks/useNotification";
-import { createCollection, getCollections } from "@/services/display-service";
+import { createCollection, getCollections, updateCollection } from "@/services/display-service";
 import { uploadImage } from "@/services/upload-service";
 import { FormDataCollection, ICollection } from "@/types/display";
 import CardData from "@/views/Manage/components/CardData";
 import SearchBox from "@/views/Manage/components/SearchBox";
+import ApproveCollection from "./ApproveCollection";
+import NavigateBack from "@/views/Manage/components/NavigateBack";
 
 
 interface AllCollectionsCreatedProps{
@@ -44,6 +39,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
         tags: [],
         description: ''
     })
+    const [nameImg, setNameImg] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [image, setImage] = useState<string | null>(null);
     const [errorImg, setErrorImg] = useState<string>('');
@@ -87,6 +83,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
             type: 'add'
         });
         reset();
+        onBack();
         fetchData(page, rowsPerPage, 'created', profile?.id)
     }
 
@@ -104,6 +101,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
     // Chỉnh sửa bộ sưu tập
     const handleOpenEditCollection = (data: ICollection) => {
         setImage(data.imageUrl)
+        setNameImg(data.name)
         setFormData({
             name: data.name,
             tags: data.tags.split(','),
@@ -115,6 +113,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
     
     const handleCloseEditCollection = () => {
         reset();
+        onBack();
         setOpenCollection({ open: false, type: 'edit' });
         setCollection(null);
         fetchData(page, rowsPerPage, 'created', profile?.id)
@@ -128,6 +127,19 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
     const handleCloseAttactArtCollection = () => {
         setCollection(null)
         setOpenCollection({ open: false, type: 'attach' });
+        fetchData(page, rowsPerPage, 'created', profile?.id)
+    }
+
+    // Duyệt bộ sưu tập
+    const handleOpenApproveCollection = (data: ICollection) => {
+        setCollection(data);
+        setOpenCollection({ open: true, type: 'approve' })
+    }
+
+    const handleCloseApproveCollection = () => {
+        reset();
+        setOpenCollection({ open: false, type: 'approve'})
+        setCollection(null);
         fetchData(page, rowsPerPage, 'created', profile?.id)
     }
     
@@ -145,58 +157,98 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
         }
     }
 
-    const validateForm = (): boolean => {
+    const validateFormAdd = (): boolean => {
         const newErrors: FormErrors = {};
         if(!formData.tags) newErrors.tags = 'Vui lòng chọn chủ đề';
         if(!formData.name) newErrors.name = 'Vui lòng nhập tên';
         if(!formData.description) newErrors.description = 'Vui lòng nhập mô tả';
-        if(!imageFile && openCollection.type === 'add'){
+        if(!imageFile){
             setErrorImg("Vui lòng tải lên hình ảnh")
         };
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0 && !!imageFile
     }
 
-    const handleSubmit = async() => {
-        if(!validateForm()){
+    const validateFormEdit = (): boolean => {
+        const newErrors: FormErrors = {};
+        if(!formData.tags) newErrors.tags = 'Vui lòng chọn chủ đề';
+        if(!formData.name) newErrors.name = 'Vui lòng nhập tên';
+        if(!formData.description) newErrors.description = 'Vui lòng nhập mô tả';
+        if(!imageFile && !image){
+            setErrorImg("Vui lòng tải lên hình ảnh")
+        };
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0
+    }
+
+    const handleSubmitAdd = async() => {
+        if(!validateFormAdd()){
             return;
         }
         setIsSubmitting(true)
         try {
             // 1 ảnh
             let uploadResponse: any
-            if(imageFile !== null){
-                uploadResponse = await uploadImage(imageFile!, 'display/paintings/image');
-                if(!uploadResponse.success || !uploadResponse.data?.file){
-                    throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
-                }
+            uploadResponse = await uploadImage(imageFile!, 'display/paintings/image');
+            if(!uploadResponse.success || !uploadResponse.data?.file){
+                throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
             }
             const payload = {
                 name: formData.name,
                 tags: formData.tags.join(", "),
                 description: formData.description,
-                imageUrl: uploadResponse.data ? uploadResponse.data.file.imageUrl : image,
-                nameImage: uploadResponse.data ? uploadResponse.data.file.fileName : collection?.nameImage,
+                imageUrl: uploadResponse.data.file.imageUrl,
+                nameImage: uploadResponse.data.file.fileName,
                 curatorId: profile && profile.id  
             };
-            console.log('payload: ', payload);
-            
-            let res: any;
-            switch (openCollection.type) {
-                case 'add':
-                    res = await createCollection(payload);
-                    notify({
-                        message: res.message,
-                        severity: 'success'
-                    });
-                    handleCloseCreateCollection()
-                    break;
-                case 'edit':
-                    
-                    break;  
-                default:
-                    break;
+            const res = await createCollection(payload);
+            notify({
+                message: res.message,
+                severity: 'success'
+            });
+            handleCloseCreateCollection()
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const handleSubmitEdit = async() => {
+        if(!validateFormEdit()){
+            return;
+        }
+        setIsSubmitting(true)
+        try {
+            let imageUrl = image;
+            let nameImage = nameImg;
+            // 1 ảnh
+            if(imageFile){
+                let uploadResponse: any
+                uploadResponse = await uploadImage(imageFile!, 'display/paintings/image');
+                if(!uploadResponse.success || !uploadResponse.data?.file){
+                    throw new Error('Upload ảnh thất bại hoặc không nhận được URL ảnh');
+                }
+                imageUrl = uploadResponse.data.file.imageUrl;
+                nameImage = uploadResponse.data.file.fileName
             }
+            const payload = {
+                name: formData.name,
+                tags: formData.tags.join(", "),
+                description: formData.description,
+                imageUrl: imageUrl,
+                nameImage: nameImage,
+                curatorId: profile && profile.id  
+            };
+            const res = await updateCollection(Number(collection?.id), payload)
+            notify({
+                message: res.message,
+                severity: 'success'
+            })
+            handleCloseEditCollection()
         } catch (error: any) {
             notify({
                 message: error.message,
@@ -224,13 +276,10 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                             Thêm mới bộ sưu tập
                         </Button>
                     </SearchBox>
-                    <Stack my={1}>
-                        <IconButton
-                            handleFunt={onBack}
-                            icon={<NavigateBefore sx={{ width: '28px', height: '28px'}}/>}
-                        />
-                        <Typography pt={0.2} fontWeight={600} variant="h6">Bộ sưu tập vừa tạo</Typography>
-                    </Stack>
+                    <NavigateBack
+                        onBack={onBack}
+                        title="Bộ sưu tập vừa tạo"
+                    />
                     {loading && (
                         <Backdrop open={loading}/>
                     )}
@@ -271,7 +320,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                                                                     {collection.description}
                                                                 </Typography>
                                                             </Stack>
-                                                            <Box px={2} pb={2} display='flex' flexDirection={{ xs: 'column', lg: 'row'}} justifyContent='space-between'>
+                                                            <Box px={2} pb={{ xs: 0, lg: 2}} display='flex' flexDirection={{ xs: 'column', lg: 'row'}} justifyContent='space-between'>
                                                                 <Button
                                                                     fullWidth
                                                                     onClick={(e) => {
@@ -298,9 +347,13 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                                                             <Box px={2} pb={2} display='flex' flexDirection={{ xs: 'column', lg: 'row'}} justifyContent='space-between'>
                                                                 <Button
                                                                     fullWidth
-                                                                    onClick={() => {}}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        collection && handleOpenApproveCollection(collection)
+                                                                    }}
                                                                     variant="outlined"
                                                                     sx={{ border: '1px solid #000', color: '#000'}}
+                                                                    disabled={collection.arts && collection.arts.length === 0}
                                                                 >
                                                                     Gửi phê duyệt
                                                                 </Button>
@@ -342,7 +395,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                         errors={errors}
                         formData={formData}
                         onInputChange={handleInputChange}
-                        onSubmit={handleSubmit}
+                        onSubmit={handleSubmitAdd}
                         onSubTopicsChange={handleSubTopicsChange}
                     />
                     <Backdrop open={isSubmitting}/>
@@ -354,11 +407,11 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
                         onClose={handleCloseEditCollection}
                         onFileSelect={handleFileSelect}
                         image={image}
-                        error={{ errorImg, errorImgs }}
+                        error={{ errorImg }}
                         errors={errors}
                         formData={formData}
                         onInputChange={handleInputChange}
-                        onSubmit={handleSubmit}
+                        onSubmit={handleSubmitEdit}
                         onSubTopicsChange={handleSubTopicsChange}
                     />
                     <Backdrop open={isSubmitting}/>
@@ -367,14 +420,22 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
             {openCollection.open && openCollection.type === 'view' && collection && (
                 <ViewCollection
                     data={collection}
-                    onBack={handleCloseViewCollection}
+                    onClose={handleCloseViewCollection}
                 />
             )}
             {openCollection.open && openCollection.type === 'attach' && collection && (
                 <>
                     <AttactArtCollection
                         onClose={handleCloseAttactArtCollection}
+                        id={collection.id}
+                    />
+                </>
+            )}
+            {openCollection.open && openCollection.type === 'approve' && collection && (
+                <>
+                    <ApproveCollection
                         data={collection}
+                        onClose={handleCloseApproveCollection}
                     />
                 </>
             )}

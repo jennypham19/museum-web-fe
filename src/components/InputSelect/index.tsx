@@ -126,7 +126,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
       ));
     }
     
-    return <MenuItem disabled>{title}</MenuItem>;
+    return <MenuItem sx={{ fontSize: '14px'}} disabled>{title}</MenuItem>;
     
   };
 
