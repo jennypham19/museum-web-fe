@@ -10,7 +10,9 @@ import useAuth from "@/hooks/useAuth";
 import { useState } from "react";
 import { ROLE } from "@/constants/roles";
 import InputText from "@/components/InputText";
-import { ApprovalReject, rejectApproval } from "@/services/display-service";
+import { ApprovalReject, approve, Payload, rejectApproval, sendApprovalForAdmin, SendApprovalForAdminRequest } from "@/services/display-service";
+import DialogConfirm from "@/views/Manage/components/DialogConfirm";
+import SendApprovalForAdmin from "@/views/Manage/components/SendApprovalForAdmin";
 
 interface ApproveAndRejectCollecionProps{
     type: string,
@@ -30,6 +32,8 @@ const ApproveAndRejectCollecion = (props: ApproveAndRejectCollecionProps) => {
         open: false,
         type: ''
     })
+
+    // Từ chối phê duyệt
     const handleReject = () => {
         setOpenReject(true);
     }
@@ -49,6 +53,74 @@ const ApproveAndRejectCollecion = (props: ApproveAndRejectCollecionProps) => {
                 message: res.message,
                 severity: 'success'
             });
+            onClose()
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        }
+    }
+
+    // Duyệt
+    const handleOpenApprove = () => {
+        setSendOrApprove({
+            open: true,
+            type: 'approve'
+        })
+    }
+
+    const handleCloseApprove = () => {
+        setSendOrApprove({
+            open: false,
+            type: 'approve'
+        })
+    }
+
+    const handleApprove = async() => {
+        try {
+            const payload: Payload = {
+                status: 'approved',
+                userIdApprove: profile?.id
+            }
+            const res = await approve(data.id, 'collection', payload);
+            notify({
+                message: res.message,
+                severity: 'success'
+            })
+            onClose()
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        }
+    }
+
+    // Gửi lên admin
+    const handleOpenSend = (data: ICollection) => {
+        setSendOrApprove({
+            open: true,
+            type: 'send'
+        })
+        setCollection(data)
+    }
+
+    const handleCloseSend = () => {
+        setSendOrApprove({
+            open: false,
+            type: 'send'
+        })
+        setCollection(null)
+    }
+
+    const handleSend = async (payload: SendApprovalForAdminRequest) => {
+        try {
+            const res = collection && await sendApprovalForAdmin(collection?.id, 'collection', payload);
+            notify({
+                message: res?.message,
+                severity: 'success'
+            })
             onClose()
         } catch (error: any) {
             notify({
@@ -85,7 +157,7 @@ const ApproveAndRejectCollecion = (props: ApproveAndRejectCollecionProps) => {
                                                 bgcolor: COLORS.BUTTON,
                                                 width: 120,
                                             }}
-                                            onClick={() => {}}
+                                            onClick={handleOpenApprove}
                                         >
                                             Duyệt
                                         </Button>
@@ -95,14 +167,14 @@ const ApproveAndRejectCollecion = (props: ApproveAndRejectCollecionProps) => {
                                                 bgcolor: COLORS.BUTTON,
                                                 width: 120,
                                             }}
-                                            onClick={() => {}}
+                                            onClick={() => handleOpenSend(data)}
                                         >
                                             Gửi lên Admin
                                         </Button>
                                     </>
                                 ) : (
                                     <Button
-                                        onClick={() => {}}
+                                        onClick={handleOpenApprove}
                                         sx={{ bgcolor: COLORS.BUTTON, mr: 2, width: 120}}
                                     >
                                         Duyệt
@@ -170,6 +242,22 @@ const ApproveAndRejectCollecion = (props: ApproveAndRejectCollecionProps) => {
                     </>
                 )}
             </Box>
+            {sendOrApprove.open && sendOrApprove.type === 'approve' && (
+                <DialogConfirm
+                    open={sendOrApprove.open}
+                    title={`Bạn có chắc muốn duyệt bộ sưu tập "${data.name}" không? Hành động này sẽ chuyển bộ sưu tập sang trạng thái Đã duyệt`}
+                    handleAgree={handleApprove}
+                    onClose={handleCloseApprove}
+                />
+            )}
+            {sendOrApprove.open && sendOrApprove.type === 'send' && collection && (
+                <SendApprovalForAdmin
+                    name={collection.name}
+                    open={sendOrApprove.open}
+                    onClose={handleCloseSend}
+                    onSend={handleSend}
+                />
+          )}
         </Box>
     )
 }

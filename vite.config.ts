@@ -28,6 +28,13 @@ export default defineConfig({
   server: {
     host: true, // Here
     port: 3000,
+    proxy: {
+    '/ws': {
+      target: 'ws://localhost:3002',
+      ws: true, // 👈 bắt buộc để Vite hỗ trợ proxy WebSocket
+      changeOrigin: true,
+    },
+  },
   },
   preview: {
     port: 4173,

@@ -40,13 +40,6 @@ export interface PaintingPublished {
   is_published: boolean
 }
 
-export interface PaintingSent {
-  status: string,
-  userIdSend: number,
-  reasonSend: string,
-  note?: string
-}
-
 export interface ApprovalReject {
   status: string,
   userIdApprove?: number,
@@ -54,11 +47,18 @@ export interface ApprovalReject {
 }
 
 export interface GetParams{
-    page: number;
-    limit: number;
-    status?: string | string[];
-    searchTerm?: string;
-    curatorId?: number
+  page: number;
+  limit: number;
+  status?: string | string[];
+  searchTerm?: string;
+  curatorId?: number
+}
+
+export interface SendApprovalForAdminRequest{
+  status: string,
+  reasonSend: string;
+  userIdSend: number | undefined;
+  note?: string | null
 }
 
 // Thêm mới tác phẩm
@@ -141,14 +141,14 @@ export const publishPainting = async(id: number, payload: PaintingPublished) : P
 }
 
 // Mod và admin duyệt
-export const approvePainting = async(id: number, payload: Payload) : Promise<HttpResponse<any>> => {
-  const url = `${prefix}/approve-painting/${id}`;
+export const approve = async(id: number, type: string, payload: Payload) : Promise<HttpResponse<any>> => {
+  const url = `${prefix}/approve-${type}/${id}`;
   return HttpClient.put<any>(url, payload as any)
 }
 
 // Gửi lên cho admin
-export const sendPainting = async(id: number, payload: PaintingSent) : Promise<HttpResponse<any>> => {
-  const url = `${prefix}/send-painting/${id}`;
+export const sendApprovalForAdmin = async(id: number, type: string, payload: SendApprovalForAdminRequest) : Promise<HttpResponse<any>> => {
+  const url = `${prefix}/send-${type}/${id}`;
   return HttpClient.put<any>(url, payload as any)
 }
 

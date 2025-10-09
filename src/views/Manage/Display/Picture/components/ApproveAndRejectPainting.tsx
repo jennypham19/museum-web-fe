@@ -1,24 +1,18 @@
 import { useState } from "react";
-
-
-
 import { NavigateBefore } from "@mui/icons-material";
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import SendPainting from "./SendPainting";
 import IconButton from "@/components/IconButton/IconButton";
 import CommonImage from "@/components/Image/index";
 import InputText from "@/components/InputText";
-
-
-
 import { COLORS } from "@/constants/colors";
 import { ROLE } from "@/constants/roles";
 import useAuth from "@/hooks/useAuth";
 import useNotification from "@/hooks/useNotification";
-import { approvePainting, Payload, ApprovalReject, rejectApproval } from "@/services/display-service";
+import { approve, Payload, ApprovalReject, rejectApproval } from "@/services/display-service";
 import { IPainting } from "@/types/display";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
+import SendApprovalForAdmin from "@/views/Manage/components/SendApprovalForAdmin";
 
 
 interface ApproveAndRejectPaintingProps {
@@ -57,7 +51,7 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
                 status: 'approved',
                 userIdApprove: profile?.id
             }
-            const res = await approvePainting(data.id, payload);
+            const res = await approve(data.id, 'painting', payload);
             notify({
                 message: res.message,
                 severity: 'success'
@@ -265,8 +259,8 @@ const ApproveAndRejectPainting = (props: ApproveAndRejectPaintingProps) => {
             />
           )}
           {sendOrApprove.open && sendOrApprove.type === 'send' && painting && (
-            <SendPainting
-              data={painting}
+            <SendApprovalForAdmin
+              name={painting.name}
               open={sendOrApprove.open}
               onClose={() => {
                 setSendOrApprove({

@@ -46,3 +46,20 @@ export const STATUS_LABELS: { [key in StatusObject]: string } = {
     [StatusObject.APPROVED]: 'Đã phê duyệt',
     [StatusObject.REJECTED]: 'Phê duyệt thất bại'
 }
+
+// Lý do gửi lên admin
+export const ReasonSend = {
+    SUSPICIOUS_CONTENT: 'suspicious_content',
+    COPYRIGHT: 'copyright',
+    NEEDS_QUALITY_REVIEW: 'needs_quality_review',
+    OTHER: 'other'
+}
+
+export type ReasonSend = typeof ReasonSend[keyof typeof ReasonSend];
+
+export const REASON_SEND_LABELS: { [key in ReasonSend]: string } = {
+    [ReasonSend.SUSPICIOUS_CONTENT]: 'Nghi ngờ nội dung nhạy cảm',
+    [ReasonSend.COPYRIGHT]: 'Nghi ngờ vi phạm bản quyền',
+    [ReasonSend.NEEDS_QUALITY_REVIEW]: 'Cần kiểm tra chất lượng',
+    [ReasonSend.OTHER]: 'Khác',
+}

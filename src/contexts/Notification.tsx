@@ -12,6 +12,7 @@ import type { PickUnion } from '@/types/common';
 import type { FCC } from '@/types/react';
 import sleep from '@/utils/sleep';
 import Slide, { SlideProps } from '@mui/material/Slide';
+import { useWebSocket } from '@/hooks/useWebSocket';
 
 const AlertMessage = forwardRef<HTMLDivElement, AlertProps>((props, ref) => (
   <Alert ref={ref} {...props} />
@@ -48,6 +49,7 @@ const NotificationProvider: FCC = (props) => {
   const { children } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [settings, setSettings] = useState<Settings>(initialSettings);
+  const [messages, setMessages] = useState<string | null>(null);
 
   const {
     message,
@@ -99,6 +101,24 @@ const NotificationProvider: FCC = (props) => {
     setOpen(true);
   }, []);
 
+  const handleMessage = useCallback((data: any) => {
+    console.log("data: ",data);
+    
+    if (data.type === "NEW_REQUEST") {
+      setMessages(`${data.message}: ${data.data.name}`);
+    }
+  }, []);
+
+  // Kết nối socket
+  useWebSocket(handleMessage);
+
+  // ✅ Tự bật Snackbar khi có message mới
+  useEffect(() => {
+    if (messages) {
+      setOpen(true);
+    }
+  }, [messages]);
+
   return (
     <NotificationContext.Provider value={setNotification}>
       {children}
@@ -132,7 +152,7 @@ const NotificationProvider: FCC = (props) => {
             </Stack>
           }
         >
-          {error || message}
+          {error || message || messages}
         </AlertMessage>
       </Snackbar>
     </NotificationContext.Provider>
