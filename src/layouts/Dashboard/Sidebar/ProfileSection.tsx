@@ -19,8 +19,8 @@ const ProfileSection = () => {
     return (
         <Box sx={{ p: 2, textAlign: 'center', mt: 5}}>
             <Avatar
-                alt={profile.full_name}
-                src={profile.avatar_url && getPathImage(profile.avatar_url) || avatar1}
+                alt={profile.fullName}
+                src={profile.avatarUrl && getPathImage(profile.avatarUrl) || avatar1}
                 sx={{
                     width: 80,
                     height: 80,
@@ -32,7 +32,7 @@ const ProfileSection = () => {
                 }}
             />
             <Typography variant="h6" component='div'>
-                {profile.full_name}
+                {profile.fullName}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ textTransform: 'capitalize'}}>
                 {getRoleLabel(profile.role)}

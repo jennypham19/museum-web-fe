@@ -6,17 +6,16 @@ import { Alert, Button, Stack, Typography } from "@mui/material";
 import DialogComponent from "@/components/DialogComponent";
 import InputSelect from "@/components/InputSelect";
 import InputText from "@/components/InputText";
-
-
-
 import { COLORS } from "@/constants/colors";
-import { IPainting } from "@/types/display";
+import { SendApprovalForAdminRequest } from "@/services/display-service";
+import useAuth from "@/hooks/useAuth";
 
 
-interface SendPaintingProps{
+interface SendApprovalForAdminProps{
     open: boolean;
-    data: IPainting;
+    name: string;
     onClose: () => void;
+    onSend: (payload: SendApprovalForAdminRequest) => void;
 }
 
 interface reasonSent {
@@ -48,8 +47,9 @@ const REASON_SENT: reasonSent[] = [
     }
 ]
 
-const SendPainting = (props: SendPaintingProps) => {
-    const { open, data, onClose } = props;
+const SendApprovalForAdmin = (props: SendApprovalForAdminProps) => {
+    const { open, name, onClose, onSend } = props;
+    const { profile } = useAuth();
     const [sendReason, setSendReason] = useState<string>('');
     const [errorReason, setErrorReason] = useState<string>('');
     const [errorNote, setErrorNote] = useState<string>('');
@@ -71,10 +71,18 @@ const SendPainting = (props: SendPaintingProps) => {
             setErrorReason('Mục chọn lý do không được để trống.')
             return
         }
-        if(!note) {
+        if(sendReason === 'other' && !note) {
             setErrorNote('Mục ghi chú không được để trống.')
             return
         }
+
+        const payload: SendApprovalForAdminRequest = {
+          status: 'reviewing',
+          reasonSend: sendReason,
+          userIdSend: profile ? profile.id : undefined,
+          note: note ? note : null
+        }
+        onSend(payload)
     }
 
     
@@ -87,7 +95,7 @@ const SendPainting = (props: SendPaintingProps) => {
       >
         <Stack direction='column' spacing={2}>
           <Typography>
-            Chọn lý do gửi lên Admin cho tác phẩm: <b>{data.name}</b>
+            Chọn lý do gửi lên Admin cho tác phẩm: <b>{name}</b>
           </Typography>
           <InputSelect
             label=''
@@ -140,4 +148,4 @@ const SendPainting = (props: SendPaintingProps) => {
     );
 };
 
-export default SendPainting;
+export default SendApprovalForAdmin;
