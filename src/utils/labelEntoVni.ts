@@ -1,4 +1,4 @@
-import { ROLE_LABELS, RoleUser, STATUS_LABELS, StatusObject } from "@/constants/status";
+import { REASON_SEND_LABELS, ReasonSend, ROLE_LABELS, RoleUser, STATUS_LABELS, StatusObject } from "@/constants/status";
 
 export const getRoleLabel = (role: RoleUser | null | undefined) : string => {
     if(!role) return "Chưa xác định";
@@ -22,4 +22,9 @@ export const getStatusLabelColor = (status: StatusObject | null) => {
         default:
             return { color: 'warning' as const };
     }
+}
+
+export const getReasonSendLabel = (reason: ReasonSend | null | undefined): string => {
+    if(!reason) return "Chưa xác định"
+    return REASON_SEND_LABELS[reason] || reason;
 }

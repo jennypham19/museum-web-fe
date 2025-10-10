@@ -1,22 +1,28 @@
 import { useState } from "react";
+
+
+
 import { NavigateBefore } from "@mui/icons-material";
 import { Alert, Box, Button, Chip, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import Backdrop from "@/components/Backdrop";
-import IconButton from "@/components/IconButton/IconButton";
-import { useDataList } from "@/hooks/useDataList";
-import { getPaintings, PaintingPublished, publishPainting } from "@/services/display-service";
-import { DataStatusProps, FormDataPainting, IPainting } from "@/types/display";
-import CardData from "@/views/Manage/components/CardData";
-import FilterTabs from "@/views/Manage/components/FilterTabs";
-import SearchBox from "@/views/Manage/components/SearchBox";
-import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
-import CustomPagination from "@/components/Pagination/CustomPagination";
-import useNotification from "@/hooks/useNotification";
-import ViewPainting from "./ViewPainting";
 import EditPainting from "./EditPainting";
+import ViewPainting from "./ViewPainting";
+import Backdrop from "@/components/Backdrop";
+import IconButton from '@/components/IconButton/IconButton';
+import CustomPagination from "@/components/Pagination/CustomPagination";
+
+
+
+import { useDataList } from "@/hooks/useDataList";
+import useNotification from "@/hooks/useNotification";
+import { getPaintings, publish, Published } from "@/services/display-service";
+import { DataStatusProps, FormDataPainting, IPainting } from "@/types/display";
+import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
+import CardData from "@/views/Manage/components/CardData";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
+import FilterTabs from "@/views/Manage/components/FilterTabs";
 import NavigateBack from "@/views/Manage/components/NavigateBack";
+import SearchBox from "@/views/Manage/components/SearchBox";
 
 
 interface AllPaintingsProps {
@@ -121,11 +127,11 @@ const AllPaintings: React.FC<AllPaintingsProps> = ({ onBack }) => {
     
     const handlePublishPaiting = async () => {
       try {
-        const payload: PaintingPublished = {
-          is_published: !painting?.isPublished
+        const payload: Published = {
+          is_published: !painting?.isPublished,
         };
 
-        const res = painting && await publishPainting(painting?.id, payload);
+        const res = painting && await publish(Number(painting?.id), 'painting', payload);
         notify({ message: res?.message, severity: 'success' });
         setOpenPublishPainting(false)
         fetchData(page, rowsPerPage, viewMode)

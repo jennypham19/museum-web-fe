@@ -36,7 +36,7 @@ export interface Payload {
   userIdApprove?: number
 }
 
-export interface PaintingPublished {
+export interface Published {
   is_published: boolean
 }
 
@@ -135,8 +135,8 @@ export const sendApproval = async(id: number, type: string, payload: Payload): P
 }
 
 // Đăng tải
-export const publishPainting = async(id: number, payload: PaintingPublished) : Promise<HttpResponse<any>> => {
-  const url = `${prefix}/publish-painting/${id}`;
+export const publish = async(id: number, type: string, payload: Published) : Promise<HttpResponse<any>> => {
+  const url = `${prefix}/publish-${type}/${id}`;
   return HttpClient.patch<any>(url, payload as any);
 }
 

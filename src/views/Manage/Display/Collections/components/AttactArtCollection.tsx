@@ -93,7 +93,7 @@ const AttactArtCollection = (props: AttactArtCollectionProps) => {
             const payload = {
                 artIds: [...selectedArtsUnassignedIds]
             }
-            const res = await attachArtFromCollection(collection.id, payload)
+            const res = await attachArtFromCollection(Number(collection.id), payload)
             notify({
                 message: res.message,
                 severity: 'success'

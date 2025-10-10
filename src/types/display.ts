@@ -51,5 +51,6 @@ export interface ICollection{
     tags: string;
     curatorId: number;
     arts: IPainting[],
-    curator: IUser
+    curator: IUser,
+    reasonSend: string,
 }

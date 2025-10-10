@@ -16,7 +16,7 @@ interface CollectionDetailProps{
 
 const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
     const theme = useTheme();
-    const lg = useMediaQuery(theme.breakpoints.up('lg'));
+    const lg = useMediaQuery(theme.breakpoints.up('xxl'));
     const [selectedArt, setSelectedArt] = useState<IPainting | null>(null);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const additionalCount = Math.max(0, collection.arts.length - 10);
@@ -63,7 +63,7 @@ const CollectionDetail: React.FC<CollectionDetailProps> = ({ collection }) => {
                                 ) : (
                                 <Grid container spacing={2} sx={{ mb: 1 }}>
                                     {collection.tags.split(",").map((tag) => (
-                                        <Grid size={{ xs: 6}}>
+                                        <Grid size={{ xs: 6, lg: 4 }}>
                                             <Chip key={tag} label={tag} size="small"  />
                                         </Grid>
                                     ))}
