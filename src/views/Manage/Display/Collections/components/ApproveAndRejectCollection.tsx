@@ -13,6 +13,7 @@ import InputText from "@/components/InputText";
 import { ApprovalReject, approve, Payload, rejectApproval, sendApprovalForAdmin, SendApprovalForAdminRequest } from "@/services/display-service";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 import SendApprovalForAdmin from "@/views/Manage/components/SendApprovalForAdmin";
+import { getReasonSendLabel } from "@/utils/labelEntoVni";
 
 interface ApproveAndRejectCollecionProps{
     type: string,
@@ -142,6 +143,9 @@ const ApproveAndRejectCollecion = (props: ApproveAndRejectCollecionProps) => {
                 </Typography>
             </Stack>
             <Box p={3}>
+                {data.reasonSend && (
+                    <Typography sx={{ pb: 1, borderBottom: '1px solid #000', mb: 1.5 }}>{`Lý do mà kiểm duyệt viên gửi lên: ${getReasonSendLabel(data.reasonSend)}`}</Typography>
+                )}
                 <CollectionDetail
                     collection={data}
                     onBack={onClose}

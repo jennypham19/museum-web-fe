@@ -2,7 +2,7 @@ import Backdrop from "@/components/Backdrop";
 import useAuth from "@/hooks/useAuth";
 import { useDataList } from "@/hooks/useDataList";
 import useNotification from "@/hooks/useNotification";
-import { getCollections, updateCollection } from "@/services/display-service";
+import { getCollections, publish, Published, updateCollection } from "@/services/display-service";
 import { DataStatusProps, FormDataCollection, ICollection } from "@/types/display";
 import FilterTabs from "@/views/Manage/components/FilterTabs";
 import NavigateBack from "@/views/Manage/components/NavigateBack";
@@ -16,6 +16,7 @@ import CustomPagination from "@/components/Pagination/CustomPagination";
 import ViewCollection from "./ViewCollection";
 import EditCollection from "./EditCollection";
 import { uploadImage } from "@/services/upload-service";
+import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 
 interface AllCollectionProps{
     onBack: () => void;
@@ -72,6 +73,7 @@ const AllCollections: React.FC<AllCollectionProps> = ({ onBack }) => {
         open: false,
         type: ''
     });
+    const [openPublishCollection, setOpenPublishCollection] = useState(false);
     const [collection, setCollection] = useState<ICollection | null>(null);
     const {
         listData,
@@ -129,6 +131,38 @@ const AllCollections: React.FC<AllCollectionProps> = ({ onBack }) => {
         setOpenCollection({ open: false, type: 'edit' });
         setCollection(null);
     }
+
+    // Đăng tải/ Hủy bộ sưu tập
+    const handleOpenPublishCollection = (data: ICollection) => {
+        setOpenPublishCollection(true);
+        setCollection(data)
+    }
+
+    const handleClosePublishCollection = () => {
+        setOpenPublishCollection(false);
+        setCollection(null)
+    }
+
+    const handlePublishCollection = async() => {
+        try {
+            const payload: Published = {
+                is_published: !collection?.isPublished
+            };
+            const res = collection && await publish(Number(collection.id), 'collection', payload);
+            notify({
+                message: res?.message,
+                severity: 'success'
+            })
+            handleClosePublishCollection();
+            fetchData(page, rowsPerPage, viewMode, profile?.id)
+        } catch (error: any) {
+            notify({
+                message: error.message,
+                severity: 'error'
+            })
+        }
+    }
+
 
     const handleInputChange = (name: string, value: any) => {
         setFormData(prev => ({ ...prev, [name]: value}));
@@ -279,6 +313,7 @@ const AllCollections: React.FC<AllCollectionProps> = ({ onBack }) => {
                                                                         sx={{ border: '1px solid #000', color: '#000'}}
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
+                                                                            collection && handleOpenPublishCollection(collection)
                                                                         }}
                                                                     >
                                                                         {collection.isPublished ? 'Hủy đăng tải' : 'Đăng tải'}
@@ -328,6 +363,14 @@ const AllCollections: React.FC<AllCollectionProps> = ({ onBack }) => {
                     />
                     <Backdrop open={isSubmitting}/>
                 </>
+            )}
+            {openPublishCollection && collection && (
+                <DialogConfirm
+                    open={openPublishCollection}
+                    title={collection.isPublished ? 'Bạn chắc chắn muốn hủy đăng tải bộ sưu tập?' : 'Bạn chắc chắn muốn đăng bộ sưu tập lên page hay không?'}
+                    onClose={handleClosePublishCollection}
+                    handleAgree={handlePublishCollection}
+                />
             )}
         </Box>
     )
