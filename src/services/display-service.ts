@@ -1,7 +1,7 @@
 import type { HttpResponse } from '@/types/common';
 import { Images} from '@/types/post';
 import HttpClient from '@/utils/HttpClient';
-import { ICollection, IPainting } from '@/types/display';
+import { ICollection, IEvent, IPainting } from '@/types/display';
 import QueryString from 'qs';
 import { PaginatedResponse } from './base-service';
 
@@ -30,6 +30,7 @@ interface CollectionRequest{
 
 export type PaintingsResponse = PaginatedResponse<IPainting>;
 export type CollectionsResponse = PaginatedResponse<ICollection>;
+export type EventsResponse = PaginatedResponse<IEvent>;
 
 export interface Payload {
   status: string,
@@ -127,6 +128,8 @@ export const getCollections = async(getParams: GetParams) : Promise<HttpResponse
     throw new Error(response.message || 'Failed to fetch list user');
   }
 }
+
+// Lấy danh sách sự kiện
 
 // Gửi phê duyệt
 export const sendApproval = async(id: number, type: string, payload: Payload): Promise<HttpResponse<any>> => {

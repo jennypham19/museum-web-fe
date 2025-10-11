@@ -1,5 +1,5 @@
 import { StatusObject } from "@/constants/status";
-import { IImage, Images } from "./post";
+import { IImage, Images, IPost } from "./post";
 import { IUser } from "./user";
 
 export interface IPainting{
@@ -53,4 +53,25 @@ export interface ICollection{
     arts: IPainting[],
     curator: IUser,
     reasonSend: string,
+}
+
+export interface IEvent{
+  id: number,
+  name: string,
+  description: string,
+  startDate: string,
+  endDate: string,
+  openTime: string,
+  closeTime: string,
+  imageUrl: string,
+  nameImage: string,
+  topic: string,
+  createdAt?: string,
+  updatedAt?: string,
+  rejectionReason: string,
+  isPublished: boolean,
+  reasonSend: string,
+  note: string,
+  curator: IUser,
+  posts: IPost[]
 }

@@ -1,13 +1,12 @@
 import DialogComponent from "@/components/DialogComponent";
 import useNotification from "@/hooks/useNotification";
-import { assignedGroupToUser, getRoleGroupsWithMenu, getRoleGroupToUser } from "@/services/permission-service";
+import { assignedGroupToUser, getObjectPermisstion, getRoleGroupToUser } from "@/services/permission-service";
 import { IMenu, IPermission } from "@/types/permisstion";
 import { IUser } from "@/types/user";
-import { Alert, Box, Button, Checkbox, CircularProgress, Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Typography } from "@mui/material";
-import React, {useEffect, useState } from "react";
-import SearchBox from "../../components/SearchBox";
+import { Alert, Box, Button, Checkbox, CircularProgress, Collapse, InputAdornment, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Pagination, Paper, TextField, Typography } from "@mui/material";
+import React, {useEffect, useMemo, useState } from "react";
 import Grid from "@mui/material/Grid2";
-import { ArrowLeft, ArrowRight, Circle, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ArrowLeft, ArrowRight, Circle, ExpandLess, ExpandMore, Search } from "@mui/icons-material";
 import { useDataList } from "@/hooks/useDataList";
 
 
@@ -23,13 +22,31 @@ const DialogAttactPermission: React.FC<DialogAttactPermissionProps> = ({ open, o
     const [checked, setChecked] = useState<number | null>(null);
     const [openCollapse, setOpenCollapse] = useState<Record<number, boolean>>({});
     const [errorPer, setErrorPer] = useState<string>('');
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
 
-    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPermission>(getRoleGroupsWithMenu);
+    const { listData, loading, error } = useDataList<IPermission>((params) => getObjectPermisstion(params, 'role-groups-with-menu'),5);
 
     //Danh sách id nhóm chưa gán
     const unassignedGroups = listData.filter(
         (group) => assignedGroups?.id !== group.id
     )
+
+    // Bộ lọc theo tên
+    const filteredRoleGroupsUnassigned = useMemo(
+        () => 
+            unassignedGroups.filter((a) => 
+            a.name.toLowerCase().includes(search.toLowerCase())
+        ),
+        [unassignedGroups, search]
+    )
+
+    // Phân trang
+    const totalPages = Math.ceil(filteredRoleGroupsUnassigned.length/5);
+    const paginatedRoleGroupsUnassigned = useMemo(() => {
+        const start = (page - 1) * 5;
+        return filteredRoleGroupsUnassigned.slice(start, start + 8)
+    }, [filteredRoleGroupsUnassigned, page])
 
     const getRoleGroupAssignedUser = async(id: number) => {
         const res = await getRoleGroupToUser(id);
@@ -187,11 +204,63 @@ const DialogAttactPermission: React.FC<DialogAttactPermissionProps> = ({ open, o
             dialogTitle="Gán quyền"
             maxWidth='lg'
         >
-            <SearchBox
-                initialValue={searchTerm}
-                onSearch={handleSearch}
-                placeholder="Tìm kiếm theo tên"
-                isPermission={true}
+            <TextField
+                placeholder="Tìm kiếm nhóm quyền"
+                value={search}
+                onChange={(e) => {
+                    setSearch(e.target.value);
+                    setPage(1)
+                }}
+                size="small"
+                fullWidth
+                sx={{ 
+                    mt: 1,
+                    "& .MuiInputBase-not": {
+                        padding: 0,
+                        borderRadius: 5,
+                        color: '#000',
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                        color: "#000"
+                    }
+                }}
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment
+                            position="start"
+                            sx={{
+                                height:"100%", // Đảm bảo InputAdornment chiếm toàn bộ chiều cao của input
+                                maxHeight:"none", // Override default maxHeight
+                                marginRight:0, // Remove default margin-right
+                                display: "flex",
+                                alignItems: "center", // Căn giữa icon và divider theo chiều dọc
+                                justifyContent: 'center', // Căn giữa nội dung trong adornment
+                                paddingRight: "12px" // Padding cho divider bên phải
+                            }}
+                        >
+                            <Search sx={{ fontSize: '25px' }}/>
+                        </InputAdornment>
+                    ),
+                    sx:{
+                        "& .MuiOutlinedInput-notchedOutline":{
+                            borderColor:'#1C1A1B'
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: '#1C1A1B',
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            // borderColor: "rgba(0, 0, 0, 0.2)",
+                            border:`1px solid '#1C1A1B''}`
+                        },
+                        ".MuiInputBase-input":{
+                            // padding: "12px 14px", // Điều chỉnh padding cho text input, bỏ padding trái vì adornment đã lo
+                            paddingLeft:0 // Bỏ padding mặc định bên trái vì đã có adornment,
+                        },
+                        // Áp dụng border radius cho chính input field
+                        borderRadius: 5,
+                        color: '#fff'
+                    },
+                }}
             />
             {loading && (
                 <Box display='flex' justifyContent='center' my={3}>
@@ -210,14 +279,24 @@ const DialogAttactPermission: React.FC<DialogAttactPermissionProps> = ({ open, o
                     <Grid container spacing={2}>
                         {/* LEFT LIST */}
                         <Grid size={{ xs: 5}}>
-                            {unassignedGroups.length === 0 ? (
+                            {paginatedRoleGroupsUnassigned.length === 0 ? (
                                 <Paper variant="outlined" sx={{ height: 185, overflow: "auto" }}>
                                     <Typography m={1} variant="body2" fontWeight={600}>Không tồn tại nhóm quyền nào cả</Typography>
                                 </Paper>
                             ) : (
                                 <Paper variant="outlined" sx={{ overflow: "auto" }}>
                                     <Typography variant="subtitle2" fontWeight={600} p={1} borderBottom='solid 1px #d3cfd1ff'>Danh sách nhóm quyền chưa được gán</Typography>
-                                        {renderGroupListLeft(unassignedGroups)}
+                                        {renderGroupListLeft(paginatedRoleGroupsUnassigned)}
+                                    {totalPages > 1 && (
+                                        <Box display="flex" justifyContent="center" mt={3} borderTop='1px solid #d3cfd1ff'>
+                                            <Pagination
+                                                count={totalPages}
+                                                page={page}
+                                                onChange={(_, val) => setPage(val)}
+                                                color="primary"
+                                            />
+                                        </Box>
+                                    )}
                                 </Paper>
                             )}
                         </Grid>
