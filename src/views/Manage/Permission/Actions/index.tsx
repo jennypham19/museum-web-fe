@@ -7,7 +7,7 @@ import { Add, Delete, Edit } from "@mui/icons-material";
 import Grid from "@mui/material/Grid2";
 import InputText from "@/components/InputText";
 import { IAction } from "@/types/permisstion";
-import { createAction, getActions, updateAction } from "@/services/permission-service";
+import { createAction, getActions, getObjectPermisstion, updateAction } from "@/services/permission-service";
 import useNotification from "@/hooks/useNotification";
 import IconButton from "@/components/IconButton/IconButton";
 import CustomPagination from "@/components/Pagination/CustomPagination";
@@ -38,7 +38,7 @@ const Actions = () => {
     const [action, setAction] = useState<IAction | null>(null)
 
 
-    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IAction>(getActions);
+    const { listData, loading, error, handleSearch, searchTerm, handlePageChange, page, rowsPerPage, total, fetchData } = useDataList<IAction>((params) => getObjectPermisstion(params, "actions")) // ✅ factory trả về đúng hàm);
 
     const handleOpenAddActions = () => {
         setOpenAction({

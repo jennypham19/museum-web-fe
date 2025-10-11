@@ -1,8 +1,8 @@
 import Page from "@/components/Page";
 import useNotification from "@/hooks/useNotification";
 import { IAction, IMenu } from "@/types/permisstion";
-import { Alert, Box, Button, CircularProgress, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Alert, Box, Button, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { useState } from "react";
 import SearchBox from "../../components/SearchBox";
 import { COLORS } from "@/constants/colors";
 import { Add, Delete, Edit } from "@mui/icons-material";
@@ -11,8 +11,7 @@ import CustomPagination from "@/components/Pagination/CustomPagination";
 import Grid from "@mui/material/Grid2"
 import InputText from "@/components/InputText";
 import DialogAction from "./components/DialogAction";
-import { createMenu, getMenu, getMenus, updateMenu } from "@/services/permission-service";
-import { debounce } from "lodash";
+import { createMenu, getMenu, getObjectPermisstion, updateMenu } from "@/services/permission-service";
 import TableData from "../../components/TableData";
 import { useDataList } from "@/hooks/useDataList";
 
@@ -48,7 +47,7 @@ const Menus = () => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [menu, setMenu] = useState<IMenu | null>(null);
 
-    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IMenu>(getMenus);
+    const { listData, loading, error, handleSearch, searchTerm, handlePageChange, page, rowsPerPage, total, fetchData } = useDataList<IMenu>((params) => getObjectPermisstion(params, "menus"))
 
     const handleOpenAddMenu = () => {
         setOpenMenu({

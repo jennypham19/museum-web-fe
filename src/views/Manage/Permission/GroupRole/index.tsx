@@ -6,7 +6,7 @@ import SearchBox from "../../components/SearchBox";
 import { COLORS } from "@/constants/colors";
 import { Add, Delete, Edit } from "@mui/icons-material";
 import { IMenu, IPermission } from "@/types/permisstion";
-import { createRoleGroup, getAllModules, getPermissions, getPermissionWithMenuAction, updateRoleGroup } from "@/services/permission-service";
+import { createRoleGroup, getAllModules, getObjectPermisstion, getPermissionWithMenuAction, updateRoleGroup } from "@/services/permission-service";
 import IconButton from "@/components/IconButton/IconButton";
 import TableData from "../../components/TableData";
 import CustomPagination from "@/components/Pagination/CustomPagination";
@@ -25,7 +25,7 @@ const GroupRole = () => {
     const [errorCheckedAction, setErrorCheckedAction] = useState<string>('');
     const [checked, setChecked] = useState<Record<string, boolean>>({});
 
-    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPermission>(getPermissions);
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPermission>((params) => getObjectPermisstion(params, 'role-groups'));
 
     const getModules = async() => {
         const res = await getAllModules();

@@ -33,6 +33,28 @@ export type ActionsResponse = PaginatedResponse<IAction>;
 export type MenusResponse = PaginatedResponse<IMenu>;
 export type PermissionsResponse = PaginatedResponse<IPermission>;
 
+// Lấy danh sách thao tác, chức năng, quyền, quyền kèm chức năng
+export const getObjectPermisstion = async <T>(getParams: GetParams, type: string) : Promise<HttpResponse<PaginatedResponse<T>>> => {
+  const url = `${prefix}/${type}`;
+  const params: Record<string, any> = {
+    page: getParams.page,
+    limit: getParams.limit
+  };
+  if(getParams.searchTerm && getParams.searchTerm.trim()) {
+    params.searchTerm = getParams.searchTerm
+  }
+  const response = await HttpClient.get<{
+    success: boolean,
+    message: string,
+    data: PaginatedResponse<T>
+  }>(url, { params });
+  if(response.data && response.success && response.data) {
+    return response;
+  }else{
+    throw new Error(response.message || 'Failed to fetch list user')
+  }
+}
+
 //Lấy danh sách
 export const getActions = (params: GetParams) => {
     return HttpClient.get<any, HttpResponse<ActionsResponse>>(`${prefix}/actions`, { params })
@@ -51,11 +73,6 @@ export const updateAction = (id: number, payload: { name: string} ) => {
 //Tạo chức năng
 export const createMenu = (payload: FormDataMenus) => {
     return HttpClient.post<FormDataMenus, HttpResponse>(`${prefix}/create-menu`, payload)
-}
-
-//Lấy danh sách chức năng
-export const getMenus = (params: GetParams) => {
-    return HttpClient.get<any, HttpResponse<MenusResponse>>(`${prefix}/menus`, { params })
 }
 
 //Lấy chi tiết chức năng
@@ -79,10 +96,6 @@ export const createRoleGroup = (data: GroupPermissionResquest) => {
   return HttpClient.post<any, HttpResponse<GroupPermissionRes>>(endpoint,data)
 }
 
-// Lấy danh sách nhóm quyền
-export const getPermissions = (params: GetParams) => {
-    return HttpClient.get<any, HttpResponse<PermissionsResponse>>(`${prefix}/role-groups`, { params })
-}
 
 //Lấy chi tiết nhóm quyền
 export const getPermissionWithMenuAction = (id: number) => {
