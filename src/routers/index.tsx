@@ -53,6 +53,7 @@ const Exhibition = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/Ex
 const EventAndPerformance = Loadable(lazy(() => import('@/views/LandingPage/Exhibition/EventAndPerformance')));
 const CollectionMuseum = Loadable(lazy(() => import('@/views/LandingPage/Art/CollectionMuseum')));
 const AboutUs = Loadable(lazy(() => import('@/views/LandingPage/AboutUs/index')));
+const Feedback = Loadable(lazy(() => import('@/views/LandingPage/Feedback/index')))
 
 
 
@@ -124,6 +125,7 @@ const routes: RouteObject[] = [
       { path: 'event-performance', element: <EventAndPerformance/>},
       { path: 'museum-collection', element: <CollectionMuseum/>},
       { path: 'about-us', element: <AboutUs/>},
+      { path: 'feedback', element: <Feedback/>},
 
       // Nếu người dùng vào '/', mặc định hiển thị trang home
       { index: true, element: <Navigate to='home' replace /> },

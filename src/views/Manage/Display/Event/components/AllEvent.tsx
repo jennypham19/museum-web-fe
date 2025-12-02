@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
 
 interface AllEventProps {
-
+    onBack: () => void;
 }
 
 const AllEvent = (props: AllEventProps) => {
-    const { } = props;
+    const { onBack} = props;
     return(
         <Box>
             All event

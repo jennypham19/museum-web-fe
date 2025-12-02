@@ -1,8 +1,14 @@
 export interface IICommonLandingPage{
     id: number,
     image_url: string,
-    title: string,
-    content: string,
+    title: {
+        vi: string,
+        en: string
+    },
+    content: {
+        vi: string,
+        en: string
+    },
     url?: string, 
     type?: string,
 }
@@ -18,7 +24,7 @@ export interface IPackageMember{
 }
 
 export interface IObjectArt{
-    id: number,
+    id: string,
     image_url: string,
     title: string,
     artist: string,
@@ -28,9 +34,9 @@ export interface IObjectArt{
 }
 
 export interface IImageDetailObject{
-    id: number,
+    id: string,
     name: string,
-    image_detail_url: string
+    url: string
 }
 
 export interface IItemType{

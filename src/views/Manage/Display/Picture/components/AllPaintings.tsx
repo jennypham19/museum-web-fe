@@ -1,21 +1,13 @@
 import { useState } from "react";
-
-
-
-import { NavigateBefore } from "@mui/icons-material";
 import { Alert, Box, Button, Chip, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import EditPainting from "./EditPainting";
 import ViewPainting from "./ViewPainting";
 import Backdrop from "@/components/Backdrop";
-import IconButton from '@/components/IconButton/IconButton';
 import CustomPagination from "@/components/Pagination/CustomPagination";
-
-
-
 import { useDataList } from "@/hooks/useDataList";
 import useNotification from "@/hooks/useNotification";
-import { getPaintings, publish, Published } from "@/services/display-service";
+import { getObjectDisplay, publish, Published } from "@/services/display-service";
 import { DataStatusProps, FormDataPainting, IPainting } from "@/types/display";
 import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
 import CardData from "@/views/Manage/components/CardData";
@@ -23,6 +15,7 @@ import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 import FilterTabs from "@/views/Manage/components/FilterTabs";
 import NavigateBack from "@/views/Manage/components/NavigateBack";
 import SearchBox from "@/views/Manage/components/SearchBox";
+import useAuth from "@/hooks/useAuth";
 
 
 interface AllPaintingsProps {
@@ -63,6 +56,7 @@ export type FormErrors = {
 
 const AllPaintings: React.FC<AllPaintingsProps> = ({ onBack }) => {
     const notify = useNotification();
+    const { profile } = useAuth();
     const [errors, setErrors] = useState<FormErrors>({});
     const [formData, setFormData] = useState<FormDataPainting>({
         name: '',
@@ -95,7 +89,7 @@ const AllPaintings: React.FC<AllPaintingsProps> = ({ onBack }) => {
       page,
       rowsPerPage,
       fetchData,
-    } = useDataList<IPainting>(getPaintings, 8, viewMode);
+    } = useDataList<IPainting>((params) => getObjectDisplay(params, 'paintings'), 8, viewMode, profile?.id);
 
     const handleOpenViewPainting = (data: IPainting) => {
       setOpenViewPainting(true);

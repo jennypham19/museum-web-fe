@@ -11,6 +11,7 @@ import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import CommonImage from '@/components/Image/index';
 import image_museum from "@/assets/images/users/logo_1.png";
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface TextProps{
   data: string
@@ -18,10 +19,11 @@ interface TextProps{
 
 const Footer = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('footer');
 
   const InputHeader = () => (
     <TextField
-      placeholder='Đóng góp ý kiến'
+      placeholder={t('nav_search_footer')}
       InputProps={{
         endAdornment: (
           <InputAdornment
@@ -74,7 +76,7 @@ const Footer = () => {
         <Box color='white' bgcolor='#D30000' height={{ xs: '100%', md: 80}}>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 8}}>
-                <Typography ml={{ xs: 4, md: 15}} mt={{ xs: 3, md: 2}} fontWeight={600} fontSize={{ xs: '18px', md: '28px'}}>Đóng góp ý kiến của bạn cho chúng tôi!</Typography>
+                <Typography ml={{ xs: 4, md: 15}} mt={{ xs: 3, md: 2}} fontWeight={600} fontSize={{ xs: '18px', md: '28px'}}>{t('nav_title_footer')}</Typography>
               </Grid>
               <Grid size={{ xs: 12, md: 4}}>
                 <Box px={{ xs: 2, md: 4}} py={{ xs: 0, md: 2.6}} mb={{ xs: 2, md: 0}}>
@@ -91,8 +93,8 @@ const Footer = () => {
                 sx={{ height: 100}}
               />
               <Stack pl={6} direction='column'>
-                <Typography fontSize={{ xs: '16px', md: '24px', whiteSpace: 'normal', wordBreak: 'break-word'}} fontWeight={600}>Bảo tàng nghệ thuật kính màu</Typography>
-                <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Cơ sở 1 - Trại Da Vinci - Ba Trại - Hà Nội</Typography>
+                <Typography fontSize={{ xs: '16px', md: '24px', whiteSpace: 'normal', wordBreak: 'break-word'}} fontWeight={600}>{t('logo_name_footer.name_museum')}</Typography>
+                <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>{t('logo_name_footer.address_museum')}</Typography>
                 <Typography fontSize={{ xs: '13px', md: '20px', whiteSpace: 'normal', wordBreak: 'break-word'}} color='text.secondary'>Hotline: 1900 8976</Typography>
               </Stack>
             </Box>
@@ -100,29 +102,29 @@ const Footer = () => {
           <Grid size={{ xs: 12, md: 8}} sx={{ borderBottom: '1px solid'}}>
             <Grid container>
               <Grid size={{ xs: 4}} sx={{ borderBottom: '1px solid', borderRight: '1px solid'}}>
-                <RenderText data='About Tiffany'/>
-                <RenderText data='Mission and History'/>
-                <RenderText data='Collection Areas'/>
-                <RenderText data='Conservation Departments'/>
-                <RenderText data='Accessibility'/>
-                <RenderText data='Press'/>
+                <RenderText data={t('label_footer.about_the_art')}/>
+                <RenderText data={t('label_footer.mission_and_history')}/>
+                <RenderText data={t('label_footer.collection_areas')}/>
+                <RenderText data={t('label_footer.conservation_departments')}/>
+                <RenderText data={t('label_footer.accessibility')}/>
+                <RenderText data={t('label_footer.press')}/>
               </Grid>
               <Grid size={{ xs: 4}} sx={{ borderBottom: '1px solid', borderRight: '1px solid'}}>
-                <RenderText data='Support'/>
-                <RenderText data='Membership'/>
-                <RenderText data='Host an Events'/>
-                <RenderText data='Corporate Support'/>
+                <RenderText data={t('label_footer.support')}/>
+                <RenderText data={t('label_footer.membership')}/>
+                <RenderText data={t('label_footer.host_an_events')}/>
+                <RenderText data={t('label_footer.corporate_support')}/>
               </Grid>
               <Grid size={{ xs: 4}} sx={{ borderBottom: '1px solid'}}>
-                <RenderText data='Opportunities'/>
-                <RenderText data='Careers'/>
-                <RenderText data='Volunteer'/>
-                <RenderText data='Fellowships'/>
-                <RenderText data='Internship'/>
+                <RenderText data={t('label_footer.opportunities')}/>
+                <RenderText data={t('label_footer.careers')}/>
+                <RenderText data={t('label_footer.volunteer')}/>
+                <RenderText data={t('label_footer.fellowships')}/>
+                <RenderText data={t('label_footer.internship')}/>
               </Grid>
               <Grid size={{ xs: 12, md: 4}} sx={{ borderRight: { xs: 'none', md: '1px solid'}, borderBottom: { xs: '1px solid', md: 'none'}}}>
                 <Box py={{ xs: 2, md:4}} px={{ xs: 2, md: 5}} display='flex' flexDirection='column'>
-                  <Typography ml={0.5} mb={1} fontWeight={600} fontSize={{ xs: '13px', md: '16px'}}>Follow us</Typography>
+                  <Typography ml={0.5} mb={1} fontWeight={600} fontSize={{ xs: '13px', md: '16px'}}>{t('social_title_footer')}</Typography>
                   <Box px={1} display='flex' flexDirection={{ xs: 'row', md: 'column', lg: 'row'}}>
                     <Stack direction='row'>
                       <IconButton
@@ -161,7 +163,7 @@ const Footer = () => {
               </Grid>
               <Grid size={{ xs: 12, md: 8}}>
                 <Box py={{ xs: 2, md:4}} px={{ xs: 2, md: 5}} display='flex' flexDirection='column'>
-                  <Typography ml={0.5} mb={1} fontWeight={600} fontSize={{ xs: '13px', md: '16px'}}>Đóng góp ý kiến của bạn tại đây !</Typography>
+                  <Typography ml={0.5} mb={1} fontWeight={600} fontSize={{ xs: '13px', md: '16px'}}>{t('feedback_footer')}</Typography>
                   <InputHeader/>
                 </Box>
               </Grid>
@@ -170,12 +172,12 @@ const Footer = () => {
         </Grid>
         <Box px={{ xs: 2, md: 6}} py={2} display='flex' flexDirection={{ xs: 'column', md: 'row'}} justifyContent={{ xs: 'flex-start', md: 'space-between'}}>
           <Stack direction='row'>
-            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Side Index</Typography>
-            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Terms and Conditions</Typography>
-            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Privacy Policy</Typography>
-            <Typography fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>Contact Information</Typography>
+            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>{t('label_last_footer.side_index')}</Typography>
+            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>{t('label_last_footer.terms_and_conditions')}</Typography>
+            <Typography pr={2} fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>{t('label_last_footer.privacy_policy')}</Typography>
+            <Typography fontSize={{ xs: '14px', md: '18px'}} fontWeight={600}>{t('label_last_footer.contact_information')}</Typography>
           </Stack>
-          <Typography fontSize={{ xs: '14px', md: '18px'}} mt={{ xs: 2, md: 0}} fontWeight={600}>© 2000 - 2025 The Metropolitan Museum of Art. All rights reserved.</Typography>
+          <Typography fontSize={{ xs: '14px', md: '18px'}} mt={{ xs: 2, md: 0}} fontWeight={600}>{t('label_last_footer.label')}</Typography>
         </Box>
     </FooterRoot>
   );

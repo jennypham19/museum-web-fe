@@ -4,6 +4,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import MapMuseum from '@/views/LandingPage/Visit/MapMuseum';
+import Feedback from '@/views/LandingPage/Feedback/index'
+import { I18nProvider } from '@/contexts/i18nContext';
 
 const LandingPageLayout = () => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
@@ -23,38 +25,42 @@ const LandingPageLayout = () => {
     <>
       {location.pathname === '/map-museum' ? (
         <MapMuseum/>
+      ) : location.pathname === '/feedback' ? (
+        <Feedback/>
       ) : (
-        <Box
-          sx={{
-            flexGrow: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100svh',
-            overflow: 'hidden',
-            paddingTop: { xs: '64px', md: '140px'},
-          }}
-        >
-          <Header
-            collapsed={collapsed}
-            onToggleSidebar={handleToggleSidebar}
-            onToggleCollapsed={handleToggleCollapsed}
-          />
+        <I18nProvider>
           <Box
             sx={{
-                overflowY: 'auto',
-                '&::-webkit-scrollbar': { width: '6px' },
-                '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(0,0,0,0.2)', borderRadius: 1 },
-                '&::-webkit-scrollbar-track': {
-                  backgroundColor: '#f1f1f1',
-              }, 
+              flexGrow: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '100svh',
+              overflow: 'hidden',
+              paddingTop: { xs: '64px', md: '140px'},
             }}
           >
-            <Box sx={{ flexGrow: 1 }}>
-              <Outlet />
+            <Header
+              collapsed={collapsed}
+              onToggleSidebar={handleToggleSidebar}
+              onToggleCollapsed={handleToggleCollapsed}
+            />
+            <Box
+              sx={{
+                  overflowY: 'auto',
+                  '&::-webkit-scrollbar': { width: '6px' },
+                  '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(0,0,0,0.2)', borderRadius: 1 },
+                  '&::-webkit-scrollbar-track': {
+                    backgroundColor: '#f1f1f1',
+                }, 
+              }}
+            >
+              <Box sx={{ flexGrow: 1 }}>
+                <Outlet />
+              </Box>
+              <Footer />
             </Box>
-            <Footer />
           </Box>
-        </Box>
+        </I18nProvider>
       )}
     </>
   );

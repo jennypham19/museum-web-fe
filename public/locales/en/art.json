@@ -1,0 +1,23 @@
+{
+    "breadcrumb_navigation": "Art/ Museum Collection",
+    "title_art": "Art Glass Collection",
+    "description_art": "Travel around the world and explore 5,000 years of stained glass history through more than 490,000 artworks curated and displayed across various collections.",
+    "search_art": "Search by Collection Name",
+    "back_collection": "Back to Collection",
+    "search_collection": "Search in Collection",
+    "search_field": "Search by",
+    "filter_by": {
+        "name": "Filter by",
+        "type_exhibit": "Type Exhibit",
+        "art_style": "Art Style",
+        "pattern": "Pattern",
+        "geographic_location": "Geographic Location",
+        "date_era": "Date/ Era",
+        "origin_factory": "Origin Factory",
+        "only_show": "Only Show",
+        "highlights": "Highlights",
+        "artworks_with_image": "Artworks with image",
+        "artworks_on_display": "Artworks on display"
+    }
+
+}

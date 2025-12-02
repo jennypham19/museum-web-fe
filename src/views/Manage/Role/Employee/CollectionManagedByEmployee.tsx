@@ -4,7 +4,7 @@ import OverviewDataCreate from "../../components/OverviewDataCreate";
 import OverviewData from "../../components/OverviewData";
 import AllCollectionsCreated from "../../Display/Collections/components/AllCollectionsCreated";
 import { ICollection } from "@/types/display";
-import { getCollections } from "@/services/display-service";
+import { getObjectDisplay } from "@/services/display-service";
 import useAuth from "@/hooks/useAuth";
 import Grid from "@mui/material/Grid2";
 import CardData from "../../components/CardData";
@@ -29,7 +29,7 @@ const CollectionManagedByEmployee = () => {
     const [collection, setCollection] = useState<ICollection | null>(null);
 
     const collectionStatus = useMemo(() => ['pending', 'reviewing', 'approved', 'rejected'], [])
-    const { data, fetchDatas } = useLoadData<ICollection>(getCollections, 4, collectionStatus, profile?.id);
+    const { data, fetchDatas } = useLoadData<ICollection>((params) => getObjectDisplay(params, 'collections'), 4, collectionStatus, profile?.id);
     
     // Xem chi tiết
     const handleOpenViewCollection = (data: ICollection) => {

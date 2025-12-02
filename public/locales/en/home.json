@@ -1,3 +1,9 @@
 {
-  "home": "Home"
+  "home": "Home",
+  "label_banner": "Welcome to Art Glass Museum",
+  "label_button": "Visit plan",
+  "livestream": {
+    "name_livestream": "Livestream",
+    "view_all": "View all"
+  }
 }

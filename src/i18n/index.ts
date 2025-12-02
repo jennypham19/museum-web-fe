@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 
 let i18nInstance: I18nInstance;
 
-const NS = ['auth', 'sidebar', 'common', 'customer', 'home'];
+const NS = ['home', 'header', 'footer', 'art'];
 
 const initI18n = (): I18nInstance => {
   if (i18nInstance) {
@@ -13,6 +13,7 @@ const initI18n = (): I18nInstance => {
 
   const userCache = localStorage.getItem('i18nConfig');
   const langCode = userCache ? JSON.parse(userCache) : navigator.language.split('-')[0];
+  
 
   i18nInstance = i18next.createInstance();
   i18nInstance
@@ -35,5 +36,9 @@ const initI18n = (): I18nInstance => {
 };
 
 const i18n = initI18n();
+
+// i18n.on("languageChanged", (lng) => {
+//   localStorage.setItem("app_language", lng);
+// });
 
 export default i18n;

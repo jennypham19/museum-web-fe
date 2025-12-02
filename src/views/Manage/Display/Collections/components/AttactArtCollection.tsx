@@ -7,6 +7,7 @@ import { useDataList } from "@/hooks/useDataList";
 import { attachArtFromCollection, detachArtFromCollection, getCollectionHasArtById, getPaintings } from "@/services/display-service";
 import { COLORS } from "@/constants/colors";
 import useNotification from "@/hooks/useNotification";
+import useAuth from "@/hooks/useAuth";
 
 interface AttactArtCollectionProps{
     onClose: () => void;
@@ -15,9 +16,10 @@ interface AttactArtCollectionProps{
 
 const AttactArtCollection = (props: AttactArtCollectionProps) => {
     const notify = useNotification();
+    const { profile } = useAuth();
     const { onClose, id } = props;
     const [isOpenColletion, setIsCollection] = useState(false);
-    const { listData, fetchData } = useDataList(getPaintings, 8, 'approved');
+    const { listData, fetchData } = useDataList(getPaintings, 8, 'approved', profile?.id);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [selectedArtsUnassignedIds, setSelectedArtsUnassignedIds] = useState<number[]>([]); // Lấy id các tác phẩm chưa gán

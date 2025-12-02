@@ -1,3 +1,9 @@
 {
-    "home": "Trang chủ"
+    "home": "Trang chủ",
+    "label_banner": "Chào mừng đến Bảo tàng nghệ thuật kính màu",
+    "label_button": "Kế hoạch tham quan",
+    "livestream": {
+        "name_livestream": "Xem trực tiếp",
+        "view_all": "Xem tất cả"
+    }
 }

@@ -30,7 +30,7 @@ const DialogAction: React.FC<DialogActionProps> = ({ open, onClose, menuCode, on
         if(open){
             const getAction = async() => {
                 const res = await getActions({page: 1, limit: 99});
-                const data = res.data?.actions as any as IAction[];
+                const data = res.data?.data as any as IAction[];
                 setActions(data)
             }
             getAction();
