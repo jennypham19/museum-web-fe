@@ -1,6 +1,6 @@
 import useAuth from "@/hooks/useAuth";
 import { useDataList } from "@/hooks/useDataList";
-import { getCollections } from "@/services/display-service";
+import { getObjectDisplay } from "@/services/display-service";
 import { DataStatusProps, ICollection } from "@/types/display";
 import { Alert, Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { useState } from "react";
@@ -63,7 +63,7 @@ const CollectionManagedByAdmin = () => {
         page,
         rowsPerPage,
         fetchData,
-    } = useDataList<ICollection>(getCollections, 8, viewMode)
+    } = useDataList<ICollection>((params) => getObjectDisplay(params, 'collections'), 8, viewMode)
 
     // Chi tiết bộ sưu tập
     const handleOpenViewCollection = (data: ICollection) => {

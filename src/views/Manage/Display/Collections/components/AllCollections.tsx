@@ -2,7 +2,7 @@ import Backdrop from "@/components/Backdrop";
 import useAuth from "@/hooks/useAuth";
 import { useDataList } from "@/hooks/useDataList";
 import useNotification from "@/hooks/useNotification";
-import { getCollections, publish, Published, updateCollection } from "@/services/display-service";
+import { getObjectDisplay, publish, Published, updateCollection } from "@/services/display-service";
 import { DataStatusProps, FormDataCollection, ICollection } from "@/types/display";
 import FilterTabs from "@/views/Manage/components/FilterTabs";
 import NavigateBack from "@/views/Manage/components/NavigateBack";
@@ -86,7 +86,7 @@ const AllCollections: React.FC<AllCollectionProps> = ({ onBack }) => {
         page,
         rowsPerPage,
         fetchData
-    } = useDataList<ICollection>(getCollections, 8, viewMode, profile?.id);
+    } = useDataList<ICollection>((params) => getObjectDisplay(params, 'collections'), 8, viewMode, profile?.id);
 
     const handleFileSelect = (file: File | null) => {
         setImageFile(file);

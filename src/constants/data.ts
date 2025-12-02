@@ -65,7 +65,7 @@ import image_policy_1 from "@/assets/images/users/image_policy_1.png";
 import image_policy_2 from "@/assets/images/users/image_policy_2.png";
 import image_policy_3 from "@/assets/images/users/image_policy_3.png";
 import { CategoryProps } from "@/types/post";
-
+import { v4 as uuidv4} from "uuid";
 
 
 export const DATA_LIVE_STREAM = [
@@ -91,6 +91,57 @@ export const DATA_LIVE_STREAM = [
         status: 'Sắp diễn ra'
     }
 ];
+
+export const DATA_LIVESTREAM = [
+    {
+        id: 1,
+        image_url: live_1,
+        title: {
+            "vi": "Nghệ thuật từ Châu Á",
+            "en": "Asian Art",
+        },
+        date: {
+            "vi": "Ngày 26/06",
+            "en": "26 June",
+        },
+        status: {
+            "vi": "Sắp diễn ra",
+            "en": "Upcoming",
+        }
+    },
+    {
+        id: 2,
+        image_url: live_2,
+        title: {
+            "vi": "Nghệ thuật cổ điển Châu Mỹ",
+            "en": "Classical American Art",
+        },
+        date: {
+            "vi": "Ngày 26/06",
+            "en": "26 June",
+        },
+        status: {
+            "vi": "Sắp diễn ra",
+            "en": "Upcoming",
+        }
+    },
+    {
+        id: 3,
+        image_url: live_3, 
+        title: {
+            "vi": "Trình diễn Tiffany từ Úc",
+            "en": "Tiffany Performance from Australia"
+        },
+        date: {
+            "vi": "Ngày 26/06",
+            "en": "26 June",
+        },
+        status: {
+            "vi": "Sắp diễn ra",
+            "en": "Upcoming",
+        }
+    }
+]
 
 export const DATA_LOCATION_TIME = [
     {
@@ -167,26 +218,50 @@ export const DATA_PLAN_VISIT: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: map,
-        title: 'Bản đồ bảo tàng',
-        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!'
+        title: {
+            "vi": "Bản đồ bảo tàng",
+            "en": ""
+        },
+        content: {
+            "vi": "Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!",
+            "en": ""
+        }
     },
     {
         id: 2,
         image_url: plan,
-        title: 'Lộ trình thăm quan miễn phí',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+        title: {
+            "vi": "Lộ trình thăm quan miễn phí",
+            "en": ""
+        },
+        content: {
+            "vi": "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.",
+            "en": ""
+        }
     },
     {
         id: 3,
         image_url: app,
-        title: 'Tải app bảo tàng để kết nối',
-        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!'
+        title: {
+            "vi": "Tải app bảo tàng để kết nối",
+            "en": ""
+        },
+        content: {
+            "vi": "Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!",
+            "en": ""
+        }
     },
     {
         id: 4,
         image_url: present,
-        title: 'Thuyết trình bảo tàng',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+        title: {
+            "vi": "Thuyết trình bảo tàng",
+            "en": ""
+        },
+        content: {
+            "vi": "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.",
+            "en": ""
+        }
     },
 ]
 
@@ -194,29 +269,53 @@ export const DATA_ABOUT_US: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: card_1,
-        title: 'Lịch sử bảo tàng',
-        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!',
+        title: {
+            "vi": "Lịch sử bảo tàng",
+            "en": ""
+        },
+        content: {
+            "vi": "Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!",
+            "en": ""
+        },
         type: 'history_museum'
     },
     {
         id: 2,
         image_url: image_senior_leaders,
-        title: 'Lãnh đạo cao cấp',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.',
+        title: {
+            vi: "Lãnh đạo cao cấp",
+            en: "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích."
+        },
+        content: {
+            vi: "",
+            en: ""
+        },
         type: 'senior_leader'
     },
     {
         id: 3,
         image_url: image_collection,
-        title: 'Bộ sưu tập',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.',
+        title: {
+            vi: "Bộ sưu tập",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.",
+            en: ""
+        },
         type: 'museum_collection'
     },
     {
         id: 4,
         image_url: image_reality_research,
-        title: 'Nghiên cứu thực tại',
-        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!',
+        title: {
+            vi: "Nghiên cứu thực tại",
+            en: ""
+        },
+        content: {
+            vi: "Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!",
+            en: ""
+        },
         type: 'reality_research'
     },
 ]
@@ -225,38 +324,74 @@ export const DATA_COMMON: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: parking_lot,
-        title: 'Địa điểm gửi xe',
-        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.'
+        title: {
+            vi: "Địa điểm gửi xe",
+            en: ""
+        },
+        content: {
+            vi: "Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.",
+            en: ""
+        }
     },
     {
         id: 2,
         image_url: painting,
-        title: 'Tác phẩm nổi bật',
-        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.'
+        title: {
+            vi: "Tác phẩm nổi bật",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.",
+            en: ""
+        }
     },
     {
         id: 3,
         image_url: explore_museum,
-        title: 'Khám phá bảo tàng',
-        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.'
+        title: {
+            vi: "Khám phá bảo tàng",
+            en: ""
+        },
+        content: {
+            vi: "Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.",
+            en: ""
+        }
     },
     {
         id: 4,
         image_url: collection,
-        title: 'Bộ sưu tập tác phẩm',
-        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.'
+        title: {
+            vi: "Bộ sưu tập tác phẩm",
+            en: ""
+        },
+        content: {
+            vi: "Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.",
+            en: ""
+        }
     },
     {
         id: 5,
         image_url: card_member,
-        title: 'Thẻ thành viên',
-        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.'
+        title: {
+            vi: "Thẻ thành viên",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.",
+            en: ""
+        }
     },
     {
         id: 6,
         image_url: find_museum,
-        title: 'Tìm hiểu về bảo tàng',
-        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.'
+        title: {
+            vi: "Tìm hiểu về bảo tàng",
+            en: ""
+        },
+        content: {
+            vi: "Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.",
+            en: ""
+        }
     },
 ];
 
@@ -264,26 +399,50 @@ export const DATA_COLLECTION: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: collection_1,
-        title: 'Tranh kính ảo diệu',
-        content: 'Bộ sưu tập nhà Sen khi kết hợp các mảnh kính đầy màu sắc quy tụ với nhau tạo nên một bức tranh kính hoàn hảo độc đáo, từng mảnh ghép tinh tế kết hợp nên bộ sưu tập đầy màu sắc này.'
+        title: {
+            vi: 'Tranh kính ảo diệu',
+            en: "Enchanting Stained Glass"
+        },
+        content: {
+            vi: "Bộ sưu tập nhà Sen khi kết hợp các mảnh kính đầy màu sắc quy tụ với nhau tạo nên một bức tranh kính hoàn hảo độc đáo, từng mảnh ghép tinh tế kết hợp nên bộ sưu tập đầy màu sắc này.",
+            en: "The Lotus House Collection brings together vibrant pieces of glass to create a uniquely exquisite stained-glass artwork. Each delicate fragment comes together to form this beautifully colorful collection."
+        }
     },
     {
         id: 2,
         image_url: collection_2,
-        title: 'Đèn kính đứng Tiffany',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+        title: {
+            vi: 'Đèn kính đứng Tiffany',
+            en: "Tiffany Floor Lamp"
+        },
+        content: {
+            vi: "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.",
+            en: "Broadcasting valuable content and discussions on the arts by passionate and enthusiastic young creators. Explore and learn from diverse and inspiring art movements."
+        }
     },
     {
         id: 3,
         image_url: collection_3,
-        title: 'Đèn kính treo tường Tiffany',
-        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!'
+        title: {
+            vi: "Đèn kính treo tường Tiffany",
+            en: "Tiffany Wall Lamp"
+        },
+        content: {
+            vi: "Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!",
+            en: "Museum Art Management Training Program: Can you become an art management expert? Join us and find out!"
+        }
     },
     {
         id: 4,
         image_url: collection_4,
-        title: 'Đèn cây đứng Tiffany',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+        title: {
+            vi: "Đèn cây đứng Tiffany",
+            en: "Tiffany Floor Standing Lamp"
+        },
+        content: {
+            vi: "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.",
+            en: "Broadcasting valuable content and discussions on the arts by passionate and enthusiastic young creators. Explore and learn from diverse and inspiring art movements."
+        }
     },
 ]
 
@@ -497,14 +656,26 @@ export const DATA_MEMBER: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: card_1,
-        title: 'Chương trình đào tạo quản lý',
-        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!'
+        title: {
+            vi: "Chương trình đào tạo quản lý",
+            en: ""
+        },
+        content: {
+            vi: "Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!",
+            en: ""
+        }
     },
     {
         id: 2,
         image_url: card_2,
-        title: 'Chương trình họp các hội viên',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+        title: {
+            vi: "Chương trình họp các hội viên",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.",
+            en: ""
+        }
     },
 ]
 
@@ -518,7 +689,7 @@ export const DATA_OVERALL =
 
 export const DATA_OBJECT_ART: IObjectArt[] = [
     {
-        id: 1,
+        id: uuidv4(),
         image_url: object_1,
         title: "Tranh kính bạch tước",
         artist: 'Trương Cao Hoàng',
@@ -527,17 +698,20 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_3 },
         ]
     },
     {
-        id: 2,
+        id: uuidv4(),
         image_url: object_2,
         title: "Tranh kính hoa sen",
         artist: 'Trương Cao Hoàng',
@@ -546,17 +720,17 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
         ]
     },
     {
-        id: 3,
+        id: uuidv4(),
         image_url: object_3,
         title: "Landscape Greek Temple",
         artist: 'Louis Comfort Tiffany',
@@ -565,17 +739,17 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
         ]
     },
     {
-        id: 4,
+        id: uuidv4(),
         image_url: object_4,
         title: "Autumn Landscape",
         artist: 'Northrop',
@@ -584,17 +758,17 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
         ]
     },
     {
-        id: 5,
+        id: uuidv4(),
         image_url: object_5,
         title: "Window",
         artist: 'Louis Comfort Tiffany',
@@ -603,17 +777,17 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
         ]
     },
     {
-        id: 6,
+        id: uuidv4(),
         image_url: object_6,
         title: "Đèn Tiffany Magnolia",
         artist: 'Louis Comfort Tiffany',
@@ -622,17 +796,17 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
         ]
     },
     {
-        id: 7,
+        id: uuidv4(),
         image_url: object_7,
         title: "Đèn Tiffany Lotus Bell",
         artist: 'Louis Comfort Tiffany',
@@ -641,17 +815,17 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
         ]
     },
     {
-        id: 8,
+        id: uuidv4(),
         image_url: object_8,
         title: "Đèn Tiffany Peony",
         artist: 'Louis Comfort Tiffany',
@@ -660,16 +834,17 @@ export const DATA_OBJECT_ART: IObjectArt[] = [
         'Tác phẩm rộng 132 × 102 inch, hình vòm neo‑Gothic vốn được đặt cho cầu thang biệt thự Loren D. Towle ở Boston, nhưng chưa được lắp dựng trước khi Towle qua đời. \n' +
         'Bức tranh khắc họa ánh hoàng hôn chiếu xuyên qua làn lá thu rực rỡ, phản ánh vẻ đẹp tự nhiên không qua phác họa bằng sơn, mà hoàn toàn tạo từ thủ pháp kính đa kỹ thuật.',
         images:[
-            { id: 1, name: 'detail_object_1', image_detail_url: detail_object_1 },
-            { id: 2, name: 'detail_object_2', image_detail_url: detail_object_2 },
-            { id: 3, name: 'detail_object_3', image_detail_url: detail_object_3 },
-            { id: 4, name: 'detail_object_4', image_detail_url: detail_object_4 },
-            { id: 5, name: 'detail_object_5', image_detail_url: detail_object_5 },
-            { id: 6, name: 'detail_object_6', image_detail_url: detail_object_6 },
-            { id: 7, name: 'detail_object_7', image_detail_url: detail_object_7 },
+            { id: uuidv4(), name: 'detail_object_1', url: detail_object_1 },
+            { id: uuidv4(), name: 'detail_object_2', url: detail_object_2 },
+            { id: uuidv4(), name: 'detail_object_3', url: detail_object_3 },
+            { id: uuidv4(), name: 'detail_object_4', url: detail_object_4 },
+            { id: uuidv4(), name: 'detail_object_5', url: detail_object_5 },
+            { id: uuidv4(), name: 'detail_object_6', url: detail_object_6 },
+            { id: uuidv4(), name: 'detail_object_7', url: detail_object_7 },
         ]
     },
 ]
+
 export const DATA_TICKET_LOCATION = [
     {
         id: 1,
@@ -851,22 +1026,40 @@ export const DATA_EXHIBITION_RECENTLY_OPENED: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: card_member,
-        title: 'Thẻ thành viên',
-        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.',
+        title: {
+            vi: "Thẻ thành viên",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.",
+            en: ""
+        },
         url: '/card-member'
     },
     {
         id: 2,
         image_url: live_2,
-        title: 'Bộ sưu tập tác phẩm',
-        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.',
+        title: {
+            vi: "Bộ sưu tập tác phẩm",
+            en: ""
+        },
+        content: {
+            vi: "Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.",
+            en: ""
+        },
         url: '/museum-collection'
     },
     {
         id: 3,
         image_url: find_museum,
-        title: 'Tìm hiểu về bảo tàng',
-        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.',
+        title: {
+            vi: "Tìm hiểu về bảo tàng",
+            en: ""
+        },
+        content: {
+            vi: "Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.",
+            en: ""
+        },
         url: '/home'
     },
 ]
@@ -875,20 +1068,38 @@ export const DATA_EXHIBITION_ABOUT_TO_CLOSE: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: collection,
-        title: 'Bộ sưu tập tác phẩm',
-        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.'
+        title: {
+            vi: "Bộ sưu tập tác phẩm",
+            en: ""
+        },
+        content: {
+            vi: "Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.",
+            en: ""
+        }
     },
     {
         id: 2,
         image_url: find_museum,
-        title: 'Tìm hiểu về bảo tàng',
-        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.'
+        title: {
+            vi: "Tìm hiểu về bảo tàng",
+            en: ""
+        },
+        content: {
+            vi: "Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.",
+            en: ""
+        }
     },
     {
         id: 3,
         image_url: card_member,
-        title: 'Thẻ thành viên',
-        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.'
+        title: {
+            vi: "Thẻ thành viên",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.",
+            en: ""
+        }
     },
 ]
 
@@ -896,20 +1107,38 @@ export const DATA_EXHIBITION_IN_PROGRESS: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: find_museum,
-        title: 'Tìm hiểu về bảo tàng',
-        content: 'Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.'
+        title: {
+            vi: "Tìm hiểu về bảo tàng",
+            en: ""
+        },
+        content: {
+            vi: "Truyền tải nội dung bằng AV thực tế ảo hình ảnh và âm thanh sống động, chân thực tạo cảm giác cho người xem ở không gian thực.",
+            en: ""
+        }
     },
     {
         id: 2,
         image_url: card_member,
-        title: 'Thẻ thành viên',
-        content: 'Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.'
+        title: {
+            vi: "Thẻ thành viên",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung Hướng dẫn bằng âm thanh cho hàng ngàn tác phẩm nghệ thuật trong các phòng trưng bày và một số triển lãm hiện tại.",
+            en: ""
+        }
     },
     {
         id: 3,
         image_url: collection,
-        title: 'Bộ sưu tập tác phẩm',
-        content: 'Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.'
+        title: {
+            vi: "Bộ sưu tập tác phẩm",
+            en: ""
+        },
+        content: {
+            vi: "Khám phá Bảo tàng cùng gia đình với hướng dẫn viên đặc biệt, sự kiện và nhiều hơn thế nữa.",
+            en: ""
+        }
     },
 ]
 
@@ -952,22 +1181,40 @@ export const DATA_ABOUT_US_1: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: image_about_us_1,
-        title: 'Chính sách và tài liệu',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Chính sách và tài liệu",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'policy_material'
     },
     {
         id: 2,
         image_url: image_about_us_2,
-        title: 'Thông tin liên lạc',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Thông tin liên lạc",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'contact-information'
     },
     {
         id: 3,
         image_url: live_3,
-        title: 'Về The Tiffany',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Về The Tiffany",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'about-us'
     }
 ]
@@ -976,14 +1223,26 @@ export const DATA_ABOUT_US_2: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: image_about_us_3,
-        title: 'Tình nguyện viên',
-        content: 'Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.'
+        title: {
+            vi: "Tình nguyện viên",
+            en: ""
+        },
+        content: {
+            vi: "Truyền phát nội dung bổ ích và trao đổi về các nghệ thuật từ các bạn trẻ đầy nhiệt huyết và đam mê nghệ thuật. Học hỏi những trường phái nghệ thuật thú vị và bổ ích.",
+            en: ""
+        },
     },
     {
         id: 2,
         image_url: image_about_us_4,
-        title: 'Hỗ trợ bảo tàng',
-        content: 'Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!'
+        title: {
+            vi: "Hỗ trợ bảo tàng",
+            en: ""
+        },
+        content: {
+            vi: "Chương trình đào tạo quản lý nghệ thuật cho bảo tàng: Bạn có thể trở thành chuyên gia quản lý nghệ thuật được hay không? Tham gia cùng chúng tôi nhé!",
+            en: ""
+        },
     },
 ]
 
@@ -991,22 +1250,40 @@ export const DATA_ABOUT_US_3: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: image_about_us_5,
-        title: 'Cơ hội nghề nghiệp',
-        content: 'Mô tả chi tiết.',
+        title: {
+            vi: "Cơ hội nghề nghiệp",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết.",
+            en: ""
+        },
         type: 'career_opportunities'
     },
     {
         id: 2,
         image_url: image_about_us_6,
-        title: 'Thực tập',
-        content: 'Mô tả chi tiết.',
+        title: {
+            vi: "Thực tập",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết.",
+            en: ""
+        },
         type: 'intership'
     },
     {
         id: 3,
         image_url: image_about_us_7,
-        title: 'Chương trình kiến thức',
-        content: 'Mô tả chi tiết.',
+        title: {
+            vi: "Chương trình kiến thức",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết.",
+            en: ""
+        },
         type: 'knowledge_program'
     },
 ]
@@ -1015,43 +1292,79 @@ export const DATA_ABOUT_MATERIAL: IICommonLandingPage[] = [
     {
         id: 1,
         image_url: image_about_us_1,
-        title: 'Chính sách và tài liệu',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Chính sách và tài liệu",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'policy_material_detail'
     },
     {
         id: 2,
         image_url: image_about_us_2,
-        title: 'Thông tin liên lạc',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Thông tin liên lạc",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'contact-information'
     },
     {
         id: 3,
         image_url: live_3,
-        title: 'Về The Tiffany',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Về The Tiffany",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'about-us'
     },
     {
         id: 4,
         image_url: image_policy_1,
-        title: 'Chính sách và tài liệu',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Chính sách và tài liệu",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'policy_material_detail'
     },
     {
         id: 5,
         image_url: image_policy_2,
-        title: 'Thông tin liên lạc',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Thông tin liên lạc",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'contact-information'
     },
     {
         id: 6,
         image_url: image_policy_3,
-        title: 'Về The Tiffany',
-        content: 'Mô tả chi tiết',
+        title: {
+            vi: "Về The Tiffany",
+            en: ""
+        },
+        content: {
+            vi: "Mô tả chi tiết",
+            en: ""
+        },
         type: 'about-us'
     }
 ];

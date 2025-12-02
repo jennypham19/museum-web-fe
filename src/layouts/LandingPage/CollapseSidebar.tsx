@@ -10,6 +10,8 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import EventIcon from '@mui/icons-material/Event';
 import MuseumIcon from '@mui/icons-material/Museum';
 import InfoIcon from '@mui/icons-material/Info';
+import LanguageSelect from "./components/LanguageSelect";
+import { useTranslation } from "react-i18next";
 
 
 export const CollapseContext = createContext<boolean | null>(null);
@@ -24,50 +26,51 @@ interface CollapsedSideBarProps{
 
 const CollapsedSideBar = (props: CollapsedSideBarProps) => {
     const { collapsed, onToggleCollapsed} = props;
+    const { t } = useTranslation('header')
 
 const MENU_DASHBOARD: MenuProps[] = [
     {
       id:1,
-      label: 'Trang chủ',
+      label: t('menu_home'),
       path: '/home',
       icon: HomeIcon
     },
     {
       id: 2,
-      label: 'Thăm quan',
+      label: t('menu_visit'),
       path: '#',
       icon: TravelExploreIcon,
       children: [
-        { label: 'Kế hoạch thăm quan', path: '/visit-plan'},
-        { label: 'Mua vé thăm quan', path: '/ticket-visit'},
-        { label: 'Thẻ thành viên', path: '/card-member'},
-        { label: 'Trải nghiệm miễn phí', path: '/free-experience'},
-        { label: 'Bản đồ bảo tàng', path: '/map-museum'},
+        { label: t('menu_child_visit_plan'), path: '/visit-plan'},
+        { label: t('menu_child_buy_tickets'), path: '/ticket-visit'},
+        { label: t('menu_child_member'), path: '/card-member'},
+        { label: t('menu_child_free_tours'), path: '/free-experience'},
+        { label: t('menu_museum_map'), path: '/map-museum'},
       ]
     },
     {
       id: 3,
-      label: 'Triển lãm và sự kiện',
+      label: t('menu_exhibitions_and_events'),
       path: '#',
       icon: EventIcon,
       children: [
-        { label: 'Triển lãm', path: '/exhibition'},
-        { label: 'Sự kiện & biểu diễn', path: '/event-performance'},
-        { label: 'Trải nghiệm miễn phí', path: '/free-experience'},
+        { label: t('menu_child_exhibitions'), path: '/exhibition'},
+        { label: t('menu_child_event_performances'), path: '/event-performance'},
+        { label: t('menu_child_free_tours'), path: '/free-experience'},
       ]
     },
     {
       id: 4,
-      label: 'Nghệ thuật',
+      label: t('menu_art'),
       path: '#',
       icon: MuseumIcon,
       children: [
-        { label: 'Bộ sưu tập bảo tàng', path: '/museum-collection'},
+        { label: t('menu_child_collection'), path: '/museum-collection'},
       ]
     },
     {
       id: 5,
-      label: 'Về chúng tôi',
+      label: t('menu_about_us'),
       path: 'about-us',
       icon: InfoIcon
     }
@@ -121,6 +124,7 @@ const MENU_DASHBOARD: MenuProps[] = [
                                 <CollapseMenu key={index} menu={item} icon={Icon} />
                             )
                         })}
+                        <LanguageSelect from='collapse'/>
                     </Stack>  
                 </Box>
             </Box>

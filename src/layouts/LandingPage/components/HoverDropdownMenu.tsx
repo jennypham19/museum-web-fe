@@ -91,7 +91,7 @@ const HoverDropdownMenu = ({ menu } : HoverDropdownMenuProps) => {
                 child.path && navigate(child.path);
                 setAnchorEl(null);
               }}
-              sx={{ color: 'white', '&:hover': { fontWeight: 600}, fontSize: 14, px: 4 }}
+              sx={{ color: 'white', '&:hover': { fontWeight: 600}, fontSize: 15, px: 4 }}
             >
               {child.label}
             </MenuItem>

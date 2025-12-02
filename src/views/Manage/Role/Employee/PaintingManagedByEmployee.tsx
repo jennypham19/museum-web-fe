@@ -15,10 +15,11 @@ import ViewPainting from "../../Display/Picture/components/ViewPainting";
 
 
 import { useLoadPage } from "@/hooks/useLoadPage";
-import { getPaintings } from "@/services/display-service";
+import { getObjectDisplay, getPaintings } from "@/services/display-service";
 import { FormDataPainting, IPainting } from "@/types/display";
 import { getStatusLabel, getStatusLabelColor } from "@/utils/labelEntoVni";
 import { useLoadData } from "@/hooks/useLoadData";
+import useAuth from "@/hooks/useAuth";
 
 
 interface PaintingManagedByEmployeeProps {
@@ -30,6 +31,7 @@ export type FormErrors = {
 };
 
 const PaintingManagedByEmployee = () => {
+    const { profile } = useAuth();
     const query = {
       page: 1,
       rowsPerPage: 4
@@ -46,7 +48,7 @@ const PaintingManagedByEmployee = () => {
     const [painting, setPainting] = useState<IPainting | null> (null);
     
     const paintingStatus = useMemo(() => ['pending', 'reviewing', 'approved', 'rejected'], [])
-    const { data, fetchDatas} = useLoadData<IPainting>(getPaintings, 4, paintingStatus);
+    const { data, fetchDatas } = useLoadData<IPainting>((params) => getObjectDisplay(params, 'paintings'), 4, paintingStatus, profile?.id);
 
     const handleOpenViewPainting = (data: IPainting) => {
         setOpenPainting({

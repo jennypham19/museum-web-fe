@@ -12,7 +12,7 @@ import { COLORS } from "@/constants/colors";
 import useAuth from "@/hooks/useAuth";
 import { useDataList } from "@/hooks/useDataList";
 import useNotification from "@/hooks/useNotification";
-import { createCollection, getCollections, updateCollection } from "@/services/display-service";
+import { createCollection, getObjectDisplay, updateCollection } from "@/services/display-service";
 import { uploadImage } from "@/services/upload-service";
 import { FormDataCollection, ICollection } from "@/types/display";
 import CardData from "@/views/Manage/components/CardData";
@@ -52,7 +52,7 @@ const AllCollectionsCreated = (props: AllCollectionsCreatedProps) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [collection, setCollection] = useState<ICollection | null>(null);
 
-    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<ICollection>(getCollections, 8, 'created', profile?.id);
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<ICollection>((params) => getObjectDisplay(params, 'collections'), 8, 'created', profile?.id);
     
     
     const handleFileSelect = (file: File | null) => {

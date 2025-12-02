@@ -64,7 +64,7 @@ const PaintingManagedByAdmin = () => {
       page,
       rowsPerPage,
       fetchData,
-    } = useDataList<IPainting>(getPaintings, 8, viewMode);
+    } = useDataList<IPainting>(getPaintings, 8, viewMode, profile?.id);
 
     const handleOpenViewPainting = (data: IPainting) => {
         setOpenViewPainting(true)

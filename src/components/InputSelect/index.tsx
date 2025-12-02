@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-import { Chip, CircularProgress, FormControl, FormHelperText, InputLabel, ListSubheader, MenuItem, Select, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material';
+import { Chip, CircularProgress, FormControl, FormHelperText, InputLabel, ListItem, ListSubheader, MenuItem, Select, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material';
 
 
 
@@ -16,6 +16,7 @@ export interface Option {
 
 export interface OptionGroup {
   label: string;
+  value: string;
   options: Option[];
 }
 
@@ -64,6 +65,28 @@ const InputSelect: React.FC<InputSelectProps> = ({
   loadingTitle,
   renderChips = false // default = text
 }) => {
+
+  const [visibleCount, setVisibleCount] = React.useState(10);
+  const [isLoadingMore, setIsLoadingMore] = React.useState(false);
+
+  const handleScrollMenu = (event: any) => {
+    const bottom =
+      Math.abs(
+        event.target.scrollTop +
+        event.target.clientHeight -
+        event.target.scrollHeight
+      ) < 5;
+
+    if (bottom && !isLoadingMore) {
+      setIsLoadingMore(true);
+
+      setTimeout(() => {
+        setVisibleCount((prev) => prev + 10);
+        setIsLoadingMore(false);
+      }, 500);
+    }
+  };
+
   const handleChange = (event: SelectChangeEvent<typeof value>) => {
     const selectedValue = multiple ? event.target.value : event.target.value;
     onChange(name, selectedValue);
@@ -99,26 +122,24 @@ const InputSelect: React.FC<InputSelectProps> = ({
     if ( Array.isArray(finalOptions) && finalOptions.length > 0 && finalOptions[0] && 'options' in finalOptions[0]) {
       return (finalOptions as OptionGroup[]).map((group, i) => [
         <ListSubheader key={`group-${i}`}>{group.label}</ListSubheader>,
-        ...group.options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {renderIcon(option.icon)}
-            {option.label}
-          </MenuItem>
-        )),
+        ...group.options.slice(0, visibleCount).map((option) => {
+          return(
+            <MenuItem key={option.value} value={option.value}>
+              {renderIcon(option.icon)}
+              {`● ${option.label}`}
+            </MenuItem>
+          )
+        }),
       ]);
     }
+
     
-    if (loading) {
-      return (
-        <MenuItem disabled>
-          <CircularProgress size={20} />
-          &nbsp; {loadingTitle}
-        </MenuItem>
-      );
-    }
+    
+
 
     if ((finalOptions as Option[]).length > 0) {
-      return (finalOptions as Option[]).map((option) => (
+      const displayList = finalOptions.slice(0, visibleCount);
+      return (displayList as Option[]).map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {renderIcon(option.icon)}
           {option.label}
@@ -126,6 +147,13 @@ const InputSelect: React.FC<InputSelectProps> = ({
       ));
     }
     
+    if (isLoadingMore) {
+      return (
+        <MenuItem disabled sx={{ justifyContent: 'center' }}>
+          <CircularProgress size={20} />
+        </MenuItem>
+      );
+    }
     return <MenuItem sx={{ fontSize: '14px'}} disabled>{title}</MenuItem>;
     
   };
@@ -193,7 +221,18 @@ const InputSelect: React.FC<InputSelectProps> = ({
         label={label}
         multiple={multiple}
         displayEmpty
-        MenuProps={MenuProps}
+        onOpen={() => {
+          setVisibleCount(10);
+        }}
+        MenuProps={{
+          PaperProps: {
+            sx: {
+              '& .MuiMenuItem-root': { fontSize: '13px', py: 0.7 },
+              maxHeight: 300,
+            },
+            onScroll: handleScrollMenu,
+          }
+        }}
         renderValue={(selected) => {
           if ((multiple && Array.isArray(selected) && selected.length === 0) || !selected) {
             return <span style={{ color: '#aaa' }}>{placeholder}</span>;
@@ -202,7 +241,13 @@ const InputSelect: React.FC<InputSelectProps> = ({
           return getSelectedLabel();
         }}
       >
-        {renderOptions()}
+        {loading ? (
+          <MenuItem disabled>
+            <CircularProgress size={20} /> &nbsp; {loadingTitle}
+          </MenuItem>
+        ) : (
+          renderOptions()
+        )}
       </Select>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

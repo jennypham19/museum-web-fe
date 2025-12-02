@@ -81,7 +81,7 @@ export default function Registration() {
         <Grid size={{ xs: 12, md: 6}} sx={{ height: '100%'}}>
           {/* Logo */}
           <Box p={{ xs: 3, xl: 8}} sx={{ display: 'flex', flexDirection: 'row'}}>
-            <CommonImage src={logo_museum} alt="Museum Tiffany" style={{ height: 60, width: 60 }} />
+            <CommonImage route={ROUTE_PATH.HOME} src={logo_museum} alt="Museum Tiffany" style={{ height: 60, width: 60 }} />
             <Stack sx={{ height: 60, ml: 2}}>
               <Typography margin="auto 0" fontWeight={700}>MUSEUM TIFFANY</Typography>
             </Stack>

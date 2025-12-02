@@ -1,10 +1,9 @@
-import IconButton from "@/components/IconButton/IconButton";
 import { COLORS } from "@/constants/colors";
 import useNotification from "@/hooks/useNotification";
-import { createPainting, deletePainting, getPaintings } from "@/services/display-service";
+import { createPainting, deletePainting, getObjectDisplay } from "@/services/display-service";
 import { uploadImage, uploadImages } from "@/services/upload-service";
 import { FormDataPainting, IPainting } from "@/types/display";
-import { Add, NavigateBefore } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import { Alert, Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import CreatePainting from "./CreatePainting";
@@ -19,6 +18,7 @@ import ViewPainting from "./ViewPainting";
 import SendApproval from "./SendApproval";
 import DialogConfirm from "@/views/Manage/components/DialogConfirm";
 import NavigateBack from "@/views/Manage/components/NavigateBack";
+import useAuth from "@/hooks/useAuth";
 
 interface AllPaintingsCreatedProps {
     onBack: () => void;
@@ -30,6 +30,7 @@ export type FormErrors = {
 
 const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => {
     const notify = useNotification();
+    const { profile } = useAuth();
     const [errors, setErrors] = useState<FormErrors>({});
     const [formData, setFormData] = useState<FormDataPainting>({
         name: '',
@@ -53,7 +54,7 @@ const AllPaintingsCreated: React.FC<AllPaintingsCreatedProps> = ({ onBack }) => 
     const [openDeletePaining, setOpenDeletePainting] = useState(false);
     const [painting, setPainting] = useState<IPainting | null> (null);
     
-    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPainting>(getPaintings, 8, 'created');
+    const { listData, searchTerm, loading, error, handlePageChange, handleSearch, total, page, rowsPerPage, fetchData } = useDataList<IPainting>((params) => getObjectDisplay(params, 'paintings'), 8, 'created', profile?.id);
     const handleOpenAddPainting = () => {
         setOpenPainting({
             type: 'add',

@@ -1,7 +1,9 @@
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import 'dayjs/locale/vi';
+import dayjs from 'dayjs';
+import "dayjs/locale/vi";
+import "dayjs/locale/en";
 
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -26,6 +28,10 @@ const queryClient = new QueryClient({
       retry: 1
     }
   }
+})
+
+i18n.on("languageChanged", (lng) => {
+  dayjs.locale(lng)
 })
 
 const App = () => {

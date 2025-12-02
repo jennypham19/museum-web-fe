@@ -78,6 +78,36 @@ export const updateCollection = async(id: number, payload: CollectionRequest) =>
   return HttpClient.put<any>(url, payload as any)
 }
 
+// Lấy danh sách tác phẩm, bộ sưu tập, triển lãm, sự kiện
+export const getObjectDisplay = async <T>(getParams: GetParams, type: string) : Promise<HttpResponse<PaginatedResponse<T>>> => {
+  const url = `${prefix}/get-list-${type}`;
+  const params: Record<string, any> = {
+    page: getParams.page,
+    limit: getParams.limit,
+    curatorId: getParams.curatorId,
+    status: getParams.status
+  };
+  if(getParams.searchTerm && getParams.searchTerm.trim()) {
+    params.searchTerm = getParams.searchTerm
+  }
+  const response = await HttpClient.get<{
+    success: boolean,
+    message: string,
+    data: PaginatedResponse<T>
+  }>(url, { 
+    params,
+    // cấu hình paramsSerializer để ép axios serialize array kiểu role=employee&role=admin (Sequelize xử lý ngon hơn)
+    paramsSerializer: (params) =>
+      QueryString.stringify(params, { arrayFormat: "repeat"}),
+    // => status=created or status=pending&status=reviewing...
+  });
+  if(response.data && response.success && response.data){
+    return response;
+  }else{
+    throw new Error(response.message || 'Failed to fetch list user');
+  }
+}
+
 // Lấy danh sách tác phẩm
 export const getPaintings = async(params: GetParams) : Promise<HttpResponse<PaintingsResponse>> => {
   const url = `${prefix}/get-list-paintings`;

@@ -1,0 +1,34 @@
+{
+    "nav_title_footer": "Share your feedback with us!",
+    "nav_search_footer": "Feedback",
+    "logo_name_footer": {
+        "name_museum": "The Art Glass Museum",
+        "address_museum": "Da Vinci Camp - Ba Trai - Ha Noi"
+    },
+    "label_footer": {
+        "about_the_art": "About the Art",
+        "mission_and_history": "Mission and History",
+        "collection_areas": "Collection Areas",
+        "conservation_departments": "Conservation Departments",
+        "accessibility": "Accessibility",
+        "press": "Press",
+        "support": "Support",
+        "membership": "Membership",
+        "host_an_events": "Host an Events",
+        "corporate_support": "Corporate Support",
+        "opportunities": "Opportunities",
+        "careers": "Careers",
+        "volunteer": "Volunteer",
+        "fellowships": "Fellowships",
+        "internship": "Internship"
+    },
+    "social_title_footer": "Follow us",
+    "feedback_footer": "Share your feedback here!",
+    "label_last_footer": {
+        "side_index": "Side index",
+        "terms_and_conditions": "Terms and Conditions",
+        "privacy_policy": "Privacy Policy",
+        "contact_information": "Contact Information",
+        "label": "© 2000 - 2025 The Art Glass Museum. All rights reserved"
+    }
+}

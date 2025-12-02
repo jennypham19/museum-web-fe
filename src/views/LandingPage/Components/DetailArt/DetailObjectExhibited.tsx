@@ -1,9 +1,10 @@
 import DialogComponent from "@/components/DialogComponent";
-import { IObjectArt } from "@/types/landingpage";
+import { IImageDetailObject, IObjectArt } from "@/types/landingpage";
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import Grid from "@mui/material/Grid2"
 import CommonImage from "@/components/Image/index";
+import { v4 as uuidv4} from "uuid";
 
 interface DetailObjectExhibitedProps{
     open: boolean,
@@ -15,6 +16,7 @@ const DetailObjectExhibited: React.FC<DetailObjectExhibitedProps> = ({ open, dat
     const handleClose = () => {
         onClose()
     }
+
     return(
         <DialogComponent
             dialogKey={open}

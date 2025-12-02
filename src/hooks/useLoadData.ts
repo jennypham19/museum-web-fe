@@ -9,7 +9,12 @@ interface FetchParams {
   curatorId?: number,
 }
 
-export const useLoadData = <T>(fn: (params: FetchParams) => Promise<HttpResponse<PaginatedResponse<T>>>, rowsPerPage: number = 10, status?: string | string[], curatorId?: number) => {
+export const useLoadData = <T>(
+    fn: (params: FetchParams, type?: string) => Promise<HttpResponse<PaginatedResponse<T>>>, 
+    rowsPerPage: number = 10, 
+    status?: string | string[], 
+    curatorId?: number
+) => {
     const query = {
         page: 1,
     }

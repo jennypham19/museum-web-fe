@@ -1,0 +1,23 @@
+{
+    "breadcrumb_navigation": "Nghệ thuật/ Bộ sưu tập của bảo tàng",
+    "title_art": "Bộ sưu tập của Art Glass",
+    "description_art": "Du lịch vòng quanh thế giới và khám phá 5.000 năm lịch sử của tranh kính màu thông qua hơn 490.000 tác phẩm nghệ thuật được sắp xếp và trưng bày trong từng bộ sưu tập.",
+    "search_art": "Tìm kiếm tên Bộ sưu tập",
+    "back_collection": "Quay lại bộ sưu tập",
+    "search_collection": "Tìm kiếm trong bộ sưu tập",
+    "search_field": "Tìm kiếm theo",
+    "filter_by": {
+        "name": "Lọc theo",
+        "type_exhibit": "Loại hiện vật",
+        "art_style": "Phong cách nghệ thuật",
+        "pattern": "Họa tiết chủ đạo",
+        "geographic_location": "Vị trí địa lý",
+        "date_era": "Ngày/ Thời đại",
+        "origin_factory": "Xuất xứ & xưởng chế tác",
+        "only_show": "Chỉ hiện thị",
+        "highlights": "Điểm nổi bật",
+        "artworks_with_image": "Tác phẩm nghệ thuật có hình ảnh",
+        "artworks_on_display": "Tác phẩm nghệ thuật trưng bày"
+    }
+    
+}

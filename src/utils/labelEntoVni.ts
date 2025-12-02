@@ -28,3 +28,21 @@ export const getReasonSendLabel = (reason: ReasonSend | null | undefined): strin
     if(!reason) return "Chưa xác định"
     return REASON_SEND_LABELS[reason] || reason;
 }
+
+export const getFieldLabel = (field: string) => {
+    switch (field) {
+        case 'artist':
+            return { title: { vi: "nghệ sĩ", en: "artist" }};
+        case 'culture': 
+            return { title: { vi: "văn hóa", en: "culture" }};
+        case 'title':
+            return { title: { vi: "tiêu đề", en: "title" }};
+        case 'description':
+            return { title: { vi: "mô tả", en: "description" }};
+        case 'gallery':
+            return { title: { vi: "phòng trưng bày", en: "gallery" }};
+        default:
+            return { title: { vi: "tất cả các trường", en: "all fields" }};
+    }
+    
+}

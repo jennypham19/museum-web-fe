@@ -1,0 +1,34 @@
+{
+    "nav_title_footer": "Đóng góp ý kiến của bạn cho chúng tôi!",
+    "nav_search_footer": "Đóng góp ý kiến",
+    "logo_name_footer": {
+        "name_museum": "Bảo tàng nghệ thuật kính màu",
+        "address_museum": "Trại Da Vinci - Ba Trại - Hà Nội"
+    },
+    "label_footer": {
+        "about_the_art": "Giới thiệu về Art",
+        "mission_and_history": "Sứ mệnh và Lịch sử",
+        "collection_areas": "Các khu sưu tập",
+        "conservation_departments": "Các bộ phận bảo tồn",
+        "accessibility": "Khả năng tiếp cận",
+        "press": "Báo chí",
+        "support": "Tài trợ",
+        "membership": "Thành viên",
+        "host_an_events": "Tổ chức sự kiện",
+        "corporate_support": "Hỗ trợ từ doanh nghiệp",
+        "opportunities": "Cơ hội",
+        "careers": "Nghề nghiệp",
+        "volunteer": "Tình nguyện viên",
+        "fellowships": "Học bổng nghiên cứu",
+        "internship": "Thực tập"
+    },
+    "social_title_footer": "Theo dõi chúng tôi",
+    "feedback_footer": "Đóng góp ý kiến của bạn tại đây!",
+    "label_last_footer": {
+        "side_index": "Mục lục bên",
+        "terms_and_conditions": "Điều khoản và Điều kiện",
+        "privacy_policy": "Chính sách bảo mật",
+        "contact_information": "Thông tin liên hệ",
+        "label": "© 2000 - 2025 The Art Glass Museum. Bảo lưu mọi quyền"
+    }
+}

@@ -1,14 +1,16 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import art_work from "@/assets/images/users/artglass.mp4"
 
 interface ImageCarouselProps{
     image_url: string,
     label: string,
+    labelBtn: string,
     title?: string,
     isDisabled?: boolean;
 }
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ image_url, label, title, isDisabled = false}) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ image_url, label, title, isDisabled = false, labelBtn}) => {
     const navigate = useNavigate();
     return(
         <Box
@@ -16,15 +18,23 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ image_url, label, title, 
                 position: 'relative',
                 height: { xs: 450, md: 600},
                 width: '100%',
-                backgroundImage:`url(${image_url})`,
-                backgroundSize: '100% 100%',
-                backgroundPosition: 'center',
+                // backgroundImage:`url(${image_url})`,
+                // backgroundSize: '100% 100%',
+                // backgroundPosition: 'center',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 textAlign: 'center',
             }}
         >
+            <video 
+                autoPlay
+                loop
+                muted
+                playsInline 
+                style={{ width: "100%", height: '100%', objectFit: 'fill' }} 
+                src={art_work}
+            />
             <Box
                 sx={{
                     position: 'absolute',
@@ -70,7 +80,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ image_url, label, title, 
                                 },
                             }}
                         >
-                            Kế hoạch tham quan
+                            {labelBtn}
                         </Button>
                     )}
                 </Box> 

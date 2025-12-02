@@ -2,8 +2,10 @@ import { Box, Card, CardContent, CardMedia, IconButton, Stack, Tooltip, Typograp
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid2';
-import { DATA_LIVE_STREAM } from "@/constants/data";
+import { DATA_LIVESTREAM } from "@/constants/data";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { useI18n } from "@/contexts/i18nContext";
 
 interface LiveStreamProps{
     title: string,
@@ -11,6 +13,8 @@ interface LiveStreamProps{
 }
 
 const LiveStream: React.FC<LiveStreamProps> = ({title, isDisabled=false}) => {
+    const { t } = useTranslation('home');
+    const { locale } = useI18n();
     const theme = useTheme();
     const navigate = useNavigate();
     const mdUp = useMediaQuery(theme.breakpoints.up('lg'));
@@ -26,8 +30,8 @@ const LiveStream: React.FC<LiveStreamProps> = ({title, isDisabled=false}) => {
                 {mdUp ? (
                     <>
                         {!isDisabled && (
-                            <Stack direction='row'>
-                                <Typography sx={{ pt:1, cursor: 'pointer' }} variant="body2" fontWeight={600} onClick={() => navigate('/center-exhibition')}> Xem tất cả</Typography>
+                            <Stack direction='row' onClick={() => navigate('/museum-collection')}>
+                                <Typography sx={{ pt:1, cursor: 'pointer' }} variant="body2" fontWeight={600}>{t('livestream.view_all')}</Typography>
                                 <IconButton sx={{ border: 'solid 0.5px #757373ff', borderRadius: '50%', width: 36, height: 36}}>
                                     <ArrowForwardIcon fontSize="small"/>
                                 </IconButton>
@@ -50,7 +54,7 @@ const LiveStream: React.FC<LiveStreamProps> = ({title, isDisabled=false}) => {
             </Box>
             <Box py={2}>
                 <Grid container spacing={3} sx={{ mt: { xs: 2, md: 0}}}>
-                    {DATA_LIVE_STREAM.slice(0,3).map((data, index) => {
+                    {DATA_LIVESTREAM.slice(0,3).map((data, index) => {
                         return(                      
                                 <Grid key={index} size={{ xs: 12, sm: 4}}>
                                     <Card
@@ -65,7 +69,7 @@ const LiveStream: React.FC<LiveStreamProps> = ({title, isDisabled=false}) => {
                                         <CardMedia
                                             component='img'
                                             image={data.image_url}
-                                            alt={data.title}
+                                            alt={data.title[locale]}
                                             sx={{
                                                 objectFit: 'fill',
                                                 backgroundColor: '#f5f5f5',
@@ -74,12 +78,10 @@ const LiveStream: React.FC<LiveStreamProps> = ({title, isDisabled=false}) => {
                                             }}
                                         />
                                         <CardContent>
-                                            <Typography fontWeight={600}>{data.title}</Typography>
-                                            <Typography variant="subtitle2" color='text.secondary'>{`${data.date} - ${data.status}`}</Typography>
+                                            <Typography fontWeight={600}>{data.title[locale]}</Typography>
+                                            <Typography variant="subtitle2" color='text.secondary'>{`${data.date[locale]} - ${data.status[locale]}`}</Typography>
                                         </CardContent>
                                     </Card>                                    
-                                
-
                                 </Grid>
                         )
                     })}
